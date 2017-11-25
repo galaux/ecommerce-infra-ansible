@@ -25,7 +25,9 @@
   when: stat_admin_present.stat.exists
 
 - name: install boto dependency
-  yum: name=python27-boto3 state=present
+  yum: >
+    name=python27-boto3
+    state=present
 
 - name: retrieve backups from S3
   aws_s3:
