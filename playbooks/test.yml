@@ -1,0 +1,9 @@
+---
+
+- name: setup test instance
+  hosts: test.example.com
+  become: true
+  become_user: root
+  roles:
+    - { role: etc-hosts }
+    - { role: sshd, tags: ['sshd'] }

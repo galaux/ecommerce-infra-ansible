@@ -1,0 +1,5 @@
+[test]
+test.example.com
+
+#[prod]
+#example.com
