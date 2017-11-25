@@ -9,3 +9,5 @@
     - { role: sshd, tags: ['sshd'] }
     - { role: logrotate }
     - { role: php }
+    - { role: nginx }
+    - { role: php-fpm }

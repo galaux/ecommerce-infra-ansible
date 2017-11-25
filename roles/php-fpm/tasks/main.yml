@@ -1,0 +1,22 @@
+---
+
+- name: install php-fpm
+  yum: >
+    name=php56-fpm
+    state=present
+
+- name: configure php-fpm
+  template: >
+   src=www.conf.j2
+   dest=/etc/php-fpm-5.6.d/www.conf
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart php-fpm
+
+- name: start and enable php-fpm
+  service: >
+    name=php-fpm
+    enabled=yes
+    state=started
