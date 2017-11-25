@@ -1,0 +1,9 @@
+---
+
+- name: configure PHP
+  template: >
+   src=timezone.ini.j2
+   dest=/etc/php-5.6.d/20-timezone.ini
+   owner=root
+   group=root
+   mode=0644
