@@ -1,5 +1,17 @@
 ---
 
+- name: install PHP
+  yum: >
+    name={{ item }}
+    state=present
+  with_items:
+    - php56
+    - php56-gd
+    - php56-mbstring
+    - php56-mcrypt
+    - php56-mysqlnd
+    - php56-soap
+
 - name: configure PHP
   template: >
    src=timezone.ini.j2
