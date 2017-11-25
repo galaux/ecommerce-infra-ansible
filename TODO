@@ -1,0 +1,2 @@
+- when/if writting apache role, do not forget to set .htaccess from S3
+- add installation of packages declared as PKG_LIST in user_data.sh

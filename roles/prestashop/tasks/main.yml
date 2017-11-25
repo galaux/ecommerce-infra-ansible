@@ -1,0 +1,64 @@
+---
+
+- name: download Prestashop vanilla files
+  unarchive:
+    remote_src: yes
+    src: https://www.prestashop.com/download/old/prestashop_{{ prestashop_version }}.zip
+    dest: /var
+    creates: /var/prestashop
+    owner: apache
+    group: apache
+    mode: 0664
+    exclude: Install_PrestaShop.html
+
+- name: remove install directory
+  file:
+    state: absent
+    path: /var/prestashop/install
+
+- name: stat whether admin directory is present
+  stat: path=/var/prestashop/admin
+  register: stat_admin_present
+
+- name: rename admin directory
+  command: mv /var/prestashop/admin /var/prestashop/FuckMyAdm1n
+  when: stat_admin_present.stat.exists
+
+- name: install boto dependency
+  yum: name=python27-boto3 state=present
+
+- name: retrieve backups from S3
+  aws_s3:
+    bucket: prestashop-data
+    object: "/{{ backup_date }}/{{ item }}"
+    dest: "/tmp/{{ item }}"
+    mode: get
+  with_items: "{{ prestashop_tarballs }}"
+
+- name: deploy backups
+  unarchive:
+    src: /tmp/{{ item }}
+    dest: /var/prestashop
+    remote_src: yes
+  with_items: "{{ prestashop_tarballs }}"
+
+- name: install config file
+  aws_s3:
+    bucket: prestashop-data
+    object: "/{{ backup_date }}/settings.inc.php"
+    dest: /var/prestashop/config/settings.inc.php
+    mode: get
+
+- name: set files and directories owner/group
+  file:
+    path: /var/prestashop
+    owner: apache
+    group: apache
+    state: directory
+    recurse: yes
+
+- name: set files permissions
+  command: find /var/prestashop -type d -exec chmod 0755 {} \;
+
+- name: set directories permissions
+  command: find /var/prestashop -type f -exec chmod 0644 {} \;

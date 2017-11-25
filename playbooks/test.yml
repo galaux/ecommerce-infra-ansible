@@ -11,3 +11,4 @@
     - { role: php }
     - { role: nginx }
     - { role: php-fpm }
+    - { role: prestashop }
