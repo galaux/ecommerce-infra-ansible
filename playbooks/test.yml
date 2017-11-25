@@ -7,3 +7,4 @@
   roles:
     - { role: etc-hosts }
     - { role: sshd, tags: ['sshd'] }
+    - { role: logrotate }

@@ -1,0 +1,4 @@
+---
+
+- name: configure logrotate
+  template: src=compress.conf.j2 dest=/etc/logrotate.d/compress.conf owner=root group=root mode=0644
