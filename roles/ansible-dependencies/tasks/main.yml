@@ -1,0 +1,6 @@
+---
+
+- name: install boto dependency
+  yum: >
+    name=python27-boto3
+    state=present
