@@ -1,32 +1,82 @@
 ---
 
-- name: install MySQL
+- name: install MySQL and dependencies
   yum: >
-    name=mysql56-server
+    name=mysql56-server,MySQL-python27
     state=present
 
-# - name: start and enable nginx
-#   service: >
-#     name=nginx
-#     enabled=yes
-#     state=started
+- name: start and enable MySQL
+  service: >
+    name=mysqld
+    enabled=yes
+    state=started
 
-# - name: configure nginx
-#   template: >
-#    src=nginx.conf.j2
-#    dest=/etc/nginx/nginx.conf.new
-#    owner=root
-#    group=root
-#    mode=0644
-#   notify:
-#     - restart nginx
+- name: remove anonymous accounts
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
 
-# - name: configure virtual env
-#   template: >
-#    src=virtual.conf.j2
-#    dest=/etc/nginx/conf.d/virtual.conf
-#    owner=root
-#    group=root
-#    mode=0644
-#   notify:
-#     - restart nginx
+- name: create PS account
+  mysql_user:
+    name: 'ps_std'
+    host: 'localhost'
+    password: 'REDACTED5000000000000000'
+    priv: 'ps_std.*:ALL'
+    state: present
+
+- name: create read only account
+  mysql_user:
+    name: 'shop-ro'
+    host: 'localhost'
+    password: 'XXXXXXXX'
+    priv: 'ps_std.*:SELECT'
+    state: present
+
+- name: create/set root account
+  mysql_user:
+    name: 'shop-ro'
+    host: 'localhost'
+    password: 'XXXXXXXX'
+    state: present
+
+- name: set root my.cnf
+  template: >
+   src=my.cnf.j2
+   dest=/root/.my.cnf
+   owner=root
+   group=root
+   mode=0600
+
+- name: stat whether DB is already present
+  shell: mysql -e 'USE ps_std_new;'
+  register: db_already_present
+  failed_when: db_already_present.rc > 1
+
+- name: create DB
+  mysql_db:
+    name: ps_std_new
+    state: present
+
+- name: retrieve DB backup from S3
+  aws_s3:
+    bucket: prestashop-data
+    object: "/{{ backup_date }}/db_ps.sql.bz2"
+    dest: /tmp/db_ps.sql.bz2
+    mode: get
+  when: db_already_present.rc == 1
+
+- name: Restore DB
+  mysql_db:
+    name: ps_std_new
+    state: import
+    target: /tmp/db_ps.sql.bz2
+  when: db_already_present.rc == 1
+
+- name: configure logrotate
+  copy: >
+   src=logrotate
+   dest=/etc/logrotate.d/mysqld
+   owner=root
+   group=root
+   mode=0644
