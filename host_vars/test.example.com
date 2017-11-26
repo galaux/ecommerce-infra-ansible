@@ -13,3 +13,5 @@ prestashop_tarballs:
   - themes_example.tgz
   - translations.tgz
   - upload.tgz
+prestashop_root_path: "/var/www/html"
+prestashop_path: "{{ prestashop_root_path }}/prestashop"

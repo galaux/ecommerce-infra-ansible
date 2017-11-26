@@ -1,30 +1,34 @@
 ---
 
 - name: stat whether Prestashop is already present
-  command: test -d /var/prestashop
+  command: test -d "{{ prestashop_path }}"
   register: ps_already_present
+  failed_when: ps_already_present.rc > 1
+
+- debug:
+    msg: "{{ prestashop_root_path }} || {{ prestashop_path }} || {{ ps_already_present }}"
 
 - name: download Prestashop vanilla files
   unarchive:
     remote_src: yes
-    src: https://www.prestashop.com/download/old/prestashop_{{ prestashop_version }}.zip
-    dest: /var
-    creates: /var/prestashop
+    src: "https://www.prestashop.com/download/old/prestashop_{{ prestashop_version }}.zip"
+    dest: "{{ prestashop_root_path }}"
+    creates: "{{ prestashop_path }}"
     owner: apache
     group: apache
     mode: 0664
     exclude: Install_PrestaShop.html
-  when: not ps_already_present
+  when: ps_already_present.rc == 1
 
 - name: remove install directory
   file:
     state: absent
-    path: /var/prestashop/install
-  when: not ps_already_present
+    path: "{{ prestashop_path }}/install"
+  when: ps_already_present.rc == 1
 
 - name: rename admin directory
-  command: mv /var/prestashop/admin /var/prestashop/FuckMyAdm1n
-  when: not ps_already_present
+  command: mv "{{ prestashop_path }}/admin" "{{ prestashop_path }}/FuckMyAdm1n"
+  when: ps_already_present.rc == 1
 
 - name: retrieve backups from S3
   aws_s3:
@@ -33,33 +37,33 @@
     dest: "/tmp/{{ item }}"
     mode: get
   with_items: "{{ prestashop_tarballs }}"
-  when: not ps_already_present
+  when: ps_already_present.rc == 1
 
 - name: deploy backups
   unarchive:
     src: /tmp/{{ item }}
-    dest: /var/prestashop
+    dest: "{{ prestashop_path }}"
     remote_src: yes
   with_items: "{{ prestashop_tarballs }}"
-  when: not ps_already_present
+  when: ps_already_present.rc == 1
 
 - name: install config file
   aws_s3:
     bucket: prestashop-data
     object: "/{{ backup_date }}/settings.inc.php"
-    dest: /var/prestashop/config/settings.inc.php
+    dest: "{{ prestashop_path }}/config/settings.inc.php"
     mode: get
 
 - name: set files and directories owner/group
   file:
-    path: /var/prestashop
+    path: "{{ prestashop_path }}"
     owner: apache
     group: apache
     state: directory
     recurse: yes
 
 - name: set files permissions
-  command: find /var/prestashop -type d -exec chmod 0755 {} \;
+  command: find "{{ prestashop_path }}" -type d -exec chmod 0755 {} \;
 
 - name: set directories permissions
-  command: find /var/prestashop -type f -exec chmod 0644 {} \;
+  command: find "{{ prestashop_path }}" -type f -exec chmod 0644 {} \;
