@@ -5,6 +5,7 @@
     name=nginx
     state=present
 
+# http://doc.prestashop.com/display/PS16/System+Administrator+Guide#SystemAdministratorGuide-NginxfriendlyURLs
 - name: configure nginx
   template: >
    src=nginx.conf.j2
