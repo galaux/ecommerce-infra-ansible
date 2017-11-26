@@ -1,5 +1,9 @@
 ---
 
+- name: stat whether Prestashop is already present
+  command: test -d /var/prestashop
+  register: ps_already_present
+
 - name: download Prestashop vanilla files
   unarchive:
     remote_src: yes
@@ -10,20 +14,19 @@
     group: apache
     mode: 0664
     exclude: Install_PrestaShop.html
+  when: not ps_already_present
 
 - name: remove install directory
   file:
     state: absent
     path: /var/prestashop/install
-
-- name: stat whether admin directory is present
-  stat: path=/var/prestashop/admin
-  register: stat_admin_present
+  when: not ps_already_present
 
 - name: rename admin directory
   command: mv /var/prestashop/admin /var/prestashop/FuckMyAdm1n
-  when: stat_admin_present.stat.exists
+  when: not ps_already_present
 
+  # TODO put this in a more "global" place
 - name: install boto dependency
   yum: >
     name=python27-boto3
@@ -36,6 +39,7 @@
     dest: "/tmp/{{ item }}"
     mode: get
   with_items: "{{ prestashop_tarballs }}"
+  when: not ps_already_present
 
 - name: deploy backups
   unarchive:
@@ -43,6 +47,7 @@
     dest: /var/prestashop
     remote_src: yes
   with_items: "{{ prestashop_tarballs }}"
+  when: not ps_already_present
 
 - name: install config file
   aws_s3:
