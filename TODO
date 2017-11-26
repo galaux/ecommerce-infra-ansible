@@ -1,4 +1,9 @@
 - run mysql script that removes test db
-- when/if writting apache role, do not forget to set .htaccess from S3
+- when/if writting apache role
+  - do not forget to set .htaccess from S3
 - add installation of packages declared as PKG_LIST in user_data.sh
-- finish MySQL role
+- write letsencrypt role
+- write phpmyadmin role
+- role nginx: setup TLS
+
+- in role prestashop: use template for settings.inc.php
