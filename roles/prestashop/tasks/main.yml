@@ -5,9 +5,6 @@
   register: ps_already_present
   failed_when: ps_already_present.rc > 1
 
-- debug:
-    msg: "{{ prestashop_root_path }} || {{ prestashop_path }} || {{ ps_already_present }}"
-
 - name: download Prestashop vanilla files
   unarchive:
     remote_src: yes
