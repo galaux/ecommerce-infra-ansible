@@ -9,8 +9,8 @@
     - { role: etc-hosts }
     - { role: sshd, tags: ['sshd'] }
     - { role: logrotate }
-    - { role: php }
-    - { role: nginx }
-    - { role: php-fpm }
     - { role: prestashop }
+    - { role: php }
+    - { role: php-fpm }
+    - { role: nginx }
     - { role: mysqld }
