@@ -49,13 +49,13 @@
    mode=0600
 
 - name: stat whether DB is already present
-  shell: mysql -e 'USE ps_std_new;'
+  shell: mysql -e 'USE ps_std;'
   register: db_already_present
   failed_when: db_already_present.rc > 1
 
 - name: create DB
   mysql_db:
-    name: ps_std_new
+    name: ps_std
     state: present
 
 - name: retrieve DB backup from S3
@@ -68,7 +68,7 @@
 
 - name: Restore DB
   mysql_db:
-    name: ps_std_new
+    name: ps_std
     state: import
     target: /tmp/db_ps.sql.bz2
   when: db_already_present.rc == 1
