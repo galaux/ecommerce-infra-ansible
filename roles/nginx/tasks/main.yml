@@ -25,8 +25,7 @@
   notify:
     - restart nginx
 
-- name: start and enable nginx
+- name: enable nginx
   service: >
     name=nginx
     enabled=yes
-    state=started
