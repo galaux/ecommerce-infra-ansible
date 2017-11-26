@@ -1,9 +1,9 @@
 ---
 
-- name: configure logrotate
-  template: >
-    src=compress.conf.j2
-    dest=/etc/logrotate.d/compress.conf
+- name: configure logrotate compression
+  copy: >
+    src=compress
+    dest=/etc/logrotate.d/compress
     owner=root
     group=root
     mode=0644
