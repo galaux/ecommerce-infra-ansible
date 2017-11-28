@@ -1,0 +1,42 @@
+---
+
+- name: install letsencrypt script
+  get_url:
+    url: https://dl.eff.org/certbot-auto
+    dest: /usr/local/bin/certbot-auto
+    checksum: sha256:687987829ad4676aa2ad2beae7482a0ae08cdbb865300f5e4ee17f4a98620847
+    owner: root
+    group: root
+    mode: 0775
+
+- name: stat whether letsencrypt is already present
+  command: test -d "{{ letsencrypt_path }}"
+  register: letsencrypt_already_present
+  failed_when: letsencrypt_already_present.rc > 1
+
+- name: retrieve backup certificates from S3
+  aws_s3:
+    bucket: prestashop-data
+    # TODO letsencrypt origin for PROD
+    object: /cert_test.example.com.tgz
+    dest: /tmp/cert_test.example.com.tgz
+    mode: get
+  when: letsencrypt_already_present.rc == 1
+
+- name: deploy certificates
+  unarchive:
+    src: /tmp/cert_test.example.com.tgz
+    # TODO make backup script archive relative path for letsencrypt and set it here from variable
+    dest: /
+    remote_src: yes
+  when: letsencrypt_already_present.rc == 1
+
+- name: setup cron to update letsencrypt certificates
+  template: >
+   src=cron.j2
+   dest=/etc/cron.d/renew-certificates
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - reload crond
