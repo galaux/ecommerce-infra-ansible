@@ -4,6 +4,6 @@
 - add installation of packages declared as PKG_LIST in user_data.sh
 - write letsencrypt role
 - write phpmyadmin role
-- role nginx: setup TLS
-
+- role nginx: setup TLSj
 - in role prestashop: use template for settings.inc.php
+- See use of [CloudFront template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html#w2ab2c23c48c13c15)
