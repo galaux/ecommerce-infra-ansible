@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: example instance
+
+Parameters:
+
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.nano
+      - t2.micro
+      - t2.small
+      - t2.medium
+    ConstraintDescription: must be a valid EC2 instance type.
+
+Resources:
+  EC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: !Ref InstanceType
+      SecurityGroups:
+        - example-ami
+      IamInstanceProfile: example-ami
+      KeyName: example-kp
+      ImageId: ami-bf2ba8d0
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -x
+          set -e
+          GITLAB_TOKEN='REDACTED700000000000'
+          PROJECT_NAME='example-ansible'
+          ARCHIVE_URL="https://gitlab.com/example/$PROJECT_NAME/repository/master/archive.tar.gz"
+          yum --assumeyes update
+          yum \
+            --assumeyes \
+            --enablerepo=epel \
+            install \
+            ansible \
+            python27-boto3
+          wget "$ARCHIVE_URL?private_token=$GITLAB_TOKEN" \
+            -O $PROJECT_NAME.tar.gz
+          tar xf $PROJECT_NAME.tar.gz -C /home/ec2-user
+          cd /home/ec2-user/$PROJECT_NAME-master-*
+          ansible-playbook \
+            --connection=local \
+            playbooks/test.yml
+
+Outputs:
+
+  InstanceId:
+    Description: InstanceId of the newly created EC2 instance
+    Value: !Ref EC2Instance
+
+  AZ:
+    Description: Availability Zone of the newly created EC2 instance
+    Value: !GetAtt
+      - EC2Instance
+      - AvailabilityZone
+
+  PublicDNS:
+    Description: Public DNSName of the newly created EC2 instance
+    Value: !GetAtt
+      - EC2Instance
+      - PublicDnsName
+
+  PublicIP:
+    Description: Public IP address of the newly created EC2 instance
+    Value: !GetAtt
+      - EC2Instance
+      - PublicIp
