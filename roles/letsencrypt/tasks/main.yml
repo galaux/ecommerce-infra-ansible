@@ -9,6 +9,9 @@
     group: root
     mode: 0775
 
+- name: install certbot dependencies
+  shell: /usr/local/bin/certbot-auto --debug --non-interactive --os-packages-only
+
 - name: stat whether certificates are already present
   command: test -d "{{ letsencrypt_path }}"
   register: letsencrypt_already_present
