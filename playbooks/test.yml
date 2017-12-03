@@ -15,3 +15,4 @@
     - { role: prestashop }
     - { role: mysqld }
     - { role: letsencrypt }
+    - { role: collectd }

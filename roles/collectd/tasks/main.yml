@@ -1,0 +1,36 @@
+---
+
+- name: install collectd
+  yum: >
+    name=collectd,collectd-rrdtool
+    state=present
+
+- name: setup collectd
+  template: >
+   src=collectd.conf.j2
+   dest=/etc/collectd.conf
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart collectd
+
+- name: setup collectd snippets
+  template: >
+   src={{ item }}.conf.j2
+   dest=/etc/collectd.d/{{ item }}.conf
+   owner=root
+   group=root
+   mode=0644
+  with_items:
+    - df
+    - nginx
+    - mysql
+    - processes
+  notify:
+    - restart collectd
+
+- name: enable collectd
+  service: >
+    name=collectd
+    enabled=yes
