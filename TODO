@@ -1,21 +1,10 @@
 - run mysql script that removes test db
-- when/if writting apache role
+- when/if writing apache role
   - do not forget to set .htaccess from S3
 - add installation of packages declared as PKG_LIST in user_data.sh
-- write letsencrypt role
 - write phpmyadmin role
-- role nginx: setup TLS
-- in role prestashop: use template for settings.inc.php
 
-- vérifier que la conf nginx est bonne sur une instance fraîchement créée
-- installer certbot-auto
-  - lui installer via Ansible le dossier etc/letsencrypt
-  - configurer nginx pour qu'il prenne cette conf
-  - ne pas lui faire "renouveler" les certificats
-  - le lancer avec `--os-packages-only` pour qu'il installe ses dépendances
-
-- also backup `robots.txt`
-- remove s3 files
+- once aws_user.sh is deprecated,remove s3 files
   - httpd_conf.tgz
   - monit_conf
   - settings.inc.php
@@ -24,24 +13,9 @@
 
 see php-fpm conf: one can setup a `/ping` path to get details
 
-reporter sur ansible conf de PROD de
-  - nginx
-    - monitoring
-    - prestashop
-    - status
-    - … ?
-  - php-fpm
-  - php
-  - collectd
-    nginx
-    - php-fpm
-ne pas oublier d'enable tous ces services
+role ansible should be removed (now that it is done by cloud-formation template)
 
-Où j'en suis : je viens fixer la conf nginx dans virtual.conf pour qu'il aille utiliser le certificat www.test.example et non test.example
-il faut donc que je reporte cette conf sur ansible
-attention il va y avoir une discrepancy : le cert.tgz actuellement sur s3 ne doit pas avoir les bons certifs (???) mais il ne faut pas y toucher car il est utilisé par user_data.sh
-
-
+make backup_date a variable in cloud-front template
 
 https://tweaked.io/guide/nginx/
   voir "client caching"
