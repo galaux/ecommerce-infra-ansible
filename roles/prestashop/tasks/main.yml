@@ -36,6 +36,14 @@
   with_items: "{{ prestashop_tarballs }}"
   when: ps_already_present.rc == 1
 
+- name: retrieve robots.txt from S3
+  aws_s3:
+    bucket: prestashop-data
+    object: "/{{ backup_date }}/robots.txt"
+    dest: "{{ prestashop_path }}/robots.txt"
+    mode: get
+  when: ps_already_present.rc == 1
+
 - name: deploy backups
   unarchive:
     src: /tmp/{{ item }}

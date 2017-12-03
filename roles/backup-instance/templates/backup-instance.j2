@@ -29,6 +29,9 @@ tar -czf \
   -C /etc \
   letsencrypt
 
+cp ${PS_DIR}/robots.txt \
+  ${TEMP_DIR}
+
 mysqldump \
   ps_std \
   | bzip2 \
