@@ -26,6 +26,46 @@
   notify:
     - restart nginx
 
+- name: configure Prestashop location
+  template: >
+   src=prestashop.conf.j2
+   dest=/etc/nginx/default.d/prestashop.conf
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart nginx
+
+- name: configure status
+  template: >
+   src=status.conf.j2
+   dest=/etc/nginx/conf.d/status.conf
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart nginx
+
+- name: install 'monitoring' htpasswd
+  template: >
+   src=htpasswd.j2
+   dest=/etc/nginx/htpasswd
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart nginx
+
+- name: configure restricted 'monitoring' access
+  template: >
+   src=monitoring.conf.j2
+   dest=/etc/nginx/default.d/monitoring.conf
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart nginx
+
 - name: enable nginx
   service: >
     name=nginx

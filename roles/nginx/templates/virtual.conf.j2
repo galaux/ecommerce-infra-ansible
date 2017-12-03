@@ -1,23 +1,21 @@
 server {
     listen      80;
-    server_name www.test.example.com test.example.com;
+    server_name www.{{ fqdn }} {{ fqdn }};
     return      301 https://$server_name$request_uri;
 }
 
 server {
-    listen 443 ssl default_server; # managed by Certbot
+    listen 443 ssl default_server;
     server_name  _;
-    root /var/www/html/prestashop;
+    root {{ prestashop_root_path }};
 
-    ssl_certificate /etc/letsencrypt/live/test.example.com/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/test.example.com/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/www.{{ fqdn }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/www.{{ fqdn }}/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     # Load configuration files for the default server block.
     include /etc/nginx/default.d/*.conf;
-
-    #index index.php index.html index.htm;
 
     # Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).
     location ~ /\. {
