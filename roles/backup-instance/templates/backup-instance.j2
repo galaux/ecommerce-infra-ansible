@@ -1,0 +1,54 @@
+#!/bin/bash
+
+PS_DIR={{ prestashop_path }}
+BACKUP_TIME=$(date +%F-%H%M%S)
+
+TO_BACKUP=('classes'
+           'download'
+           'img'
+           'mails'
+           'modules'
+           'themes/simple-great'
+           'themes/example'
+           'translations'
+           'upload')
+
+echo "New backup: ${BACKUP_TIME}"
+
+TEMP_DIR=$(mktemp -d)
+
+for d in ${TO_BACKUP[@]}; do
+  tar -czf \
+    ${TEMP_DIR}/${d/\//_}.tgz \
+    -C ${PS_DIR} \
+    ${d}
+done
+
+# TODO set it in Ansible
+cp \
+  $PS_DIR/config/settings.inc.php \
+  $PS_DIR/.htaccess \
+  ${TEMP_DIR}
+
+tar -czf \
+  ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
+  -C /etc \
+  letsencrypt
+
+mysqldump \
+  ps_std \
+  | bzip2 \
+  > ${TEMP_DIR}/db_ps.sql.bz2
+
+
+aws s3 cp \
+  ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
+  s3://prestashop-data/
+
+rm ${TEMP_DIR}/cert-{{ fqdn }}.tgz
+
+aws s3 sync \
+  ${TEMP_DIR}/ \
+  s3://prestashop-data/${BACKUP_TIME}/
+
+rm -rf ${TEMP_DIR}

@@ -16,3 +16,4 @@
     - { role: mysqld }
     - { role: letsencrypt }
     - { role: collectd }
+    - { role: backup-instance }
