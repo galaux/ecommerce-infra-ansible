@@ -45,11 +45,12 @@
   when: ps_already_present.rc == 1
 
 - name: install config file
-  aws_s3:
-    bucket: prestashop-data
-    object: "/{{ backup_date }}/settings.inc.php"
-    dest: "{{ prestashop_path }}/config/settings.inc.php"
-    mode: get
+  template: >
+   src=settings.inc.php.j2
+   dest="{{ prestashop_path }}/config/settings.inc.php"
+   owner=apache
+   group=apache
+   mode=0644
 
 - name: set files and directories owner/group
   file:

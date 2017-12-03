@@ -24,12 +24,6 @@ for d in ${TO_BACKUP[@]}; do
     ${d}
 done
 
-# TODO set it in Ansible
-cp \
-  $PS_DIR/config/settings.inc.php \
-  $PS_DIR/.htaccess \
-  ${TEMP_DIR}
-
 tar -czf \
   ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
   -C /etc \
