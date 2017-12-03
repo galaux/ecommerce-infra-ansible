@@ -7,7 +7,7 @@ server {
 server {
     listen 443 ssl default_server;
     server_name  _;
-    root {{ prestashop_root_path }};
+    root {{ prestashop_path }};
 
     ssl_certificate /etc/letsencrypt/live/www.{{ fqdn }}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/www.{{ fqdn }}/privkey.pem;
