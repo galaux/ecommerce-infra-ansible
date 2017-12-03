@@ -46,20 +46,10 @@
   notify:
     - restart nginx
 
-- name: install 'monitoring' htpasswd
+- name: install htpasswd
   template: >
    src=htpasswd.j2
    dest=/etc/nginx/htpasswd
-   owner=root
-   group=root
-   mode=0644
-  notify:
-    - restart nginx
-
-- name: configure restricted 'monitoring' access
-  template: >
-   src=monitoring.conf.j2
-   dest=/etc/nginx/default.d/monitoring.conf
    owner=root
    group=root
    mode=0644

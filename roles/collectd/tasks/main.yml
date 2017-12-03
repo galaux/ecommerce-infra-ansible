@@ -30,6 +30,26 @@
   notify:
     - restart collectd
 
+- name: install CGP
+  unarchive:
+    remote_src: yes
+    src: "https://github.com/pommi/CGP/archive/v1.tar.gz"
+    dest: "{{ prestashop_root_path }}"
+    creates: "{{ prestashop_root_path }}/CGP-1"
+    owner: apache
+    group: apache
+    mode: 0755
+
+- name: configure '/monitoring' nginx access
+  template: >
+   src=nginx-monitoring.conf.j2
+   dest=/etc/nginx/default.d/monitoring.conf
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart nginx
+
 - name: enable collectd
   service: >
     name=collectd
