@@ -4,6 +4,47 @@
 - add installation of packages declared as PKG_LIST in user_data.sh
 - write letsencrypt role
 - write phpmyadmin role
-- role nginx: setup TLSj
+- role nginx: setup TLS
 - in role prestashop: use template for settings.inc.php
-- See use of [CloudFront template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html#w2ab2c23c48c13c15)
+
+- vérifier que la conf nginx est bonne sur une instance fraîchement créée
+- installer certbot-auto
+  - lui installer via Ansible le dossier etc/letsencrypt
+  - configurer nginx pour qu'il prenne cette conf
+  - ne pas lui faire "renouveler" les certificats
+  - le lancer avec `--os-packages-only` pour qu'il installe ses dépendances
+
+- also backup `robots.txt`
+- remove s3 files
+  - httpd_conf.tgz
+  - monit_conf
+  - settings.inc.php
+
+- parse mysql dump to replace PS_SHOP etc by fqdn
+
+see php-fpm conf: one can setup a `/ping` path to get details
+
+reporter sur ansible conf de PROD de
+  - nginx
+    - monitoring
+    - prestashop
+    - status
+    - … ?
+  - php-fpm
+  - php
+  - collectd
+    nginx
+    - php-fpm
+ne pas oublier d'enable tous ces services
+
+Où j'en suis : je viens fixer la conf nginx dans virtual.conf pour qu'il aille utiliser le certificat www.test.example et non test.example
+il faut donc que je reporte cette conf sur ansible
+attention il va y avoir une discrepancy : le cert.tgz actuellement sur s3 ne doit pas avoir les bons certifs (???) mais il ne faut pas y toucher car il est utilisé par user_data.sh
+
+
+
+https://tweaked.io/guide/nginx/
+  voir "client caching"
+  voir "Tuning for PHP"
+    utiliser socket pour nginx → php-fpm
+  comme recommandé, installer APC
