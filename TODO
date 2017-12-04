@@ -19,6 +19,8 @@ make backup_date a variable in cloud-front template
 
 report install of php56-pecl-acpu to ansible
 
+report latest php-fpm conf to ansible
+
 voir pour désactiver engine apache dans php.ini
 
 https://tweaked.io/guide/nginx/
