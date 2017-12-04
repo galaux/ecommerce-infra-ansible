@@ -17,7 +17,7 @@ role ansible should be removed (now that it is done by cloud-formation template)
 
 make backup_date a variable in cloud-front template
 
-report install of php56-pecl-acpu to ansible
+report install of php56-pecl-acpu to ansible (do not forget that this must be enabled in PS backend … but this should be backuped by our DB dump)
 
 report latest php-fpm conf to ansible
 
