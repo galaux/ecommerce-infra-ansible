@@ -17,6 +17,8 @@ role ansible should be removed (now that it is done by cloud-formation template)
 
 make backup_date a variable in cloud-front template
 
+voir pour désactiver engine apache dans php.ini
+
 https://tweaked.io/guide/nginx/
   voir "client caching"
   voir "Tuning for PHP"
