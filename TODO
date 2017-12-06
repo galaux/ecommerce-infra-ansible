@@ -23,6 +23,8 @@ report latest php-fpm conf to ansible
 
 voir pour désactiver engine apache dans php.ini
 
+report latest collectd/process config (uses "myslqd" instead of "mysql")
+
 voir s'il n'est pas intéressant de configurer un cache dans nginx pour les images
 
 https://tweaked.io/guide/nginx/
