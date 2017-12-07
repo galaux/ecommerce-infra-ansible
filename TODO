@@ -21,6 +21,8 @@ report install of php56-pecl-acpu to ansible (do not forget that this must be en
 
 report latest php-fpm conf to ansible
 
+report later php.ini conf `max_input_vars`
+
 voir pour désactiver engine apache dans php.ini
 
 report latest collectd/process config (uses "myslqd" instead of "mysql")
