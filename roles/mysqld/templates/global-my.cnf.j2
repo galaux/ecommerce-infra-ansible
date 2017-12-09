@@ -8,10 +8,6 @@ symbolic-links=0
 # customize your systemd unit file for mysqld according to the
 # instructions in http://fedoraproject.org/wiki/Systemd
 
-[mysqld_safe]
-log-error=/var/log/mysqld.log
-pid-file=/var/run/mysqld/mysqld.pid
-
 slow_query_log=1
 
 ## To keep the thread count low:
@@ -19,7 +15,7 @@ slow_query_log=1
 # The maximum permitted number of simultaneous client connections.
 # mysqld actually permits max_connections+1 clients to connect.
 # The extra connection is reserved for use by accounts that have the SUPER privilege.
-max_connections=2
+max_connections=5
 # https://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_thread_cache_size
 # How many threads the server should cache for reuse.
 thread_cache_size=1
@@ -27,12 +23,15 @@ thread_cache_size=1
 ## To enable query_cache
 # https://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_query_cache_type
 # Cache results only for cacheable queries that begin with SELECT SQL_CACHE.
-query_cache_type=ON
+query_cache_type='ON'
 # https://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_query_cache_limit
 # Do not cache results that are larger than this number of bytes. The default value is 1MB.
 #query_cache_limit=
 # https://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_query_cache_size
-# The amount of memory allocated for caching query results.
-# Default: 1048576 (1M)
-# 20971520=20M
-query_cache_size=20971520
+# The amount of memory allocated for caching query results. (Default: 1M)
+query_cache_size=41943040
+
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
