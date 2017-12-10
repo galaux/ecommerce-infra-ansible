@@ -36,7 +36,7 @@ gzip_types
     application/xml
     application/rss+xml
     image/svg+xml;
-# Special mask “msie6” corresponds to the regular expression "MSIE [4-6]\.", but works faster
+# Special mask "msie6" corresponds to the regular expression "MSIE [4-6]\.", but works faster
 gzip_disable "msie6";
 
 rewrite ^/api/?(.*)$ /webservice/dispatcher.php?url=$1 last;
