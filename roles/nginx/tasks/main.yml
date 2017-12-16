@@ -16,26 +16,6 @@
   notify:
     - restart nginx
 
-- name: configure virtual env
-  template: >
-   src=virtual.conf.j2
-   dest=/etc/nginx/conf.d/virtual.conf
-   owner=root
-   group=root
-   mode=0644
-  notify:
-    - restart nginx
-
-- name: configure Prestashop location
-  template: >
-   src=prestashop.conf.j2
-   dest=/etc/nginx/default.d/prestashop.conf
-   owner=root
-   group=root
-   mode=0644
-  notify:
-    - restart nginx
-
 - name: configure status
   template: >
    src=status.conf.j2

@@ -1,4 +1,24 @@
-location = /monitoring {
-    auth_basic           "closed site";
-    auth_basic_user_file /etc/nginx/htpasswd;
+server {
+    #listen 443 ssl;
+    listen 80;
+    server_name  monitoring.{{ fqdn }};
+    root /var/www/monitoring;
+
+    #ssl_certificate /etc/letsencrypt/live/monitoring.{{fqdn}}/fullchain.pem;
+    #ssl_certificate_key /etc/letsencrypt/live/monitoring.{{fqdn}}/privkey.pem;
+    #include /etc/letsencrypt/options-ssl-nginx.conf;
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    # Load configuration files for the default server block.
+    include /etc/nginx/default.d/*.conf;
+
+    location / {
+        auth_basic           "closed site";
+        auth_basic_user_file /etc/nginx/htpasswd;
+
+        gzip on;
+        gzip_types "application/javascript text/css";
+        # The static files do not change often, cache hint 1 month
+        expires 1M;
+    }
 }

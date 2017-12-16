@@ -73,3 +73,14 @@
 
 - name: set directories permissions
   command: find "{{ prestashop_path }}" -type f -exec chmod 0644 {} \;
+
+- name: set Nginx config
+  template: >
+   src=nginx-prestashop.conf.j2
+   dest=/etc/nginx/conf.d/prestashop.conf
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart nginx
+

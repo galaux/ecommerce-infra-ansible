@@ -43,7 +43,7 @@
 - name: configure '/monitoring' nginx access
   template: >
    src=nginx-monitoring.conf.j2
-   dest=/etc/nginx/default.d/monitoring.conf
+   dest=/etc/nginx/conf.d/monitoring.conf
    owner=root
    group=root
    mode=0644
