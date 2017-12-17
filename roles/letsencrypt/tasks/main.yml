@@ -4,7 +4,7 @@
   get_url:
     url: https://dl.eff.org/certbot-auto
     dest: /usr/local/bin/certbot-auto
-    checksum: sha256:687987829ad4676aa2ad2beae7482a0ae08cdbb865300f5e4ee17f4a98620847
+    checksum: sha256:ab50da62c3c4931cc60ca9d17cae3f66474ae1b10a3c1bf009ac4d8c64b78275
     owner: root
     group: root
     mode: 0775
