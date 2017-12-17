@@ -33,7 +33,7 @@ cp ${PS_DIR}/robots.txt \
   ${TEMP_DIR}
 
 mysqldump \
-  ps_std \
+  {{ mysql_ps_db_name }} \
   | bzip2 \
   > ${TEMP_DIR}/db_ps.sql.bz2
 

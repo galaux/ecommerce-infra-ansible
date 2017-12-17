@@ -21,6 +21,10 @@ monitoring_path: "{{ www_path }}/monitoring"
 letsencrypt_path: "/etc/letsencrypt"
 mysql_ro_user: "shop-ro"
 mysql_ro_password: XXXXXXXX
+mysql_ps_user: "ps_std"
+mysql_ps_password: XXXXXXXX
+mysql_ps_db_name: "ps_std"
+mysql_root_password: XXXXXXXX
 mailer_address: "monit@example.com"
 mailer_password: XXXXXXXX
 nginx_status_port:8012
