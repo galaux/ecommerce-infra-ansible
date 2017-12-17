@@ -17,3 +17,4 @@
     - { role: letsencrypt }
     - { role: collectd }
     - { role: backup-instance }
+    - { role: phpmyadmin }

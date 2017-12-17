@@ -27,9 +27,9 @@
 
 - name: create read only account
   mysql_user:
-    name: 'shop-ro'
+    name: "{{ mysql_ro_user }}"
     host: 'localhost'
-    password: 'XXXXXXXX'
+    password: "{{ mysql_ro_password }}"
     priv: 'ps_std.*:SELECT'
     state: present
 

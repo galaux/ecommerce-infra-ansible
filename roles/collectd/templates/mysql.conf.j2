@@ -2,7 +2,7 @@ LoadPlugin mysql
 <Plugin mysql>
   <Database "ps_std">
       Host "localhost"
-      User "shop-ro"
-      Password "XXXXXXXX"
+      User "{{ mysql_ro_user }}"
+      Password "{{ mysql_ro_password }}"
   </Database>
 </Plugin>

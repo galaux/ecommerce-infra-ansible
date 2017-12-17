@@ -17,3 +17,5 @@ www_path: "/var/www"
 prestashop_path: "{{ www_path }}/prestashop"
 monitoring_path: "{{ www_path }}/monitoring"
 letsencrypt_path: "/etc/letsencrypt"
+mysql_ro_user: "shop-ro"
+mysql_ro_password: XXXXXXXX
