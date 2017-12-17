@@ -5,6 +5,11 @@
     name=nginx
     state=present
 
+- name: remove package configuration
+  file:
+    path: /etc/nginx/conf.d/virtual.conf
+    state: absent
+
 # http://doc.prestashop.com/display/PS16/System+Administrator+Guide#SystemAdministratorGuide-NginxfriendlyURLs
 - name: configure nginx
   template: >
