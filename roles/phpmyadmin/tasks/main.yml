@@ -14,7 +14,7 @@
    group=apache
    mode=0640
 
-- name: configure nginx
+- name: configure phpMyAdmin for Nginx
   file:
     src: "/usr/share/phpMyAdmin/"
     dest: "{{ www_path }}/phpmyadmin"
