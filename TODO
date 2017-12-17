@@ -1,8 +1,6 @@
 - run mysql script that removes test db
 - when/if writing apache role
   - do not forget to set .htaccess from S3
-- add installation of packages declared as PKG_LIST in user_data.sh
-- write phpmyadmin role
 
 - once aws_user.sh is deprecated,remove s3 files
   - httpd_conf.tgz
@@ -11,7 +9,9 @@
 
 - parse mysql dump to replace PS_SHOP etc by fqdn
 
-see php-fpm conf: one can setup a `/ping` path to get details
+see php-fpm conf:
+  - one can setup a `/ping` path to get details
+  - also use curl_json to retrieve it and display it in collect
 
 role ansible should be removed (now that it is done by cloud-formation template)
 
@@ -37,4 +37,17 @@ https://tweaked.io/guide/nginx/
 
 diminuer verbosité du script de backup et/ou configurer un logrotate avec compression
 
-Comparer notre conf Nginx avec [la suggestion de conf officielle](https://github.com/PrestaShop/PrestaShop/blob/develop/docs/server_config/nginx.conf.dist#L78)
+Comparer notre conf Nginx avec [la suggestion de conf officielle](https://github.com/PrestaShop/PrestaShop/blob/develop/docs/server_config/nginx.conf.dist)
+
+créer des "user" ansible et mettre à jour
+  - conf monit (elle utilise leurs adresses emails)
+  - créer des comptes nominatifs "owner" et "galaux" pour mysql?
+  - paramétrer les utilsateurs dans le htpasswd
+
+configurer hostname du serveur mais vérifier que ça n'empèche pas d'envoyer des emails (ou alors était-ce autre chose qui ne fonctionnait pas? voir dans l'historique des issues)
+
+sauvegarder `robots.txt` et le restaurer
+
+In backup script: use dynamic list of tarballs
+
+nginx conf to access phpMyAdmin is currently inside collectd role. Change it to phpMyAdmin role.
