@@ -20,9 +20,8 @@
 
 - name: retrieve backup certificates from S3
   aws_s3:
-    # TODO make retrieval of PROD certificate work
-    bucket: prestashop-data
-    object: /cert-{{ fqdn }}.tgz
+    bucket: {{ prestashop_backup_bucket }}
+    object: {{ certificates_s3_object }}
     dest: /tmp/cert-{{ fqdn }}.tgz
     mode: get
   when: letsencrypt_already_present.rc == 1
@@ -36,8 +35,8 @@
   when: letsencrypt_already_present.rc == 1
 
 - name: setup cron to update letsencrypt certificates
-  template: >
-   src=cron.j2
+  copy: >
+   src=cron
    dest=/etc/cron.d/renew-certificates
    owner=root
    group=root

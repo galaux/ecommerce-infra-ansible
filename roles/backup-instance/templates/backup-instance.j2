@@ -40,12 +40,12 @@ mysqldump \
 
 aws s3 cp \
   ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
-  s3://prestashop-data/
+  s3://{{ prestashop_backup_bucket }}/
 
 rm ${TEMP_DIR}/cert-{{ fqdn }}.tgz
 
 aws s3 sync \
   ${TEMP_DIR}/ \
-  s3://prestashop-data/${BACKUP_TIME}/
+  s3://{{ prestashop_backup_bucket }}/${BACKUP_TIME}/
 
 rm -rf ${TEMP_DIR}

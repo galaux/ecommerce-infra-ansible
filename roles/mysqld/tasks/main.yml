@@ -68,7 +68,7 @@
 
 - name: retrieve DB backup from S3
   aws_s3:
-    bucket: prestashop-data
+    bucket: {{ prestashop_backup_bucket }}
     object: "/{{ backup_date }}/db_ps.sql.bz2"
     dest: /tmp/db_ps.sql.bz2
     mode: get

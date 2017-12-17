@@ -15,6 +15,7 @@ prestashop_tarballs:
   - translations.tgz
   - upload.tgz
 www_path: "/var/www"
+prestashop_backup_bucket: "prestashop-data"
 prestashop_path: "{{ www_path }}/prestashop"
 prestashop_admin_page_name: "FuckMyAdm1n"
 monitoring_path: "{{ www_path }}/monitoring"
@@ -28,3 +29,7 @@ mysql_root_password: XXXXXXXX
 mailer_address: "monit@example.com"
 mailer_password: XXXXXXXX
 nginx_status_port:8012
+# This one will be specific to test or prod
+certificates_s3_object: "/cert-{{ fqdn }}.tgz"
+# For prod:
+#certificates_s3_object: "/{{ backup_date }}/cert-{{ fqdn }}.tgz"
