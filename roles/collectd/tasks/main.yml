@@ -34,8 +34,8 @@
   unarchive:
     remote_src: yes
     src: "https://github.com/pommi/CGP/archive/v1.tar.gz"
-    dest: "{{ prestashop_root_path }}"
-    creates: "{{ prestashop_root_path }}/CGP-1"
+    dest: "{{ www_path }}"
+    creates: "{{ www_path }}/CGP-1"
     owner: apache
     group: apache
     mode: 0755

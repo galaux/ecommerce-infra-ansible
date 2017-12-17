@@ -11,7 +11,7 @@
   unarchive:
     remote_src: yes
     src: "https://www.prestashop.com/download/old/prestashop_{{ prestashop_version }}.zip"
-    dest: "{{ prestashop_root_path }}"
+    dest: "{{ www_path }}"
     creates: "{{ prestashop_path }}"
     owner: apache
     group: apache

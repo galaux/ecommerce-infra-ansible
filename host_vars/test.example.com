@@ -13,6 +13,6 @@ prestashop_tarballs:
   - themes_example.tgz
   - translations.tgz
   - upload.tgz
-prestashop_root_path: "/var/www"
-prestashop_path: "{{ prestashop_root_path }}/prestashop"
+www_path: "/var/www"
+prestashop_path: "{{ www_path }}/prestashop"
 letsencrypt_path: "/etc/letsencrypt"
