@@ -26,7 +26,7 @@
   when: ps_already_present.rc == 1
 
 - name: rename admin directory
-  command: mv "{{ prestashop_path }}/admin" "{{ prestashop_path }}/FuckMyAdm1n"
+  command: mv "{{ prestashop_path }}/admin" "{{ prestashop_path }}/{{ prestashop_admin_page_name }}"
   when: ps_already_present.rc == 1
 
 - name: retrieve backups from S3

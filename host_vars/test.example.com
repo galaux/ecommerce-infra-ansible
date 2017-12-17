@@ -16,6 +16,7 @@ prestashop_tarballs:
   - upload.tgz
 www_path: "/var/www"
 prestashop_path: "{{ www_path }}/prestashop"
+prestashop_admin_page_name: "FuckMyAdm1n"
 monitoring_path: "{{ www_path }}/monitoring"
 letsencrypt_path: "/etc/letsencrypt"
 mysql_ro_user: "shop-ro"
