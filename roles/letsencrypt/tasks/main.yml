@@ -14,6 +14,7 @@
 
 - name: stat whether certificates are already present
   command: test -d "{{ letsencrypt_path }}"
+  check_mode: no
   register: letsencrypt_already_present
   failed_when: letsencrypt_already_present.rc > 1
 

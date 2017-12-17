@@ -2,6 +2,8 @@
 
 - name: stat whether Prestashop is already present
   command: test -d "{{ prestashop_path }}"
+  # https://github.com/ansible/ansible-modules-core/issues/3356
+  check_mode: no
   register: ps_already_present
   failed_when: ps_already_present.rc > 1
 
