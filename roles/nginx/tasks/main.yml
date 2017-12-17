@@ -11,6 +11,7 @@
     state: absent
 
 # http://doc.prestashop.com/display/PS16/System+Administrator+Guide#SystemAdministratorGuide-NginxfriendlyURLs
+# https://github.com/PrestaShop/PrestaShop/blob/develop/docs/server_config/nginx.conf.dist
 - name: configure nginx
   template: >
    src=nginx.conf.j2

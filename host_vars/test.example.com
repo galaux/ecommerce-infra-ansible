@@ -22,3 +22,4 @@ mysql_ro_user: "shop-ro"
 mysql_ro_password: XXXXXXXX
 mailer_address: "monit@example.com"
 mailer_password: XXXXXXXX
+nginx_status_port:8012
