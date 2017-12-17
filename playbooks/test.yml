@@ -18,3 +18,4 @@
     - { role: collectd }
     - { role: backup-instance }
     - { role: phpmyadmin }
+    - { role: monit }

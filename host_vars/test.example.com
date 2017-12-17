@@ -1,4 +1,5 @@
 ---
+is_prod: false
 ssh_port: 22
 fqdn: "test.example.com"
 prestashop_version: "1.6.1.17"
@@ -19,3 +20,5 @@ monitoring_path: "{{ www_path }}/monitoring"
 letsencrypt_path: "/etc/letsencrypt"
 mysql_ro_user: "shop-ro"
 mysql_ro_password: XXXXXXXX
+mailer_address: "monit@example.com"
+mailer_password: XXXXXXXX

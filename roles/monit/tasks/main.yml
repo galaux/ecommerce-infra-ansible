@@ -1,0 +1,38 @@
+---
+
+- name: install monit
+  yum: >
+    name=monit
+    state=present
+
+- name: configure monit (1)
+  template: >
+   src={{ item }}.j2
+   dest=/etc/monit.d/{{ item }}
+   owner=root
+   group=root
+   mode=0600
+  with_items:
+    - monit
+    - nginx
+  notify:
+    - restart monit
+
+- name: configure monit (2)
+  copy: >
+   src={{ item }}
+   dest=/etc/monit.d/{{ item }}
+   owner=root
+   group=root
+   mode=0600
+  with_items:
+    - mysqld
+    - php-fpm
+    - system
+  notify:
+    - restart monit
+
+- name: enable monit daemon
+  service: >
+    name=monit
+    enabled=yes

@@ -1,0 +1,27 @@
+set daemon 60            # check services at 1-minute intervals
+#with start delay 60       # optional: delay the first check by 1-minute
+
+set mailserver smtp.gmail.com port 587
+  username "{{ mailer_address }}" password "{{ mailer_password }}"
+  using tlsv1
+  with timeout 30 seconds
+
+# Address(es) to send alerts
+{% if is_prod %}
+set alert owner@example.com
+set alert monit.example@alaux.net
+{% else %}
+#set alert owner@example.com
+#set alert monit.example@alaux.net
+{% endif %}
+
+# Embedded web server
+# IMPORTANT: disabling this will also prevent CLI commands to be passed to monit
+set httpd port 2812
+#    ssl enable
+#    pemfile /etc/ssl/monit.pem
+#    use address localhost  # only accept connection from localhost
+    allow localhost        # allow localhost to connect to the server and
+#    allow admin:admin      # require user 'admin' with password 'monit'
+#    allow @admins          # allow users of group 'monit' to connect (rw)
+#    allow @users readonly  # allow users of group 'users' to connect readonly
