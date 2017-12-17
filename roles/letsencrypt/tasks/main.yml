@@ -30,7 +30,6 @@
 - name: deploy certificates
   unarchive:
     src: /tmp/cert-{{ fqdn }}.tgz
-    # TODO make backup script archive relative path for letsencrypt and set it here from variable
     dest: /etc
     remote_src: yes
     creates: "{{ letsencrypt_path }}"

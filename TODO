@@ -34,3 +34,7 @@ https://tweaked.io/guide/nginx/
   voir "Tuning for PHP"
     utiliser socket pour nginx → php-fpm
   comme recommandé, installer APC
+
+diminuer verbosité du script de backup et/ou configurer un logrotate avec compression
+
+Comparer notre conf Nginx avec [la suggestion de conf officielle](https://github.com/PrestaShop/PrestaShop/blob/develop/docs/server_config/nginx.conf.dist#L78)
