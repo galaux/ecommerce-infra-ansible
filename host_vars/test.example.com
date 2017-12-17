@@ -15,4 +15,5 @@ prestashop_tarballs:
   - upload.tgz
 www_path: "/var/www"
 prestashop_path: "{{ www_path }}/prestashop"
+monitoring_path: "{{ www_path }}/monitoring"
 letsencrypt_path: "/etc/letsencrypt"

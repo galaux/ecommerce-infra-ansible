@@ -30,15 +30,29 @@
   notify:
     - restart collectd
 
+- name: create CGP directory
+  file:
+    path: "{{ monitoring_path }}"
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0755
+
 - name: install CGP
   unarchive:
     remote_src: yes
     src: "https://github.com/pommi/CGP/archive/v1.tar.gz"
-    dest: "{{ www_path }}"
-    creates: "{{ www_path }}/CGP-1"
+    dest: "{{ monitoring_path }}"
+    extra_opts: [--strip-components=1]
     owner: apache
     group: apache
     mode: 0755
+
+- name: set files permissions
+  command: find "{{ monitoring_path }}" -type d -exec chmod 0755 {} \;
+
+- name: set directories permissions
+  command: find "{{ monitoring_path }}" -type f -exec chmod 0644 {} \;
 
 - name: configure '/monitoring' nginx access
   template: >
