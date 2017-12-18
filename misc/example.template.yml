@@ -45,7 +45,8 @@ Resources:
           cd /home/ec2-user/$PROJECT_NAME-master-*
           ansible-playbook \
             --connection=local \
-            playbooks/test.yml
+            playbooks/example.yml \
+            -l test
 
 Outputs:
 

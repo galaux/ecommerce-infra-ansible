@@ -31,7 +31,7 @@
 
 - name: retrieve backups from S3
   aws_s3:
-    bucket: {{ prestashop_backup_bucket }}
+    bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ backup_date }}/{{ item }}"
     dest: "/tmp/{{ item }}"
     mode: get
@@ -48,7 +48,7 @@
 
 - name: retrieve robots.txt from S3
   aws_s3:
-    bucket: {{ prestashop_backup_bucket }}
+    bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ backup_date }}/robots.txt"
     dest: "{{ prestashop_path }}/robots.txt"
     mode: get

@@ -1,0 +1,5 @@
+---
+
+is_prod: true
+fqdn: "example.com"
+certificates_s3_object: "/{{ backup_date }}/cert-{{ fqdn }}.tgz"

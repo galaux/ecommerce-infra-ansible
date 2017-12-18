@@ -1,0 +1,5 @@
+---
+
+is_prod: false
+fqdn: "test.example.com"
+certificates_s3_object: "/cert-{{ fqdn }}.tgz"
