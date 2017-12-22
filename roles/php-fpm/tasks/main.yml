@@ -7,6 +7,16 @@
 
 - name: configure php-fpm
   template: >
+   src=php-fpm.conf.j2
+   dest=/etc/nginx/conf.d/php-fpm.conf-5.6
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart php-fpm
+
+- name: configure php-fpm pool
+  template: >
    src=www.conf.j2
    dest=/etc/php-fpm-5.6.d/www.conf
    owner=root

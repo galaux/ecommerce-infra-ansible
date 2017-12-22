@@ -31,3 +31,4 @@ mailer_address: "monit@example.com"
 mailer_password: XXXXXXXX
 nginx_status_path: "/status-nginx"
 php_fpm_status_path: "/status-php-fpm"
+php_fpm_socket_path: "/var/run/php-fpm/php-fpm.sock"
