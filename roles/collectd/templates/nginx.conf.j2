@@ -1,4 +1,4 @@
 LoadPlugin nginx
 <Plugin nginx>
-      URL "http://localhost:{{ nginx_status_port }}/"
+      URL "http://localhost{{ nginx_status_path }}"
 </Plugin>

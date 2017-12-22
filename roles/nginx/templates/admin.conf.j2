@@ -1,4 +1,10 @@
 server {
+    listen      80;
+    server_name admin.{{ fqdn }};
+    return      301 https://$host$request_uri;
+}
+
+server {
     listen 443 ssl;
     server_name  admin.{{ fqdn }};
     root {{ www_path }};

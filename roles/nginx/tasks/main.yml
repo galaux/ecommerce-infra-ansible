@@ -24,17 +24,18 @@
 
 - name: configure virtual hosts
   template: >
-   src={{ item }}.conf.j2
-   dest=/etc/nginx/conf.d/{{ item }}.conf
+   src={{ item }}.j2
+   dest=/etc/nginx/conf.d/{{ item }}
    owner=root
    group=root
    mode=0644
   notify:
     - restart nginx
   with_items:
-    - status
-    - www
-    - admin
+    - local.conf
+    - local.conf-status
+    - www.conf
+    - admin.conf
 
 - name: install htpasswd
   template: >
