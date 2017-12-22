@@ -10,8 +10,7 @@
 - parse mysql dump to replace PS_SHOP etc by fqdn
 
 see php-fpm conf:
-  - one can setup a `/ping` path to get details
-  - also use curl_json to retrieve it and display it in collect
+  - setup curl_json to retrieve /status-php-fpm info and display it in collectd
 
 role ansible should be removed (now that it is done by cloud-formation template)
 
@@ -39,5 +38,3 @@ créer des "user" ansible et mettre à jour
 configurer hostname du serveur mais vérifier que ça n'empèche pas d'envoyer des emails (ou alors était-ce autre chose qui ne fonctionnait pas? voir dans l'historique des issues)
 
 In backup script: use dynamic list of tarballs
-
-nginx conf to access phpMyAdmin is currently inside collectd role. Change it to phpMyAdmin role.
