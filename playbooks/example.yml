@@ -1,6 +1,6 @@
 ---
 
-- name: setup test instance
+- name: setup example instance
   hosts: all
   become: true
   become_user: root
