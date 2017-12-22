@@ -29,4 +29,5 @@ mysql_ps_db_name: "ps_std"
 mysql_root_password: XXXXXXXX
 mailer_address: "monit@example.com"
 mailer_password: XXXXXXXX
-nginx_status_path: "/status"
+nginx_status_path: "/status-nginx"
+php_fpm_status_path: "/status-php-fpm"
