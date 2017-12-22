@@ -19,15 +19,7 @@ make backup_date a variable in cloud-front template
 
 report install of php56-pecl-acpu to ansible (do not forget that this must be enabled in PS backend … but this should be backuped by our DB dump)
 
-report latest php-fpm conf to ansible
-
-report later php.ini conf `max_input_vars`
-
 voir pour désactiver engine apache dans php.ini
-
-report latest collectd/process config (uses "myslqd" instead of "mysql")
-
-voir s'il n'est pas intéressant de configurer un cache dans nginx pour les images
 
 https://tweaked.io/guide/nginx/
   voir "client caching"
@@ -45,8 +37,6 @@ créer des "user" ansible et mettre à jour
   - paramétrer les utilsateurs dans le htpasswd
 
 configurer hostname du serveur mais vérifier que ça n'empèche pas d'envoyer des emails (ou alors était-ce autre chose qui ne fonctionnait pas? voir dans l'historique des issues)
-
-sauvegarder `robots.txt` et le restaurer
 
 In backup script: use dynamic list of tarballs
 
