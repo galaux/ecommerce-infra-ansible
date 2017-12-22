@@ -1,0 +1,15 @@
+server {
+    listen 443 ssl default_server;
+    server_name  {{ fqdn }} www.{{ fqdn }};
+    root {{ prestashop_path }};
+
+    ssl_certificate /etc/letsencrypt/live/www.{{ fqdn }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/www.{{ fqdn }}/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    # Load configuration files for the default server block.
+    include /etc/nginx/default.d/*.conf;
+
+    include /etc/nginx/conf.d/www.conf-*;
+}

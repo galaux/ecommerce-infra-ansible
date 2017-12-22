@@ -77,8 +77,8 @@
 
 - name: set Nginx config
   template: >
-   src=nginx-prestashop.conf.j2
-   dest=/etc/nginx/conf.d/prestashop.conf
+   src=vhost-nginx.conf
+   dest=/etc/nginx/conf.d/www.conf-prestashop
    owner=root
    group=root
    mode=0644

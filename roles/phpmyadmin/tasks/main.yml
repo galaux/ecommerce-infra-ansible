@@ -14,10 +14,19 @@
    group=apache
    mode=0640
 
-- name: configure phpMyAdmin for Nginx
+- name: configure phpMyAdmin for Nginx 1
   file:
     src: "/usr/share/phpMyAdmin/"
     dest: "{{ www_path }}/{{ phpmyadmin_url_path }}"
     state: link
   notify:
     - restart nginx
+
+- name: configure phpMyAdmin for Nginx 2
+  template: >
+   src=vhost-nginx.j2
+   dest=/etc/nginx/conf.d/admin.conf-phpmyadmin
+   owner=root
+   group=apache
+   mode=0640
+

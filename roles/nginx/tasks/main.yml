@@ -22,15 +22,19 @@
   notify:
     - restart nginx
 
-- name: configure status
+- name: configure virtual hosts
   template: >
-   src=status.conf.j2
-   dest=/etc/nginx/conf.d/status.conf
+   src={{ item }}.conf.j2
+   dest=/etc/nginx/conf.d/{{ item }}.conf
    owner=root
    group=root
    mode=0644
   notify:
     - restart nginx
+  with_items:
+    - status
+    - www
+    - admin
 
 - name: install htpasswd
   template: >
