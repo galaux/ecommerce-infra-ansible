@@ -19,9 +19,9 @@
 
 - name: create PS account
   mysql_user:
-    name: 'mysql_ps_user'
+    name: '{{ mysql_ps_user }}'
     host: 'localhost'
-    password: 'mysql_ps_password'
+    password: '{{ mysql_ps_password }}'
     priv: '{{ mysql_ps_db_name }}.*:ALL'
     state: present
 
