@@ -23,7 +23,6 @@ voir pour désactiver engine apache dans php.ini
 https://tweaked.io/guide/nginx/
   voir "client caching"
   voir "Tuning for PHP"
-    utiliser socket pour nginx → php-fpm
   comme recommandé, installer APC
 
 diminuer verbosité du script de backup et/ou configurer un logrotate avec compression
@@ -38,3 +37,32 @@ créer des "user" ansible et mettre à jour
 configurer hostname du serveur mais vérifier que ça n'empèche pas d'envoyer des emails (ou alors était-ce autre chose qui ne fonctionnait pas? voir dans l'historique des issues)
 
 In backup script: use dynamic list of tarballs
+
+
+
+
+FIXME :
+  est-il malin de créer une nouvelle instance?
+  je pense qu'il doit être plus simple et OK de juste "appliquer le nouveau layout" sur l'actuelle prod et de la "nettoyer"
+
+
+Si seulemt "clean de l'instance actuelle"
+  - mettre site en maintenance
+  - bouger répertoires dans /var/www/html à leur place
+  - backuper/supprimer tous les fichiers de conf nginx/php-fpm
+  - lancer ansible en --check pour vérifier ce qu'il ferait
+  - actions en fonction de résultat de item pcdt
+  - rouvrir le site
+  - supprimer db mysql ps2
+
+Si réinstallation depuis une nouvelle instance:
+  Précédure pour migration vers nouveau layout Ansible
+    backup
+      - métriques de collectd
+      - créer nouvelle entrée DNS `admin.…`
+      - fermer site
+      - faire backup
+      - créer nouvelle instance avec date dernier backup
+      - bouger /var/www/html à leurs nouvelles places
+      - changer elastic-ip
+      - rouvrir le site
