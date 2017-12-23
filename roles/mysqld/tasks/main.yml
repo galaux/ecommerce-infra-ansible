@@ -81,6 +81,17 @@
     target: /tmp/db_ps.sql.bz2
   when: db_already_present.rc == 1
 
+- name: set shop URL
+  command: >
+    mysql
+      --execute="UPDATE pss_shop_url
+                 SET
+                   domain = 'www.{{ fqdn }}',
+                   domain_ssl = 'www.{{ fqdn }}'
+                 WHERE id_shop_url = 1;"
+      "{{ mysql_ps_db_name }}"
+  when: db_already_present.rc == 1
+
 - name: configure logrotate
   copy: >
    src=logrotate
