@@ -2,7 +2,7 @@
 
 ssh_port: 22
 prestashop_version: "1.6.1.17"
-backup_date: "2017-12-18-023001"
+backup_date: "2017-12-22-023001"
 prestashop_tarballs:
   - classes.tgz
   - download.tgz
