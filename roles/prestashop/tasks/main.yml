@@ -7,6 +7,20 @@
   register: ps_already_present
   failed_when: ps_already_present.rc > 1
 
+- name: get Prestashop version file from S3 backup
+  aws_s3:
+    bucket: "{{ prestashop_backup_bucket }}"
+    object: "/{{ backup_date }}/prestashop_version"
+    dest: "/tmp/{{ prestashop_version_file_name }}"
+    mode: get
+  when: ps_already_present.rc == 1
+
+- name: read Prestashop version from S3 backup
+  shell: cat /tmp/{{ prestashop_version_file_name }}
+  check_mode: no
+  register: prestashop_version
+  when: ps_already_present.rc == 1
+
 - name: download Prestashop vanilla files
   unarchive:
     remote_src: yes
