@@ -13,13 +13,11 @@
     object: "/{{ backup_date }}/prestashop_version"
     dest: "/tmp/{{ prestashop_version_file_name }}"
     mode: get
-  when: ps_already_present.rc == 1
 
 - name: read Prestashop version from S3 backup
   shell: cat /tmp/{{ prestashop_version_file_name }}
   check_mode: no
   register: prestashop_version
-  when: ps_already_present.rc == 1
 
 - name: download Prestashop vanilla files
   unarchive:
@@ -66,6 +64,7 @@
     object: "/{{ backup_date }}/robots.txt"
     dest: "{{ prestashop_path }}/robots.txt"
     mode: get
+  when: ps_already_present.rc == 1
 
 - name: install config file
   template: >
