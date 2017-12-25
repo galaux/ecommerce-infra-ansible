@@ -14,6 +14,12 @@ Parameters:
       - t2.medium
     ConstraintDescription: must be a valid EC2 instance type.
 
+  BackupDate:
+    Description: Date of backup to restore
+    Type: String
+    Default: LATEST
+    ConstraintDescription: "must be a valid S3 backup directory name (ex: '2017-12-25-023001')"
+
 Resources:
   EC2Instance:
     Type: 'AWS::EC2::Instance'
@@ -46,7 +52,8 @@ Resources:
           ansible-playbook \
             --connection=local \
             playbooks/example.yml \
-            -l test
+            -l test \
+            --extra-vars "with_backup_date=${BackupDate}"
 
 Outputs:
 

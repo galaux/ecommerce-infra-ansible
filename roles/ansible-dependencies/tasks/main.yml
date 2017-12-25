@@ -4,3 +4,29 @@
   yum: >
     name=python27-boto3
     state=present
+
+- name: get 'latest' backup file from S3 backup
+  aws_s3:
+    bucket: "{{ prestashop_backup_bucket }}"
+    object: "/latest"
+    dest: "/tmp/latest"
+    mode: get
+
+- name: read 'latest' backup date from S3 backup if backup_date is missing
+  command: cat /tmp/latest
+  check_mode: no
+  register: last_backup_date
+
+- name: register backup_date if missing
+  set_fact:
+    backup_date: "{{ last_backup_date.stdout }}"
+  when: with_backup_date == 'LATEST'
+
+- name: register backup_date if missing 2
+  set_fact:
+    backup_date: "{{ with_backup_date }}"
+  when: with_backup_date != 'LATEST'
+
+- name: show backup_date
+  debug:
+    msg: "Using backup_date: {{ backup_date }}"
