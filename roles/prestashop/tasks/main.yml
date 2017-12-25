@@ -24,7 +24,7 @@
 - name: download Prestashop vanilla files
   unarchive:
     remote_src: yes
-    src: "https://www.prestashop.com/download/old/prestashop_{{ prestashop_version }}.zip"
+    src: "https://www.prestashop.com/download/old/prestashop_{{ prestashop_version.stdout }}.zip"
     dest: "{{ www_path }}"
     creates: "{{ prestashop_path }}"
     owner: apache
