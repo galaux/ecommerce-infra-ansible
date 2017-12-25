@@ -34,7 +34,7 @@ cp ${PS_DIR}/robots.txt \
 
 grep '_PS_VERSION_' '/var/www/prestashop/config/settings.inc.php' \
   | sed -E "s/define[(]'_PS_VERSION_', '(.*)'[)];/\1/" \
-  > ${TEMP_DIR}/{{ ps_version_file_name }}
+  > ${TEMP_DIR}/{{ prestashop_version_file_name }}
 
 mysqldump \
   {{ mysql_ps_db_name }} \
