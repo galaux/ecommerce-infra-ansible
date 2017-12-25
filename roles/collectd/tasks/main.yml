@@ -67,4 +67,5 @@
 - name: enable collectd
   service: >
     name=collectd
+    state=started
     enabled=yes

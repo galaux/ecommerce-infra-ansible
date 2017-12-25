@@ -35,4 +35,5 @@
 - name: enable monit daemon
   service: >
     name=monit
+    state=started
     enabled=yes
