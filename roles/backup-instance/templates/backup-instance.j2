@@ -1,5 +1,8 @@
 #!/bin/bash
 
+TEMP_DIR=$(mktemp -d)
+
+{% if is_prod %}
 PS_DIR={{ prestashop_path }}
 BACKUP_TIME=$(date +%F-%H%M%S)
 
@@ -14,8 +17,6 @@ TO_BACKUP=('classes'
            'upload')
 
 echo "New backup: ${BACKUP_TIME}"
-
-TEMP_DIR=$(mktemp -d)
 
 # Main files
 for d in ${TO_BACKUP[@]}; do
@@ -41,17 +42,19 @@ aws s3 sync \
   ${TEMP_DIR}/ \
   s3://{{ prestashop_backup_bucket }}/${BACKUP_TIME}/
 
+{% endif %}
 
 # Certificates
 tar -czf \
-  ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
+  ${TEMP_DIR}/{{ certificates_backup_name }} \
   -C /etc \
   letsencrypt
 
 aws s3 cp \
-  ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
+  ${TEMP_DIR}/{{ certificates_backup_name }} \
   s3://{{ prestashop_backup_bucket }}/
 
+{% if is_prod %}
 
 # "latest" backup version file
 echo ${BACKUP_TIME} > ${TEMP_DIR}/latest
@@ -59,5 +62,6 @@ aws s3 cp \
   ${TEMP_DIR}/latest \
   s3://{{ prestashop_backup_bucket }}/latest
 
+{% endif %}
 
 rm -rf ${TEMP_DIR}

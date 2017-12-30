@@ -9,8 +9,8 @@
    mode=0755
 
 - name: setup cron to backup instance
-  template: >
-   src=cron.j2
+  copy: >
+   src=cron
    dest=/etc/cron.d/backup-instance
    owner=root
    group=root

@@ -20,6 +20,23 @@ Parameters:
     Default: LATEST
     ConstraintDescription: "must be a valid S3 backup directory name (ex: '2017-12-25-023001')"
 
+  FQDN:
+    Description: Fully qualified domain name the instance should answer as
+    Type: String
+    Default: test.example.com
+    AllowedValues:
+      - example.com
+      - test.example.com
+    ConstraintDescription: "one of 'test.example.com' or 'example.com'"
+
+  IsProduction:
+    Description: Is this a Production instance (if 'true' then Monit sends emails and full PrestaShop S3 backups are enabled)
+    Type: String
+    AllowedValues:
+      - true
+      - false
+    Default: no
+
 Resources:
   EC2Instance:
     Type: 'AWS::EC2::Instance'
@@ -53,7 +70,11 @@ Resources:
             --connection=local \
             playbooks/example.yml \
             --limit=test.example.com \
-            --extra-vars "with_backup_date=${BackupDate}"
+            --extra-vars '{
+                            "with_backup_date": "${BackupDate}",
+                            "fqdn": "${FQDN}",
+                            "is_prod": ${IsProduction}
+                          }'
 
 Outputs:
 

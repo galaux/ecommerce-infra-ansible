@@ -1,6 +1,8 @@
 ---
 
 with_backup_date: "LATEST"
+fqdn: "test.example.com"
+is_prod: false
 ssh_port: 22
 prestashop_version_file_name: "prestashop_version"
 prestashop_tarballs:
@@ -32,3 +34,4 @@ mailer_password: XXXXXXXX
 nginx_status_path: "/status-nginx"
 php_fpm_status_path: "/status-php-fpm"
 php_fpm_socket_path: "/var/run/php-fpm/php-fpm.sock"
+certificates_backup_name: "cert-{{ fqdn }}.tgz"

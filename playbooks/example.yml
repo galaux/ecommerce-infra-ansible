@@ -11,11 +11,11 @@
     - { role: logrotate }
     - { role: php }
     - { role: php-fpm }
+    - { role: letsencrypt }
     - { role: nginx }
     - { role: prestashop }
     - { role: mysqld }
-    - { role: letsencrypt }
     - { role: collectd }
-    - { role: backup-instance }
+    - { role: backup-instance}
     - { role: phpmyadmin }
     - { role: monit }
