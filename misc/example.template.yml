@@ -52,7 +52,7 @@ Resources:
           ansible-playbook \
             --connection=local \
             playbooks/example.yml \
-            -l test \
+            --limit=test \
             --extra-vars "with_backup_date=${BackupDate}"
 
 Outputs:
