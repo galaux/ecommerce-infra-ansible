@@ -17,17 +17,13 @@ echo "New backup: ${BACKUP_TIME}"
 
 TEMP_DIR=$(mktemp -d)
 
+# Main files
 for d in ${TO_BACKUP[@]}; do
   tar -czf \
     ${TEMP_DIR}/${d/\//_}.tgz \
     -C ${PS_DIR} \
     ${d}
 done
-
-tar -czf \
-  ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
-  -C /etc \
-  letsencrypt
 
 cp ${PS_DIR}/robots.txt \
   ${TEMP_DIR}
@@ -41,21 +37,27 @@ mysqldump \
   | bzip2 \
   > ${TEMP_DIR}/db_ps.sql.bz2
 
-
-aws s3 cp \
-  ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
-  s3://{{ prestashop_backup_bucket }}/
-
-rm ${TEMP_DIR}/cert-{{ fqdn }}.tgz
-
 aws s3 sync \
   ${TEMP_DIR}/ \
   s3://{{ prestashop_backup_bucket }}/${BACKUP_TIME}/
 
 
+# Certificates
+tar -czf \
+  ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
+  -C /etc \
+  letsencrypt
+
+aws s3 cp \
+  ${TEMP_DIR}/cert-{{ fqdn }}.tgz \
+  s3://{{ prestashop_backup_bucket }}/
+
+
+# "latest" backup version file
 echo ${BACKUP_TIME} > ${TEMP_DIR}/latest
 aws s3 cp \
   ${TEMP_DIR}/latest \
   s3://{{ prestashop_backup_bucket }}/latest
+
 
 rm -rf ${TEMP_DIR}
