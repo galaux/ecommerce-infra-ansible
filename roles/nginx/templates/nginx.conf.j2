@@ -30,6 +30,10 @@ http {
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
 
+    limit_req_zone $binary_remote_addr zone=per_ip:1m rate=20r/s;
+    limit_req zone=per_ip burst=150 nodelay;
+    limit_req_log_level warn;
+
     # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
