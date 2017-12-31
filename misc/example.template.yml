@@ -15,7 +15,7 @@ Parameters:
     ConstraintDescription: must be a valid EC2 instance type.
 
   BackupDate:
-    Description: Date of backup to restore
+    Description: Date of backup to restore or "LATEST"
     Type: String
     Default: LATEST
     ConstraintDescription: "must be a valid S3 backup directory name (ex: '2017-12-25-023001')"
