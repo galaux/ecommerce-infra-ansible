@@ -11,51 +11,6 @@
     enabled=yes
     state=started
 
-- name: remove anonymous accounts
-  mysql_user:
-    name: ''
-    host_all: yes
-    state: absent
-
-- name: create PS account
-  mysql_user:
-    name: '{{ mysql_ps_user }}'
-    host: 'localhost'
-    password: '{{ mysql_ps_password }}'
-    priv: '{{ mysql_ps_db_name }}.*:ALL'
-    state: present
-
-- name: create read only account
-  mysql_user:
-    name: "{{ mysql_ro_user }}"
-    host: 'localhost'
-    password: "{{ mysql_ro_password }}"
-    priv: '{{ mysql_ps_db_name }}.*:SELECT'
-    state: present
-
-- name: create/set root account
-  mysql_user:
-    name: 'root'
-    host_all: yes
-    password: '{{ mysql_root_password }}'
-    state: present
-
-- name: set global my.cnf
-  template: >
-   src=global-my.cnf.j2
-   dest=/etc/my.cnf
-   owner=root
-   group=root
-   mode=0644
-
-- name: set local my.cnf
-  template: >
-   src=local-my.cnf.j2
-   dest=/root/.my.cnf
-   owner=root
-   group=root
-   mode=0600
-
 - name: stat whether DB is already present
   shell: mysql -e 'USE {{ mysql_ps_db_name }};'
   register: db_already_present
@@ -102,6 +57,51 @@
   with_items:
     - PS_SHOP_DOMAIN
     - PS_SHOP_DOMAIN_SSL
+
+- name: remove anonymous accounts
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+
+- name: create PS account
+  mysql_user:
+    name: '{{ mysql_ps_user }}'
+    host: 'localhost'
+    password: '{{ mysql_ps_password }}'
+    priv: '{{ mysql_ps_db_name }}.*:ALL'
+    state: present
+
+- name: create read only account
+  mysql_user:
+    name: "{{ mysql_ro_user }}"
+    host: 'localhost'
+    password: "{{ mysql_ro_password }}"
+    priv: '{{ mysql_ps_db_name }}.*:SELECT'
+    state: present
+
+- name: create/set root account
+  mysql_user:
+    name: 'root'
+    host_all: yes
+    password: '{{ mysql_root_password }}'
+    state: present
+
+- name: set global my.cnf
+  template: >
+   src=global-my.cnf.j2
+   dest=/etc/my.cnf
+   owner=root
+   group=root
+   mode=0644
+
+- name: set local my.cnf
+  template: >
+   src=local-my.cnf.j2
+   dest=/root/.my.cnf
+   owner=root
+   group=root
+   mode=0600
 
 - name: configure logrotate
   copy: >
