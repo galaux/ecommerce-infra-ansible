@@ -22,6 +22,16 @@
   notify:
     - restart nginx
 
+- name: configure php
+  copy: >
+   src=php.conf-5.6
+   dest=/etc/nginx/default.d/php.conf-5.6
+   owner=root
+   group=root
+   mode=0644
+  notify:
+    - restart nginx
+
 - name: configure virtual hosts
   template: >
    src={{ item }}.j2
