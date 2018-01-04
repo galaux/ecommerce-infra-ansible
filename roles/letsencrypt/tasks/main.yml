@@ -35,11 +35,11 @@
   when: letsencrypt_already_present.rc == 1
 
 - name: setup cron to update letsencrypt certificates
-  copy: >
-   src=cron
-   dest=/etc/cron.d/renew-certificates
-   owner=root
-   group=root
-   mode=0644
+  copy:
+    src: cron
+    dest: /etc/cron.d/renew-certificates
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - reload crond

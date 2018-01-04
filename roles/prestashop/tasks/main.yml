@@ -72,12 +72,12 @@
     mode: 0666
 
 - name: install config file
-  template: >
-   src=settings.inc.php.j2
-   dest="{{ prestashop_path }}/config/settings.inc.php"
-   owner=apache
-   group=apache
-   mode=0644
+  template:
+    src: settings.inc.php.j2
+    dest: "{{ prestashop_path }}/config/settings.inc.php"
+    owner: apache
+    group: apache
+    mode: 0644
 
 - name: set files and directories owner/group
   file:
@@ -94,12 +94,12 @@
   command: find "{{ prestashop_path }}" -type f -exec chmod 0644 {} \;
 
 - name: set Nginx config
-  template: >
-   src=vhost-nginx.conf
-   dest=/etc/nginx/conf.d/www.conf-prestashop
-   owner=root
-   group=root
-   mode=0644
+  template:
+    src: vhost-nginx.conf
+    dest: /etc/nginx/conf.d/www.conf-prestashop
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - restart nginx
 

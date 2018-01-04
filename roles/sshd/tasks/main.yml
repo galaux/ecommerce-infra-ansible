@@ -6,25 +6,25 @@
     state=present
 
 - name: configure sshd
-  template: >
-    src=sshd_config.j2
-    dest=/etc/ssh/sshd_config
-    owner=root
-    group=root
-    mode=0644
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - restart sshd
 
 - name: set file permissions
-  file: >
-    path=/etc/ssh
-    mode=0600
+  file:
+    path: /etc/ssh
+    mode: 0600
 
 # - name: install motd
 #   template: src=motd.j2 dest=/etc/motd owner=root group=root mode=0644
 
 - name: start and enable sshd
-  service: >
-    name=sshd
-    enabled=yes
-    state=started
+  service:
+    name: sshd
+    enabled: yes
+    state: started

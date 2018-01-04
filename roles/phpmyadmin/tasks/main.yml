@@ -7,12 +7,12 @@
     state=present
 
 - name: configure phpMyAdmin
-  template: >
-   src=config.inc.php.j2
-   dest=/etc/phpMyAdmin/config.inc.php
-   owner=root
-   group=apache
-   mode=0640
+  template:
+    src: config.inc.php.j2
+    dest: /etc/phpMyAdmin/config.inc.php
+    owner: root
+    group: apache
+    mode: 0640
 
 - name: configure phpMyAdmin for Nginx 1
   file:
@@ -23,10 +23,9 @@
     - restart nginx
 
 - name: configure phpMyAdmin for Nginx 2
-  template: >
-   src=vhost-nginx.j2
-   dest=/etc/nginx/conf.d/admin.conf-phpmyadmin
-   owner=root
-   group=apache
-   mode=0640
-
+  template:
+    src: vhost-nginx.j2
+    dest: /etc/nginx/conf.d/admin.conf-phpmyadmin
+    owner: root
+    group: apache
+    mode: 0640

@@ -1,19 +1,19 @@
 ---
 
 - name: install backup script
-  template: >
-   src=backup-instance.j2
-   dest=/usr/local/bin/backup-instance
-   owner=root
-   group=root
-   mode=0755
+  template:
+    src: backup-instance.j2
+    dest: /usr/local/bin/backup-instance
+    owner: root
+    group: root
+    mode: 0755
 
 - name: setup cron to backup instance
-  copy: >
-   src=cron
-   dest=/etc/cron.d/backup-instance
-   owner=root
-   group=root
-   mode=0644
+  copy:
+    src: cron
+    dest: /etc/cron.d/backup-instance
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - reload crond

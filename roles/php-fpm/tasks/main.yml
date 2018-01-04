@@ -6,37 +6,37 @@
     state=present
 
 - name: configure php-fpm
-  template: >
-   src=php-fpm.conf.j2
-   dest=/etc/nginx/conf.d/php-fpm.conf-5.6
-   owner=root
-   group=root
-   mode=0644
+  template:
+    src: php-fpm.conf.j2
+    dest: /etc/nginx/conf.d/php-fpm.conf-5.6
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - restart php-fpm
 
 - name: configure php-fpm pool
-  template: >
-   src=www.conf.j2
-   dest=/etc/php-fpm-5.6.d/www.conf
-   owner=root
-   group=root
-   mode=0644
+  template:
+    src: www.conf.j2
+    dest: /etc/php-fpm-5.6.d/www.conf
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - restart php-fpm
 
 - name: configure php-fpm status page in Nginx
-  template: >
-   src=vhost-nginx.conf.j2
-   dest=/etc/nginx/conf.d/local.conf-php-fpm
-   owner=root
-   group=root
-   mode=0644
+  template:
+    src: vhost-nginx.conf.j2
+    dest: /etc/nginx/conf.d/local.conf-php-fpm
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - restart php-fpm
 
 - name: enable php-fpm
-  service: >
-    name=php-fpm
-    state=started
-    enabled=yes
+  service:
+    name: php-fpm
+    state: started
+    enabled: yes

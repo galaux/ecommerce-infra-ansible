@@ -6,10 +6,10 @@
     state=present
 
 - name: start and enable MySQL
-  service: >
-    name=mysqld
-    enabled=yes
-    state=started
+  service:
+    name: mysqld
+    enabled: yes
+    state: started
 
 - name: stat whether DB is already present
   shell: mysql -e 'USE {{ mysql_ps_db_name }};'
@@ -88,25 +88,25 @@
     state: present
 
 - name: set global my.cnf
-  template: >
-   src=global-my.cnf.j2
-   dest=/etc/my.cnf
-   owner=root
-   group=root
-   mode=0644
+  template:
+    src: global-my.cnf.j2
+    dest: /etc/my.cnf
+    owner: root
+    group: root
+    mode: 0644
 
 - name: set local my.cnf
-  template: >
-   src=local-my.cnf.j2
-   dest=/root/.my.cnf
-   owner=root
-   group=root
-   mode=0600
+  template:
+    src: local-my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: 0600
 
 - name: configure logrotate
-  copy: >
-   src=logrotate
-   dest=/etc/logrotate.d/mysqld
-   owner=root
-   group=root
-   mode=0644
+  copy:
+    src: logrotate
+    dest: /etc/logrotate.d/mysqld
+    owner: root
+    group: root
+    mode: 0644

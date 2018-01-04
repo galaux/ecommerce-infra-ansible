@@ -1,6 +1,6 @@
 ---
 
 - name: restart monit
-  service: >
-    name=monit
-    state=restarted
+  service:
+    name: monit
+    state: restarted
