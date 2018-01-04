@@ -7,12 +7,23 @@
     state=present
 
 - name: configure phpMyAdmin
-  template:
-    src: config.inc.php.j2
-    dest: /etc/phpMyAdmin/config.inc.php
-    owner: root
-    group: apache
-    mode: 0640
+  lineinfile:
+    path: /etc/phpMyAdmin/config.inc.php
+    regexp: "{{ item.re }}"
+    line: "{{ item.name }} = '{{ item.value }}';"
+  with_items:
+    - { re: "^\\$cfg\\['Servers'\\]\\[\\$i\\]\\['auth_type'\\]",
+        name: "$cfg['Servers'][$i]['auth_type']",
+        value: 'config' }
+    - { re: "^\\$cfg\\['Servers'\\]\\[\\$i\\]\\['user'\\]",
+        name: "$cfg['Servers'][$i]['user']",
+        value: '{{ mysql_ps_user }}' }
+    - { re: "^\\$cfg\\['Servers'\\]\\[\\$i\\]\\['password'\\]",
+        name: "$cfg['Servers'][$i]['password']",
+        value: '{{ mysql_ps_password }}' }
+    - { re: "^\\$cfg\\['Servers'\\]\\[\\$i\\]\\['hide_db'\\]",
+        name: "$cfg['Servers'][$i]['hide_db']",
+        value: 'information_schema' }
 
 - name: configure phpMyAdmin for Nginx 1
   file:
