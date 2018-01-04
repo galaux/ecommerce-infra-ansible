@@ -5,17 +5,17 @@
   become: true
   become_user: root
   roles:
-    - { role: ansible-dependencies }
-    - { role: etc-hosts }
-    - { role: sshd, tags: ['sshd'] }
-    - { role: logrotate }
-    - { role: php }
-    - { role: php-fpm }
-    - { role: letsencrypt }
-    - { role: nginx }
-    - { role: prestashop }
-    - { role: mysqld }
-    - { role: collectd }
-    - { role: backup-instance}
-    - { role: phpmyadmin }
-    - { role: monit }
+    - { role: ansible-dependencies,             tags: ['ansible-dependencies'] }
+    - { role: base,                             tags: ['base'] }
+    - { role: sshd,                             tags: ['sshd'] }
+    - { role: logrotate,                        tags: ['logrotate'] }
+    - { role: php,                              tags: ['php'] }
+    - { role: php-fpm,                          tags: ['php-fpm'] }
+    - { role: letsencrypt,                      tags: ['letsencrypt'] }
+    - { role: nginx,                            tags: ['nginx'] }
+    - { role: prestashop,                       tags: ['prestashop'] }
+    - { role: mysqld,                           tags: ['mysqld'] }
+    - { role: collectd,                         tags: ['collectd'] }
+    - { role: backup-instance,                  tags: ['backup-instance'] }
+    - { role: phpmyadmin,                       tags: ['phpmyadmin'] }
+    - { role: monit,                            tags: ['monit'] }
