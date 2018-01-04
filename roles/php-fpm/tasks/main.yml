@@ -6,14 +6,10 @@
     state=present
 
 - name: configure php-fpm
-  template:
-    src: php-fpm.conf.j2
-    dest: /etc/nginx/conf.d/php-fpm.conf-5.6
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart php-fpm
+  lineinfile:
+    path: /etc/nginx/conf.d/php-fpm.conf-5.6
+    regexp: '^\s*server\s'
+    line: '        server unix:{{ php_fpm_socket_path }};'
 
 - name: configure php-fpm pool
   template:
