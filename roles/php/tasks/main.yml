@@ -12,10 +12,14 @@
     - php56-mysqlnd
     - php56-soap
 
+# Do not use a remote "copy of /etc/php-5.6.ini" with an Ansible `lineinfile`
+# because Ansible would consider the file as changed and thus restart php-fpm
 - name: configure PHP
-  copy: >
-   src=timezone.ini
-   dest=/etc/php-5.6.d/20-timezone.ini
-   owner=root
-   group=root
-   mode=0644
+  copy:
+    src: php-5.6.ini
+    dest: /etc/php-5.6.conf/php.ini
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart php-fpm
