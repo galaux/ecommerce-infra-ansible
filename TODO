@@ -12,8 +12,6 @@ see php-fpm conf:
 
 role ansible should be removed (now that it is done by cloud-formation template)
 
-make backup_date a variable in cloud-front template
-
 voir comment afficher des informations une fois qu'on a lancé une stack cloud formation
 (note: cloud-formation donne des infos, il faut juste attendre que la création de la machine soit terminée)
 (on a l'IP publique)
@@ -39,11 +37,12 @@ créer des "user" ansible et mettre à jour
   - créer des comptes nominatifs "owner" et "galaux" pour mysql?
   - paramétrer les utilsateurs dans le htpasswd
 
+Pas nécessaire voir même : ne PAS le faire! Est-ce que les serveurs qui gèrent google.com s'appellent "google.com"? Non!
 configurer hostname du serveur mais vérifier que ça n'empèche pas d'envoyer des emails (ou alors était-ce autre chose qui ne fonctionnait pas? voir dans l'historique des issues)
 
 In backup script: use dynamic list of tarballs
 
-
+si besoin d'optimiser plus Nginx: https://linode.com/docs/web-servers/nginx/configure-nginx-for-optimized-performance/
 
 
 FIXME :
