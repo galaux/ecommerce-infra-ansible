@@ -2,7 +2,11 @@
 
 - name: install collectd
   yum:
-    name: collectd,collectd-rrdtool,collectd-nginx,collectd-mysql
+    name: >
+      collectd,
+      collectd-mysql,
+      collectd-nginx,
+      collectd-rrdtool
     state: present
 
 - name: setup collectd
