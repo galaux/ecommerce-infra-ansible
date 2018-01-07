@@ -1,21 +1,16 @@
 ---
 
 - name: install certbot
-  get_url:
-    url: https://dl.eff.org/certbot-auto
-    dest: /usr/local/bin/certbot-auto
-    checksum: sha256:ab50da62c3c4931cc60ca9d17cae3f66474ae1b10a3c1bf009ac4d8c64b78275
-    owner: root
-    group: root
-    mode: 0775
+  yum:
+    name: certbot
 
-- name: install certbot dependencies
-  shell: >
-    unset $PYTHON_INSTALL_LAYOUT && \
-    /usr/local/bin/certbot-auto \
-      --debug \
-      --non-interactive \
-      --version
+# - name: install certbot dependencies
+#   shell: >
+#     unset $PYTHON_INSTALL_LAYOUT && \
+#     /usr/local/bin/certbot-auto \
+#       --debug \
+#       --non-interactive \
+#       --version
 
 - name: stat whether certificates are already present
   command: test -d "{{ letsencrypt_path }}"

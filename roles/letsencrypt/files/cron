@@ -1,1 +1,1 @@
-@daily root /usr/local/bin/certbot-auto --debug renew
+@daily root /bin/certbot renew
