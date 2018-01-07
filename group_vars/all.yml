@@ -4,6 +4,7 @@ with_backup_date: "LATEST"
 fqdn: "test.example.com"
 is_prod: false
 ssh_port: 22
+regular_user: "ec2-user"
 prestashop_version_file_name: "prestashop_version"
 prestashop_tarballs:
   - classes.tgz
