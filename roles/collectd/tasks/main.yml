@@ -1,9 +1,9 @@
 ---
 
 - name: install collectd
-  yum: >
-    name=collectd,collectd-rrdtool,collectd-nginx,collectd-mysql
-    state=present
+  yum:
+    name: collectd,collectd-rrdtool,collectd-nginx,collectd-mysql
+    state: present
 
 - name: setup collectd
   template:

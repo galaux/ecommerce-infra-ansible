@@ -1,9 +1,9 @@
 ---
 
 - name: install MySQL and dependencies
-  yum: >
-    name=mysql56-server,MySQL-python27
-    state=present
+  yum:
+    name: mysql56-server,MySQL-python27
+    state: present
 
 - name: start and enable MySQL
   service:

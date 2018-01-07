@@ -1,10 +1,10 @@
 ---
 
 - name: install phpMyAdmin
-  yum: >
-    name=phpMyAdmin
-    enablerepo=epel
-    state=present
+  yum:
+    name: phpMyAdmin
+    enablerepo: epel
+    state: present
 
 - name: configure phpMyAdmin
   lineinfile:

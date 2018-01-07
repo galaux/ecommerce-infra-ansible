@@ -1,9 +1,9 @@
 ---
 
 - name: install php-fpm
-  yum: >
-    name=php56-fpm
-    state=present
+  yum:
+    name: php56-fpm
+    state: present
 
 - name: configure php-fpm
   lineinfile:

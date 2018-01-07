@@ -1,9 +1,9 @@
 ---
 
 - name: install boto dependency
-  yum: >
-    name=python27-boto3
-    state=present
+  yum:
+    name: python27-boto3
+    state: present
 
 - name: get 'latest' backup file from S3 backup
   aws_s3:

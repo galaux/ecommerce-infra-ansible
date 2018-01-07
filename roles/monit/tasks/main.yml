@@ -1,9 +1,9 @@
 ---
 
 - name: install monit
-  yum: >
-    name=monit
-    state=present
+  yum:
+    name: monit
+    state: present
 
 - name: configure monit (1)
   template:

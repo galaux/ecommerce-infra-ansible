@@ -1,9 +1,9 @@
 ---
 
 - name: install openssh
-  yum: >
-    name=openssh
-    state=present
+  yum:
+    name: openssh
+    state: present
 
 - name: configure sshd
   template:
