@@ -8,6 +8,12 @@
     group: root
     mode: 0644
 
+- name: set compression for logrotate
+  lineinfile:
+    path: /etc/logrotate.conf
+    regexp: "^#compress"
+    line: "compress"
+
 - name: configure Bash for root
   template:
     src: bashrc_root.j2

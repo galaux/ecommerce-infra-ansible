@@ -8,7 +8,6 @@
     - { role: ansible-dependencies,             tags: ['ansible-dependencies'] }
     - { role: base,                             tags: ['base'] }
     - { role: sshd,                             tags: ['sshd'] }
-    - { role: logrotate,                        tags: ['logrotate'] }
     - { role: php,                              tags: ['php'] }
     - { role: php-fpm,                          tags: ['php-fpm'] }
     - { role: letsencrypt,                      tags: ['letsencrypt'] }
