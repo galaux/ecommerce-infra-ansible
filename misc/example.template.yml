@@ -64,8 +64,8 @@ Resources:
             python27-boto3
           wget "$ARCHIVE_URL?private_token=$GITLAB_TOKEN" \
             -O $PROJECT_NAME.tar.gz
-          tar xf $PROJECT_NAME.tar.gz -C /home/ec2-user
-          cd /home/ec2-user/$PROJECT_NAME-master-*
+          tar xf $PROJECT_NAME.tar.gz -C /home/centos
+          cd /home/centos/$PROJECT_NAME-master-*
           ansible-playbook \
             --connection=local \
             playbooks/example.yml \
