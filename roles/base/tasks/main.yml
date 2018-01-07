@@ -1,8 +1,15 @@
 ---
 
-- name: install boto dependency
+- name: install EPEL
   yum:
-    name: python27-boto3
+    name: epel-release
+    state: present
+
+- name: install dependencies
+  yum:
+    name: >
+      awscli,
+      python2-boto3
     state: present
 
 - name: get 'latest' backup file from S3 backup
