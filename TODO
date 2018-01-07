@@ -44,6 +44,8 @@ In backup script: use dynamic list of tarballs
 
 si besoin d'optimiser plus Nginx: https://linode.com/docs/web-servers/nginx/configure-nginx-for-optimized-performance/
 
+Changer le compte admin fuckingAdm1n
+
 
 FIXME :
   est-il malin de créer une nouvelle instance?
@@ -60,13 +62,10 @@ Si seulemt "clean de l'instance actuelle"
   - supprimer db mysql ps2
 
 Si réinstallation depuis une nouvelle instance:
-  Précédure pour migration vers nouveau layout Ansible
-    backup
-      - métriques de collectd
-      - créer nouvelle entrée DNS `admin.…`
-      - fermer site
-      - faire backup
-      - créer nouvelle instance avec date dernier backup
-      - bouger /var/www/html à leurs nouvelles places
-      - changer elastic-ip
-      - rouvrir le site
+  - backup métriques de collectd
+  - fermer site PS
+  - lancer script de backup
+  - créer nouvelle instance avec date dernier backup
+  - changer elastic-ip
+  - rouvrir le site
+  - restaurer data collectd
