@@ -1,5 +1,8 @@
 ---
 
+- name: set SELinux into permissive mode
+  shell: /sbin/setenforce permissive
+
 - name: install EPEL
   yum:
     name: epel-release
