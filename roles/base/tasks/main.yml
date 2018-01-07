@@ -1,7 +1,12 @@
 ---
 
+- name: get SELinux state
+  shell: /sbin/getenforce
+  register: selinux_state
+
 - name: set SELinux into permissive mode
   shell: /sbin/setenforce permissive
+  when: selinux_state.stdout == 'Enforcing'
 
 - name: install EPEL
   yum:
