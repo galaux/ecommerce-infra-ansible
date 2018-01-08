@@ -8,12 +8,24 @@
   shell: /sbin/setenforce permissive
   when: selinux_state.stdout == 'Enforcing'
 
-- name: install additional repository
+- name: install ELRepo key
+  rpm_key:
+    key: https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+
+- name: install additional repositories
   yum:
     name: >
+      http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm,
       epel-release,
       http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
+
+# - name: enable repo elrepo-kernel
+#   ini_file:
+#     path: /etc/yum.repos.d/elrepo.repo
+#     section: elrepo-kernel
+#     option: enabled
+#     value: 1
 
 - name: install dependencies
   yum:
