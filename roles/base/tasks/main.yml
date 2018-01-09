@@ -31,7 +31,8 @@
   yum:
     name: >
       awscli,
-      python2-boto3
+      python2-boto3,
+      unzip
     state: present
 
 - name: get 'latest' backup file from S3 backup
