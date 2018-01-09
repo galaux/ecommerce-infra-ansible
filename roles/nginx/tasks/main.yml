@@ -22,7 +22,7 @@
   notify:
     - restart nginx
 
-- name: configure php
+- name: add configuration for PHP applications
   copy:
     src: php.conf-5.6
     dest: /etc/nginx/default.d/php.conf-5.6
