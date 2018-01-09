@@ -50,7 +50,7 @@
 - name: install htpasswd
   template:
     src: htpasswd.j2
-    dest: /etc/nginx/htpasswd
+    dest: "{{ htpasswd_path }}"
     owner: root
     group: root
     mode: 0644
