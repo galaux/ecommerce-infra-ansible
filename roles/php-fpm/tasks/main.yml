@@ -2,19 +2,23 @@
 
 - name: install php-fpm
   yum:
-    name: php56-fpm
+    name: php-fpm
     state: present
 
 - name: configure php-fpm
-  lineinfile:
-    path: /etc/nginx/conf.d/php-fpm.conf-5.6
-    regexp: '^\s*server\s'
-    line: '        server unix:{{ php_fpm_socket_path }};'
+  template:
+    src: php-fpm.conf.j2
+    dest: /etc/nginx/conf.d/php-fpm.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart nginx
 
 - name: configure php-fpm pool
   template:
     src: www.conf.j2
-    dest: /etc/php-fpm-5.6.d/www.conf
+    dest: /etc/php-fpm.d/www.conf
     owner: root
     group: root
     mode: 0644
@@ -23,8 +27,8 @@
 
 - name: add configuration for PHP applications
   copy:
-    src: php.conf-5.6
-    dest: /etc/nginx/default.d/php.conf-5.6
+    src: php.conf
+    dest: /etc/nginx/default.d/php.conf
     owner: root
     group: root
     mode: 0644

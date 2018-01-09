@@ -5,11 +5,6 @@
     name: nginx
     state: present
 
-- name: remove package configuration
-  file:
-    path: /etc/nginx/conf.d/virtual.conf
-    state: absent
-
 # http://doc.prestashop.com/display/PS16/System+Administrator+Guide#SystemAdministratorGuide-NginxfriendlyURLs
 # https://github.com/PrestaShop/PrestaShop/blob/develop/docs/server_config/nginx.conf.dist
 - name: configure nginx
@@ -37,6 +32,7 @@
     - www.conf
     - admin.conf
 
+# TODO use Ansible `htpasswd` here
 - name: install htpasswd
   template:
     src: htpasswd.j2
