@@ -1,6 +1,6 @@
-check process mysqld with pidfile /var/run/mysqld/mysqld.pid
-  start program = "/etc/init.d/mysqld start" with timeout 60 seconds
-  stop program  = "/etc/init.d/mysqld stop"
+check process mariadb with pidfile /run/mariadb/mariadb.pid
+  start program = "/bin/systemctl start mariadb" with timeout 60 seconds
+  stop program  = "/bin/systemctl stop mariadb"
   if cpu > 60% for 2 cycles then alert
   if cpu > 80% for 5 cycles then restart
   if totalmem > 1000.0 MB for 5 cycles then restart

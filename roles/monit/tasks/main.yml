@@ -7,18 +7,25 @@
 
 - name: configure monit (1)
   template:
-    src: "{{ item }}.j2"
-    dest: /etc/monit.d/{{ item }}
+    src: monit.j2
+    dest: /etc/monitrc
     owner: root
     group: root
     mode: 0600
-  with_items:
-    - monit
-    - nginx
   notify:
     - restart monit
 
 - name: configure monit (2)
+  template:
+    src: nginx.j2
+    dest: /etc/monit.d/nginx
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - restart monit
+
+- name: configure monit (3)
   copy:
     src: "{{ item }}"
     dest: /etc/monit.d/{{ item }}

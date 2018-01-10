@@ -1,6 +1,6 @@
-check process php-fpm with pidfile /var/run/php-fpm/php-fpm-5.6.pid
-  start program = "/etc/init.d/php-fpm start" with timeout 60 seconds
-  stop program  = "/etc/init.d/php-fpm stop"
+check process php-fpm with pidfile /run/php-fpm/php-fpm.pid
+  start program = "/bin/systemctl start php-fpm" with timeout 60 seconds
+  stop program  = "/bin/systemctl stop php-fpm"
   if cpu > 60% for 2 cycles then alert
   if cpu > 80% for 5 cycles then restart
   if totalmem > 1500.0 MB for 5 cycles then restart
