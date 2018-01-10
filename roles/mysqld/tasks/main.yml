@@ -1,23 +1,30 @@
 ---
 
-- name: install MySQL and dependencies
+# MySQL-python27
+- name: install MariaDB and dependencies
   yum:
+    # MySQL required by Ansible `mysql_user`
     name: >
-      mysql56-server,
-      MySQL-python27
+      mariadb-server,
+      MySQL-python
     state: present
 
 - name: set global my.cnf
-  template:
-    src: global-my.cnf.j2
-    dest: /etc/my.cnf
-    owner: root
-    group: root
-    mode: 0644
+  ini_file:
+    path: /etc/my.cnf.d/server.cnf
+    section: "mysqld"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { option: "slow_query_log", value: 1 }
+    - { option: "max_connections", value: 5 }
+    - { option: "thread_cache_size", value: 1 }
+    - { option: "query_cache_type", value: 'ON' }
+    - { option: "query_cache_size", value: 41943040 }
 
-- name: start and enable MySQL
+- name: start and enable MariaDB
   service:
-    name: mysqld
+    name: mariadb
     enabled: yes
     state: started
 
