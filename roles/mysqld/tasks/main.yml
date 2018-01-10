@@ -7,6 +7,14 @@
       MySQL-python27
     state: present
 
+- name: set global my.cnf
+  template:
+    src: global-my.cnf.j2
+    dest: /etc/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+
 - name: start and enable MySQL
   service:
     name: mysqld
@@ -88,14 +96,6 @@
     host_all: yes
     password: '{{ mysql_root_password }}'
     state: present
-
-- name: set global my.cnf
-  template:
-    src: global-my.cnf.j2
-    dest: /etc/my.cnf
-    owner: root
-    group: root
-    mode: 0644
 
 - name: set local my.cnf
   template:
