@@ -8,7 +8,8 @@
       php-mbstring,
       php-mcrypt,
       php-mysqlnd,
-      php-soap
+      php-soap,
+      php-xml
     state: present
 
 - name: configure PHP
