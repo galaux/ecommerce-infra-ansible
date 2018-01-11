@@ -7,9 +7,9 @@
         compress
     postrotate
         # just if mysqld is really running
-        if test -x /usr/libexec/mysql56/mysqladmin && /usr/libexec/mysql56/mysqladmin ping &>/dev/null
+        if test -x /bin/mysqladmin && /bin/mysqladmin ping &>/dev/null
         then
-           /usr/libexec/mysql56/mysqladmin flush-logs
+           /bin/mysqladmin flush-logs
         fi
     endscript
   }
