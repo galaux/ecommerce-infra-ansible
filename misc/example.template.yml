@@ -1,6 +1,13 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: example instance
 
+Mappings:
+  ImageMap:
+    amazon-linux:
+      ImageId: "ami-bf2ba8d0"
+    centos:
+      ImageId: "ami-1e038d71"
+
 Parameters:
 
   InstanceType:
@@ -13,6 +20,14 @@ Parameters:
       - t2.small
       - t2.medium
     ConstraintDescription: must be a valid EC2 instance type.
+
+  LinuxFlavour:
+    Description: Which Linux flavour to setup
+    Type: String
+    Default: amazon-linux
+    AllowedValues:
+      - amazon-linux
+      - centos
 
   BackupDate:
     Description: Date of backup to restore or "LATEST"
@@ -46,7 +61,7 @@ Resources:
         - example-ami
       IamInstanceProfile: example-ami
       KeyName: example-kp
-      ImageId: ami-bf2ba8d0
+      ImageId: !FindInMap [ImageMap, !Ref "LinuxFlavour", "ImageId"]
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -54,22 +69,26 @@ Resources:
           set -e
           GITLAB_TOKEN='REDACTED700000000000'
           PROJECT_NAME='example-ansible'
-          ARCHIVE_URL="https://gitlab.com/example/$PROJECT_NAME/repository/master/archive.tar.gz"
+          case ${LinuxFlavour} in
+            "amazon-linux") branch='master'; yum_param='--enablerepo=epel' ;;
+            "centos")       branch='centos'; yum_param='';;
+          esac
+          ARCHIVE_URL="https://gitlab.com/example/$PROJECT_NAME/repository/$branch/archive.tar.gz"
           yum --assumeyes update
           yum \
             --assumeyes \
-            --enablerepo=epel \
+            $yum_param \
             install \
-            ansible \
-            python27-boto3
+            wget \
+            ansible
+          cd /tmp
           wget "$ARCHIVE_URL?private_token=$GITLAB_TOKEN" \
             -O $PROJECT_NAME.tar.gz
-          tar xf $PROJECT_NAME.tar.gz -C /home/centos
-          cd /home/centos/$PROJECT_NAME-master-*
+          tar xf $PROJECT_NAME.tar.gz
+          cd $PROJECT_NAME-$branch-*
           ansible-playbook \
             --connection=local \
             playbooks/example.yml \
-            --limit=test.example.com \
             --extra-vars '{
                             "with_backup_date": "${BackupDate}",
                             "fqdn": "${FQDN}",
