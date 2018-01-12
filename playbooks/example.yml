@@ -7,10 +7,10 @@
   roles:
     - { role: base,                             tags: ['base'] }
     - { role: sshd,                             tags: ['sshd'] }
-    - { role: php,                              tags: ['php'] }
-    - { role: php-fpm,                          tags: ['php-fpm'] }
     - { role: letsencrypt,                      tags: ['letsencrypt'] }
     - { role: nginx,                            tags: ['nginx'] }
+    - { role: php,                              tags: ['php'] }
+    - { role: php-fpm,                          tags: ['php-fpm'] }
     - { role: prestashop,                       tags: ['prestashop'] }
     - { role: mysqld,                           tags: ['mysqld'] }
     - { role: collectd,                         tags: ['collectd'] }
