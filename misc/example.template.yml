@@ -88,6 +88,7 @@ Resources:
           cd $PROJECT_NAME-$branch-*
           ansible-playbook \
             --connection=local \
+            --limit=localhost \
             playbooks/example.yml \
             --extra-vars '{
                             "with_backup_date": "${BackupDate}",
