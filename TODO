@@ -44,13 +44,8 @@ In backup script: use dynamic list of tarballs
 
 si besoin d'optimiser plus Nginx: https://linode.com/docs/web-servers/nginx/configure-nginx-for-optimized-performance/
 
-Changer le compte admin fuckingAdm1n
 
-
-FIXME :
-  est-il malin de créer une nouvelle instance?
-  je pense qu'il doit être plus simple et OK de juste "appliquer le nouveau layout" sur l'actuelle prod et de la "nettoyer"
-
+changer paramètre mysql 40xxxx en "40M"
 
 Si seulemt "clean de l'instance actuelle"
   - mettre site en maintenance
