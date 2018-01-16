@@ -4,9 +4,15 @@
   shell: /sbin/getenforce
   register: selinux_state
 
-- name: set SELinux into permissive mode
+- name: set SELinux current state to permissive mode
   shell: /sbin/setenforce permissive
   when: selinux_state.stdout == 'Enforcing'
+
+- name: set SELinux next reboot state to permissive mode
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: "^SELINUX=enforcing"
+    line: "SELINUX=permissive"
 
 - name: install ELRepo key
   rpm_key:
