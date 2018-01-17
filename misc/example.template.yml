@@ -6,9 +6,9 @@ Mappings:
     amazon-linux:
       ImageId: "ami-bf2ba8d0"
     centos:
-      ImageId: "ami-1e038d71"
+      ImageId: "ami-7cbc6e13"
     centos-up:
-      ImageId: "ami-1e038d71"
+      ImageId: "ami-7cbc6e13"
 
 Parameters:
 
