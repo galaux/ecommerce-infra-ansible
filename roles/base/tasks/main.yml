@@ -107,16 +107,13 @@
 
 - name: configure Bash for root
   template:
-    src: bashrc_root.j2
-    dest: /root/.bashrc
-    owner: root
-    group: root
+    src: bashrc.j2
+    dest: "{{ item.dest_dir }}/.bashrc"
+    owner: "{{ item.ownergp }}"
+    group: "{{ item.ownergp }}"
     mode: 0644
-
-- name: configure Bash for regular user
-  template:
-    src: bashrc_regular.j2
-    dest: "/home/{{ regular_user }}/.bashrc"
-    owner: "{{ regular_user }}"
-    group: "{{ regular_user }}"
-    mode: 0644
+  vars:
+    is_root: "{{ item.is_root }}"
+  with_items:
+    - { dest_dir: "/root",                    ownergp: "root",               is_root: true }
+    - { dest_dir: "/home/{{ regular_user }}", ownergp: "{{ regular_user }}", is_root: false }
