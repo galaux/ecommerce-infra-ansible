@@ -111,11 +111,3 @@
     owner: root
     group: root
     mode: 0600
-
-- name: configure logrotate
-  copy:
-    src: logrotate
-    dest: /etc/logrotate.d/mariadb
-    owner: root
-    group: root
-    mode: 0644
