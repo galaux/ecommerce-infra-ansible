@@ -16,12 +16,23 @@
     - restart nginx
 
 - name: configure php-fpm pool
-  template:
-    src: www.conf.j2
-    dest: /etc/php-fpm.d/www.conf
-    owner: root
-    group: root
-    mode: 0644
+  lineinfile:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "{{ item.re }}"
+    line: "{{ item.name }} = {{ item.value }}"
+    # https://stackoverflow.com/a/21934455/2681752
+    backrefs: yes
+  with_items:
+    - { re: "^;access.log =",          name: "access.log",           value: "/var/log/php-fpm/$pool.access.log" }
+    - { re: "^listen =",               name: "listen",               value: "/var/run/php-fpm/php-fpm.sock"     }
+    - { re: "^;listen.acl_users =",    name: "listen.acl_users",     value: "nginx"                             }
+    - { re: "^pm =",                   name: "pm",                   value: "static"                            }
+    - { re: "^pm.max_children =",      name: "pm.max_children",      value: 2                                   }
+    - { re: "^pm.start_servers =",     name: "pm.start_servers",     value: 3                                   }
+    - { re: "^pm.min_spare_servers =", name: "pm.min_spare_servers", value: 3                                   }
+    - { re: "^pm.max_spare_servers =", name: "pm.max_spare_servers", value: "6"                                 }
+    - { re: "^;pm.max_requests =",     name: "pm.max_requests",      value: 7500                                }
+    - { re: "^;pm.status_path =",      name: "pm.status_path",       value: "/status-php-fpm"                   }
   notify:
     - restart php-fpm
 

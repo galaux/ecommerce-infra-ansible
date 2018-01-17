@@ -34,6 +34,9 @@
 #     option: enabled
 #     value: 1
 
+- name: enable PHP 7.1 repo
+  shell: yum-config-manager --assumeyes --enable remi-php71
+
 - name: install MariaDB repo
   copy:
     src: mariadb.repo
