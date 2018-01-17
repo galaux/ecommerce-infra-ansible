@@ -26,6 +26,7 @@
       http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
 
+# Use `yum-config-manager --enable <REPO>` instead of manual file tweak!
 # - name: enable repo elrepo-kernel
 #   ini_file:
 #     path: /etc/yum.repos.d/elrepo.repo

@@ -1,9 +1,8 @@
 ---
 
-# MySQL-python27
 - name: install MariaDB and dependencies
   yum:
-    # MySQL required by Ansible `mysql_user`
+    # MySQL-python required by Ansible `mysql_user`
     name: >
       mariadb-server,
       MySQL-python
