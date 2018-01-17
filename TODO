@@ -46,6 +46,7 @@ si besoin d'optimiser plus Nginx: https://linode.com/docs/web-servers/nginx/conf
 
 
 changer paramètre mysql 40xxxx en "40M"
+enlever `socket` du local .my.cnf si pas besoin
 
 Si seulemt "clean de l'instance actuelle"
   - mettre site en maintenance
