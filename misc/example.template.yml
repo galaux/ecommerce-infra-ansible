@@ -7,6 +7,8 @@ Mappings:
       ImageId: "ami-bf2ba8d0"
     centos:
       ImageId: "ami-1e038d71"
+    centos-up:
+      ImageId: "ami-1e038d71"
 
 Parameters:
 
@@ -28,6 +30,7 @@ Parameters:
     AllowedValues:
       - amazon-linux
       - centos
+      - centos-up
 
   BackupDate:
     Description: Date of backup to restore or "LATEST"
@@ -72,6 +75,7 @@ Resources:
           case ${LinuxFlavour} in
             "amazon-linux") branch='master'; yum_param='--enablerepo=epel' ;;
             "centos")       branch='centos'; yum_param='';;
+            "centos-up")    branch='centos-up'; yum_param='';;
           esac
           ARCHIVE_URL="https://gitlab.com/example/$PROJECT_NAME/repository/$branch/archive.tar.gz"
           yum --assumeyes clean all
