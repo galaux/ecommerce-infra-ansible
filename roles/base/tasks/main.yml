@@ -58,8 +58,11 @@
     name: >
       awscli,
       bzip2,
+      htop,
       python2-boto3,
-      unzip
+      tree,
+      unzip,
+      vim-enhanced
     state: present
 
 - name: get 'latest' backup file from S3 backup
