@@ -14,6 +14,7 @@
     dest: "/tmp/{{ prestashop_version_file_name }}"
     mode: get
 
+# Watch out, prestashop_version is used in settings.inc.php
 - name: read Prestashop version from S3 backup
   shell: cat /tmp/{{ prestashop_version_file_name }}
   check_mode: no
