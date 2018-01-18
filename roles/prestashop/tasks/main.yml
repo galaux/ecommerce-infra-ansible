@@ -66,11 +66,6 @@
     mode: get
   when: ps_already_present.rc == 1
 
-- name: set correct robots.txt file permission
-  file:
-    path: "{{ prestashop_path }}/robots.txt"
-    mode: 0666
-
 - name: install config file
   template:
     src: settings.inc.php.j2
