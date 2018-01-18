@@ -39,3 +39,6 @@ TODO
 - In backup script: use dynamic list of tarballs
 - See if possible to change the mysql parameter 40xxxx to sthing like "40M"
 - remove `socket` from local .my.cnf if it is not compulsory
+- enhance CloudFormation with [Grouping and Labeling](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudformation-interface.html)
+- enable setup of a `test2.example.com`
+- enable setup of any `*.shop.company` instance with automatic Route53 DNS creation/update!
