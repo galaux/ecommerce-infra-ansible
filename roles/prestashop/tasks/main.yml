@@ -80,11 +80,12 @@
     path: "{{ prestashop_path }}"
     owner: apache
     group: apache
+    mode: 0644
     state: directory
     recurse: yes
 
-- name: set files permissions
-  command: chmod --recursive 0644 "{{ prestashop_path }}"
+# - name: set files permissions
+#   command: chmod --recursive 0644 "{{ prestashop_path }}"
 
 - name: set directories permissions
   command: find "{{ prestashop_path }}" -type d -exec chmod 0755 {} \;
