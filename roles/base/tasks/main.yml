@@ -3,6 +3,7 @@
 - name: get SELinux state
   shell: /sbin/getenforce
   register: selinux_state
+  check_mode: no
 
 - name: set SELinux current state to permissive mode
   shell: /sbin/setenforce permissive
@@ -85,6 +86,7 @@
 - name: register backup_date if missing 2
   set_fact:
     backup_date: "{{ with_backup_date }}"
+  check_mode: no
   when: with_backup_date != 'LATEST'
 
 - name: show backup_date

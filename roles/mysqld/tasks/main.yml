@@ -30,6 +30,7 @@
 - name: stat whether DB is already present
   shell: mysql -e 'USE {{ mysql_ps_db_name }};'
   register: db_already_present
+  check_mode: no
   failed_when: db_already_present.rc > 1
 
 - name: create DB
