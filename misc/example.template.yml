@@ -15,6 +15,7 @@ Parameters:
   InstanceName:
     Description: (Optional) comprehensive name used to identify this instance
     Type: String
+    Default: NO_NAME
 
   InstanceType:
     Description: EC2 instance type
@@ -49,7 +50,7 @@ Parameters:
     AllowedValues:
       - example.com
       - test.example.com
-    ConstraintDescription: "one of 'test.example.com' or 'example.com'"
+      - test2.example.com
 
   IsProduction:
     Description: Is this a Production instance (if 'true' then Monit sends emails and full PrestaShop S3 backups are enabled)
@@ -70,8 +71,9 @@ Resources:
       KeyName: example-kp
       ImageId: !FindInMap [ImageMap, !Ref "LinuxFlavour", "ImageId"]
       Tags:
-        - Key: Name
-        - Value: !Ref InstanceName
+        -
+          Key: Name
+          Value: !Ref InstanceName
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash

@@ -1,6 +1,7 @@
 ---
 
 with_backup_date: "LATEST"
+instance_name: "NO_NAME"
 fqdn: "test.example.com"
 is_prod: false
 ssh_port: 22
