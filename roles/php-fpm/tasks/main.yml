@@ -17,11 +17,11 @@
 
 - name: configure php-fpm pool
   lineinfile:
+    backrefs: yes
     path: /etc/php-fpm.d/www.conf
     regexp: "{{ item.re }}"
     line: "{{ item.name }} = {{ item.value }}"
     # https://stackoverflow.com/a/21934455/2681752
-    backrefs: yes
   with_items:
     - { re: "^;access.log =",          name: "access.log",           value: "/var/log/php-fpm/$pool.access.log" }
     - { re: "^listen =",               name: "listen",               value: "/var/run/php-fpm/php-fpm.sock"     }

@@ -8,6 +8,7 @@
 
 - name: configure phpMyAdmin
   lineinfile:
+    backrefs: yes
     path: /etc/phpMyAdmin/config.inc.php
     regexp: "{{ item.re }}"
     line: "{{ item.name }} = '{{ item.value }}';"
