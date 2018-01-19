@@ -89,6 +89,7 @@ Resources:
           ARCHIVE_URL="https://gitlab.com/example/$PROJECT_NAME/repository/$branch/archive.tar.gz"
           yum --assumeyes clean all
           yum --assumeyes makecache
+          yum --assumeyes install epel-release
           yum --assumeyes update
           yum \
             --assumeyes \

@@ -16,45 +16,6 @@
     regexp: "^SELINUX=enforcing"
     line: "SELINUX=permissive"
 
-# - name: install ELRepo key
-#   rpm_key:
-#     key: https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-
-# http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm,
-- name: install additional repositories
-  yum:
-    name: >
-      epel-release,
-      http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-    state: present
-
-# Use `yum-config-manager --enable <REPO>` instead of manual file tweak!
-# - name: enable repo elrepo-kernel
-#   ini_file:
-#     path: /etc/yum.repos.d/elrepo.repo
-#     section: elrepo-kernel
-#     option: enabled
-#     value: 1
-
-- name: enable PHP 7.1 repo
-  shell: yum-config-manager --assumeyes --enable remi-php71
-
-- name: install MariaDB repo
-  copy:
-    src: mariadb.repo
-    dest: /etc/yum.repos.d/mariadb.repo
-    owner: root
-    group: root
-    mode: 0644
-
-# Gives a warning but nothing to be done here:
-# https://github.com/ansible/ansible/pull/31450#issuecomment-352889579
-- name: cleanup Yum database
-  shell:    yum --assumeyes clean all \
-         && yum --assumeyes makecache
-  args:
-    warn: no
-
 - name: install dependencies
   yum:
     name: >

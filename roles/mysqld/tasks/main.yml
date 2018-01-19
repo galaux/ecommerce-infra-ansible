@@ -1,5 +1,13 @@
 ---
 
+- name: install MariaDB repository
+  copy:
+    src: mariadb.repo
+    dest: /etc/yum.repos.d/mariadb.repo
+    owner: root
+    group: root
+    mode: 0644
+
 - name: install MariaDB and dependencies
   yum:
     # MySQL-python required by Ansible `mysql_user`
