@@ -93,9 +93,6 @@
     state: directory
     recurse: yes
 
-# - name: set files permissions
-#   command: chmod --recursive 0644 "{{ prestashop_path }}"
-
 - name: set directories permissions
   command: find "{{ prestashop_path }}" -type d -exec chmod 0755 {} \;
 
