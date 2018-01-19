@@ -70,6 +70,12 @@
   notify:
     - restart collectd
 
+- name: stat whether CGP is already present
+  command: test -d "{{ monitoring_path }}"
+  check_mode: no
+  register: cgp_already_present
+  failed_when: cgp_already_present.rc > 1
+
 - name: create CGP directory
   file:
     path: "{{ monitoring_path }}"
@@ -77,12 +83,6 @@
     owner: apache
     group: apache
     mode: 0755
-
-- name: stat whether CGP is already present
-  command: test -d "{{ monitoring_path }}"
-  check_mode: no
-  register: cgp_already_present
-  failed_when: cgp_already_present.rc > 1
 
 - name: install CGP
   unarchive:
