@@ -73,11 +73,17 @@
     group: apache
     mode: 0755
 
-- name: set files permissions
-  command: find "{{ monitoring_path }}" -type d -exec chmod 0755 {} \;
+- name: set files and directories owner/group
+  file:
+    path: "{{ monitoring_path }}"
+    owner: apache
+    group: apache
+    mode: 0644
+    state: directory
+    recurse: yes
 
 - name: set directories permissions
-  command: find "{{ monitoring_path }}" -type f -exec chmod 0644 {} \;
+  command: find "{{ monitoring_path }}" -type d -exec chmod 0755 {} \;
 
 - name: configure '/monitoring' nginx access
   template:
