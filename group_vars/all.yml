@@ -7,16 +7,16 @@ is_prod: false
 ssh_port: 22
 regular_user: "centos"
 prestashop_version_file_name: "prestashop_version"
-prestashop_tarballs:
-  - classes.tgz
-  - download.tgz
-  - img.tgz
-  - mails.tgz
-  - modules.tgz
-  - themes_simple-great.tgz
-  - themes_example.tgz
-  - translations.tgz
-  - upload.tgz
+prestashop_backups:
+  - { tarball: "classes.tgz",               relpath: "classes" }
+  - { tarball: "download.tgz",              relpath: "download" }
+  - { tarball: "img.tgz",                   relpath: "img" }
+  - { tarball: "mails.tgz",                 relpath: "mails" }
+  - { tarball: "modules.tgz",               relpath: "modules" }
+  - { tarball: "themes_simple-great.tgz",   relpath: "themes/simple-great" }
+  - { tarball: "themes_example.tgz", relpath: "themes/example" }
+  - { tarball: "translations.tgz",          relpath: "translations" }
+  - { tarball: "upload.tgz",                relpath: "upload" }
 www_path: "/var/www"
 prestashop_backup_bucket: "prestashop-data"
 prestashop_path: "{{ www_path }}/prestashop"

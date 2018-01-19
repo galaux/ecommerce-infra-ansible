@@ -45,18 +45,18 @@
 - name: retrieve backups from S3
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
-    object: "/{{ backup_date }}/{{ item }}"
-    dest: "/tmp/{{ item }}"
+    object: "/{{ backup_date }}/{{ item.tarball }}"
+    dest: "/tmp/{{ item.tarball }}"
     mode: get
-  with_items: "{{ prestashop_tarballs }}"
+  with_items: "{{ prestashop_backups }}"
   when: ps_already_present.rc == 1
 
 - name: deploy backups
   unarchive:
-    src: /tmp/{{ item }}
+    src: "/tmp/{{ item.tarball }}"
     dest: "{{ prestashop_path }}"
     remote_src: yes
-  with_items: "{{ prestashop_tarballs }}"
+  with_items: "{{ prestashop_backups }}"
   when: ps_already_present.rc == 1
 
 # Without this file, some PS features do not work (such as disabling cache)

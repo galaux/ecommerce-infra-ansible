@@ -6,15 +6,10 @@ TEMP_DIR=$(mktemp -d)
 PS_DIR={{ prestashop_path }}
 BACKUP_TIME=$(date +%F-%H%M%S)
 
-TO_BACKUP=('classes'
-           'download'
-           'img'
-           'mails'
-           'modules'
-           'themes/simple-great'
-           'themes/example'
-           'translations'
-           'upload')
+TO_BACKUP=(
+{% for p in prestashop_backups %}
+           '{{ p.relpath }}'
+{% endfor %})
 
 echo "New backup: ${BACKUP_TIME}"
 
