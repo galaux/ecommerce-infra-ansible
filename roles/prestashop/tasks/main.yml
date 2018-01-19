@@ -66,7 +66,7 @@
     dest: "{{ prestashop_path }}/.htaccess"
     owner: apache
     group: apache
-    mode: 0666
+    mode: 0644
 
 - name: retrieve robots.txt from S3
   aws_s3:
