@@ -9,8 +9,6 @@ TODO
 ----
 
 - run mysql script that removes test db
-- see php-fpm conf:
-  - setup curl_json to retrieve /status-php-fpm info and display it in collectd
 - backup results of mysqltuner etc to S3
 - report install of php56-pecl-acpu to ansible (do not forget that this must be enabled in PS backend … but this should be backuped by our DB dump)
 - see deactivation of apache engine in php.ini
@@ -26,7 +24,6 @@ TODO
   - monit conf (user email addresses)
   - create nominated accounts "owner" and "galaux" for mysql?
   - set these users in the htpasswd
-- In backup script: use dynamic list of tarballs
 - See if possible to change the mysql parameter 40xxxx to sthing like "40M"
 - enhance CloudFormation with [Grouping and Labeling](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudformation-interface.html)
 - enable setup of any `*.shop.company` instance with automatic Route53 DNS creation/update!
