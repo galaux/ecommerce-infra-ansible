@@ -4,6 +4,7 @@
   yum:
     name: >
       collectd,
+      collectd-curl_json,
       collectd-mysql,
       collectd-nginx,
       collectd-rrdtool
@@ -49,9 +50,23 @@
     mode: 0644
   with_items:
     - df
+    - php-fpm
     - nginx
     - mysql
     - processes
+  notify:
+    - restart collectd
+
+- name: append specific php-fpm types
+  lineinfile:
+    path: /usr/share/collectd/types.db
+    regexp: "^{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+  with_items:
+    - { key: "phpfpm_listen_queue",  value: "value:GAUGE:0:65535" }
+    - { key: "phpfpm_processes",     value: "value:GAUGE:0:65535" }
+    - { key: "phpfpm_requests",      value: "value:DERIVE:0:U"    }
+    - { key: "phpfpm_slow_requests", value: "value:DERIVE:0:U"    }
   notify:
     - restart collectd
 
