@@ -104,6 +104,14 @@
     state: directory
     recurse: yes
 
+- name: configure CGP
+  lineinfile:
+    path: "{{ monitoring_path }}/conf/config.php"
+    regexp: "^\\$CONFIG\\['{{ item.key }}'\\]"
+    line: "$CONFIG['{{ item.key }}'] = {{ item.value }};"
+  with_items:
+    - { key: "graph_smooth", value: "true" }
+
 - name: set directories permissions
   command: find "{{ monitoring_path }}" -type d -exec chmod 0755 {} \;
 
