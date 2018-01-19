@@ -78,6 +78,12 @@
     group: apache
     mode: 0755
 
+- name: stat whether CGP is already present
+  command: test -d "{{ monitoring_path }}"
+  check_mode: no
+  register: cgp_already_present
+  failed_when: cgp_already_present.rc > 1
+
 - name: install CGP
   unarchive:
     remote_src: yes
@@ -87,6 +93,7 @@
     owner: apache
     group: apache
     mode: 0755
+  when: cgp_already_present.rc == 1
 
 - name: set files and directories owner/group
   file:
