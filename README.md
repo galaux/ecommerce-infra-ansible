@@ -9,19 +9,9 @@ TODO
 ----
 
 - run mysql script that removes test db
-- when/if writing apache role
-  - do not forget to set .htaccess from S3
-- once aws_user.sh is deprecated,remove s3 files
-  - httpd_conf.tgz
-  - monit_conf
-  - settings.inc.php
 - see php-fpm conf:
   - setup curl_json to retrieve /status-php-fpm info and display it in collectd
-- in backup script: save collectd data and write role to restore them
-  - will remove a manual step for next PROD migrations
-  - no problem if we are setuping a TEST env, the won't collide as they will be displayed under a different FQDN
 - backup results of mysqltuner etc to S3
-- role ansible should be removed (now that it is done by cloud-formation template)
 - report install of php56-pecl-acpu to ansible (do not forget that this must be enabled in PS backend … but this should be backuped by our DB dump)
 - see deactivation of apache engine in php.ini
 - Nginx optimisation
@@ -38,7 +28,6 @@ TODO
   - set these users in the htpasswd
 - In backup script: use dynamic list of tarballs
 - See if possible to change the mysql parameter 40xxxx to sthing like "40M"
-- remove `socket` from local .my.cnf if it is not compulsory
 - enhance CloudFormation with [Grouping and Labeling](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudformation-interface.html)
-- enable setup of a `test2.example.com`
 - enable setup of any `*.shop.company` instance with automatic Route53 DNS creation/update!
+- remove `lineinfile` option `backrefs` and rather use sthing such as `"^#?compress"` instead of `"^#compress"`
