@@ -26,6 +26,11 @@ for d in ${TO_BACKUP[@]}; do
     ${d}
 done
 
+tar -czf \
+  ${TEMP_DIR}/collectd-data.tgz \
+  -C /var/lib \
+  collectd
+
 cp ${PS_DIR}/robots.txt \
   ${TEMP_DIR}
 

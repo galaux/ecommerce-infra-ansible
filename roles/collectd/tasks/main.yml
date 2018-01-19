@@ -9,6 +9,27 @@
       collectd-rrdtool
     state: present
 
+- name: stat whether data is already present
+  command: test -d "/var/lib/collectd/rrd/{{ fqdn }}"
+  check_mode: no
+  register: collectd_data_already_present
+  failed_when: collectd_data_already_present.rc > 1
+
+- name: retrieve previously collected data
+  aws_s3:
+    bucket: "{{ prestashop_backup_bucket }}"
+    object: "/{{ backup_date }}/collectd-data.tgz"
+    dest: "/tmp/collectd-data.tgz"
+    mode: get
+  when: collectd_data_already_present.rc == 1
+
+- name: extract previously collected data
+  unarchive:
+    src: /tmp/collectd-data.tgz
+    dest: /var/lib
+    remote_src: yes
+  when: collectd_data_already_present.rc == 1
+
 - name: setup collectd
   template:
     src: collectd.conf.j2
