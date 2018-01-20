@@ -1,4 +1,4 @@
-check process php-fpm with pidfile /run/php-fpm/php-fpm.pid
+check process php-fpm with pidfile {{ php_fpm_pid_path }}
   start program = "/bin/systemctl start php-fpm" with timeout 60 seconds
   stop program  = "/bin/systemctl stop php-fpm"
   if cpu > 60% for 2 cycles then alert

@@ -17,24 +17,26 @@
 
 - name: configure monit (2)
   template:
-    src: nginx.j2
-    dest: /etc/monit.d/nginx
+    src: "{{ item }}.j2"
+    dest: "/etc/monit.d/{{ item }}"
     owner: root
     group: root
     mode: 0600
+  with_items:
+    - mysqld
+    - nginx
+    - php-fpm
   notify:
     - restart monit
 
 - name: configure monit (3)
   copy:
     src: "{{ item }}"
-    dest: /etc/monit.d/{{ item }}
+    dest: "/etc/monit.d/{{ item }}"
     owner: root
     group: root
     mode: 0600
   with_items:
-    - mysqld
-    - php-fpm
     - system
   notify:
     - restart monit

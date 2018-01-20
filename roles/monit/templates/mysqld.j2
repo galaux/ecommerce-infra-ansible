@@ -1,4 +1,4 @@
-check process mariadb with pidfile /run/mariadb/mariadb.pid
+check process mariadb with pidfile {{ mysql_pid_path }}
   start program = "/bin/systemctl start mariadb" with timeout 60 seconds
   stop program  = "/bin/systemctl stop mariadb"
   if cpu > 60% for 2 cycles then alert

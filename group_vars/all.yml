@@ -25,6 +25,7 @@ monitoring_url_path: "monitoring"
 phpmyadmin_url_path: "phpmyadmin"
 monitoring_path: "{{ www_path }}/{{ monitoring_url_path }}"
 letsencrypt_path: "/etc/letsencrypt"
+mysql_pid_path: "/var/lib/mysql/mysql.pid"
 mysql_ro_user: "shop-ro"
 mysql_ro_password: XXXXXXXX
 mysql_ps_user: "ps_std"
@@ -34,7 +35,8 @@ mysql_root_password: XXXXXXXX
 mailer_address: "monit@example.com"
 mailer_password: XXXXXXXX
 nginx_status_path: "/status-nginx"
+php_fpm_pid_path: "/run/php-fpm/php-fpm.pid"
 php_fpm_status_path: "/status-php-fpm"
-php_fpm_socket_path: "/var/run/php-fpm/php-fpm.sock"
+php_fpm_socket_path: "/run/php-fpm/php-fpm.sock"
 certificates_backup_name: "cert-{{ fqdn }}.tgz"
 htpasswd_path: "/etc/nginx/htpasswd"

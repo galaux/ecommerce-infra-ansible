@@ -5,6 +5,13 @@
     name: php-fpm
     state: present
 
+- name: configure php-fpm base
+  ini_file:
+    path: /etc/php-fpm.conf
+    section: "global"
+    option: "pid"
+    value: "{{ php_fpm_pid_path }}"
+
 - name: configure php-fpm
   template:
     src: php-fpm.conf.j2
