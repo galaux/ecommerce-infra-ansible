@@ -28,3 +28,4 @@ TODO
 - enhance CloudFormation with [Grouping and Labeling](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudformation-interface.html)
 - enable setup of any `*.shop.company` instance with automatic Route53 DNS creation/update!
 - remove `lineinfile` option `backrefs` and rather use sthing such as `"^#?compress"` instead of `"^#compress"`
+- optionally add collectd `collectdctl` config: `LoadPlugin unixsock` to be able to `collectdctl  getval test.example.com/df-root/df_complex-used`
