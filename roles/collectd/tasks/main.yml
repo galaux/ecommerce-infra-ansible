@@ -113,7 +113,7 @@
     - { key: "graph_smooth", value: "true" }
 
 - name: set directories permissions
-  command: find "{{ monitoring_path }}" -type d -exec chmod 0755 {} \;
+  command: find "{{ monitoring_path }}" -type d -exec chmod 0755 {} +
 
 - name: configure '/monitoring' nginx access
   template:

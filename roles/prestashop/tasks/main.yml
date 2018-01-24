@@ -94,7 +94,7 @@
     recurse: yes
 
 - name: set directories permissions
-  command: find "{{ prestashop_path }}" -type d -exec chmod 0755 {} \;
+  command: find "{{ prestashop_path }}" -type d -exec chmod 0755 {} +
 
 - name: set Nginx config
   template:
