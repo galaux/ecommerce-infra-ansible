@@ -5,8 +5,8 @@
     name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
 
-- name: enable PHP 7.1 repo
-  shell: yum-config-manager --assumeyes --enable remi-php71
+- name: enable PHP repo
+  shell: yum-config-manager --assumeyes --enable remi-php56
 
 - name: install PHP
   yum:
