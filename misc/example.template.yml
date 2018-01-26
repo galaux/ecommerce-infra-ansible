@@ -31,7 +31,7 @@ Parameters:
   LinuxFlavour:
     Description: Which Linux flavour to setup
     Type: String
-    Default: amazon-linux
+    Default: centos-up
     AllowedValues:
       - amazon-linux
       - centos
