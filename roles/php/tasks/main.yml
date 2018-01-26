@@ -23,8 +23,11 @@
 - name: configure PHP
   ini_file:
     path: /etc/php.ini
-    section: Date
-    option: date.timezone
-    value: '"Europe/Paris"'
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { section: "PHP", option: "max_input_vars", value: '10000' }
+    - { section: "Date", option: "date.timezone", value: '"Europe/Paris"' }
   notify:
     - restart php-fpm
