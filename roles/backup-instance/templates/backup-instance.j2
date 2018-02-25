@@ -29,7 +29,7 @@ tar -czf \
 cp ${PS_DIR}/robots.txt \
   ${TEMP_DIR}
 
-grep '_PS_VERSION_' '/var/www/prestashop/config/settings.inc.php' \
+grep '_PS_VERSION_' '{{ prestashop_path }}/config/settings.inc.php' \
   | sed -E "s/define[(]'_PS_VERSION_', '(.*)'[)];/\1/" \
   > ${TEMP_DIR}/{{ prestashop_version_file_name }}
 
@@ -37,6 +37,20 @@ mysqldump \
   {{ mysql_ps_db_name }} \
   | bzip2 \
   > ${TEMP_DIR}/db_ps.sql.bz2
+
+# Wordpress
+
+# TODO use a parameter name for this file
+tar -czf \
+  ${TEMP_DIR}/wordpress.tgz \
+  -C /var/www \
+  wordpress
+
+mysqldump \
+  {{ mysql_wp_db_name }} \
+  | bzip2 \
+  > ${TEMP_DIR}/db_wp.sql.bz2
+
 
 aws s3 sync \
   ${TEMP_DIR}/ \

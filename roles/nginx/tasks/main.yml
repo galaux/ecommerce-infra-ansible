@@ -31,6 +31,7 @@
     - local.conf-status
     - www.conf
     - admin.conf
+    - blog.conf
 
 # TODO use Ansible `htpasswd` here
 - name: install htpasswd

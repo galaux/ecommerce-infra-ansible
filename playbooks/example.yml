@@ -13,6 +13,7 @@
     - { role: php-fpm,                          tags: ['php-fpm'] }
     - { role: prestashop,                       tags: ['prestashop'] }
     - { role: mysqld,                           tags: ['mysqld'] }
+    - { role: wordpress,                        tags: ['wordpress'] }
     - { role: collectd,                         tags: ['collectd'] }
     - { role: backup-instance,                  tags: ['backup-instance'] }
     - { role: phpmyadmin,                       tags: ['phpmyadmin'] }

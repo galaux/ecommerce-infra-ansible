@@ -5,6 +5,12 @@ example
 - [Issue list](https://gitlab.com/galaux/shop-ami-user-data/issues)
 
 
+Generate LetsEncrypt certificates
+---------------------------------
+
+`certbot certonly --webroot  -d blog.test2.example.com`
+
+
 TODO
 ----
 
@@ -29,3 +35,41 @@ TODO
 - enable setup of any `*.shop.company` instance with automatic Route53 DNS creation/update!
 - remove `lineinfile` option `backrefs` and rather use sthing such as `"^#?compress"` instead of `"^#compress"`
 - optionally add collectd `collectdctl` config: `LoadPlugin unixsock` to be able to `collectdctl  getval test.example.com/df-root/df_complex-used`
+
+- push latest monit conf from PROD to ansible
+- in Ansible, put a _vanilla then modified_ /etc/monitrc file to git (simplifies the `yum updates`)
+- perform a `yum update in prod`. Watchout for files:
+  - /etc/php.ini.rpmnew
+  - /etc/monitrc.rpmnew
+  - /etc/php-fpm.d/www.conf.rpmnew
+- write ansible role for vsftp
+
+
+Things to remember when pushing Wordpress to PROD for the first time:
+---------------------------------------------------------------------
+
+- remember to run the following roles (for the following reasons)
+  - base (adds `blog` as FQDN)
+  - nginx (add `blog` config)
+  - wordpress
+  - backup instance
+- watchout: a `yum update` might be needed for cacert to work. Watchout for the 3 previous files with rpmnew!
+- remember to check that /var/www/{wordpress,prestashop} are group traversable (see changes made by commit for vsftpd and wordpress)
+- check "blog" DNS entry for prod
+- check prod certificates are on prod
+
+
+TODO next
+---------
+
+- generate certificates and back them up for test
+- scratch test and set-it up again brand new
+- check:
+  - ftp works
+  - wordpress works
+- generate certificates and back them up for prod
+- create "blog" DNS entry for prod
+- create "blog" DNS entry for test
+- setup PS to log in /var/log/nginx/www.error.log and www.access.log
+- setup cache for WP in nginx?
+

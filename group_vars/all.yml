@@ -20,18 +20,24 @@ prestashop_backups:
 www_path: "/var/www"
 prestashop_backup_bucket: "prestashop-data"
 prestashop_path: "{{ www_path }}/prestashop"
+wordpress_version_file_name: "wordpress_version"
+wordpress_path: "{{ www_path }}/wordpress"
 prestashop_admin_page_name: "FuckMyAdm1n"
 monitoring_url_path: "monitoring"
 phpmyadmin_url_path: "phpmyadmin"
 monitoring_path: "{{ www_path }}/{{ monitoring_url_path }}"
 letsencrypt_path: "/etc/letsencrypt"
 mysql_pid_path: "/var/lib/mysql/mysql.pid"
+mysql_socket_path: "/var/lib/mysql/mysql.sock"
 mysql_ro_user: "shop-ro"
 mysql_ro_password: XXXXXXXX
 mysql_ps_user: "ps_std"
 mysql_ps_password: XXXXXXXX
 mysql_ps_db_name: "ps_std"
 mysql_root_password: XXXXXXXX
+mysql_wp_user: "wp_std"
+mysql_wp_password: XXXXXXXX
+mysql_wp_db_name: "wp_std"
 mailer_address: "monit@example.com"
 mailer_password: XXXXXXXX
 nginx_status_path: "/status-nginx"

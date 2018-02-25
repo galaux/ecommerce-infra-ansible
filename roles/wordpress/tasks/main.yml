@@ -1,0 +1,84 @@
+---
+
+- name: create WP DB account
+  mysql_user:
+    name: '{{ mysql_wp_user }}'
+    host: 'localhost'
+    password: '{{ mysql_wp_password }}'
+    priv: '{{ mysql_wp_db_name }}.*:ALL'
+    state: present
+
+- name: stat whether DB is already present
+  shell: mysql -e 'USE {{ mysql_wp_db_name }};'
+  register: db_already_present
+  check_mode: no
+  failed_when: db_already_present.rc > 1
+
+- name: create WP DB
+  mysql_db:
+    name: "{{ mysql_wp_db_name }}"
+    state: present
+
+- name: retrieve DB backup from S3
+  aws_s3:
+    bucket: "{{ prestashop_backup_bucket }}"
+    object: "/{{ backup_date }}/db_wp.sql.bz2"
+    dest: /tmp/db_wp.sql.bz2
+    mode: get
+  # when: db_already_present.rc == 1
+
+- name: Restore DB
+  mysql_db:
+    name: "{{ mysql_wp_db_name }}"
+    state: import
+    target: /tmp/db_wp.sql.bz2
+  when: db_already_present.rc == 1
+
+- name: set WP SiteUrl in DB
+  shell: >
+    mysql \
+      --execute="UPDATE wp_options \
+                 SET \
+                   option_value = 'https://blog.{{ fqdn }}' \
+                 WHERE option_name = 'siteurl';" \
+      "{{ mysql_wp_db_name }}"
+
+- name: set WP Home in DB
+  shell: >
+    mysql \
+      --execute="UPDATE wp_options \
+                 SET \
+                   option_value = 'https://blog.{{ fqdn }}' \
+                 WHERE option_name = 'home ';" \
+      "{{ mysql_wp_db_name }}"
+
+- name: retrieve Wordpress files from S3
+  aws_s3:
+    bucket: "{{ prestashop_backup_bucket }}"
+    object: "/{{ backup_date }}/wordpress.tgz" # TODO use a parameter name for this file
+    dest: /tmp/wordpress.tgz # TODO use a parameter name for this file
+    mode: get
+  when: wp_already_present.rc == 1
+
+- name: install Wordpress files
+  unarchive:
+    src: "/tmp/wordpress.tgz" # TODO use a parameter name for this file
+    dest: "{{ www_path }}"
+    creates: "{{ wordpress_path }}"
+    owner: apache
+    group: apache
+    mode: 0664
+  when: wp_already_present.rc == 1
+
+- name: set files and directories owner/group
+  file:
+    path: "{{ wordpress_path }}"
+    owner: apache
+    group: apache
+    mode: 0664
+    state: directory
+    recurse: yes
+
+- name: set directories permissions
+  command: find "{{ wordpress_path }}" -type d -exec chmod 0775 {} +
+
