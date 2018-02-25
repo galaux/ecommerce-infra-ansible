@@ -82,19 +82,19 @@
     dest: "{{ prestashop_path }}/config/settings.inc.php"
     owner: apache
     group: apache
-    mode: 0644
+    mode: 0664
 
 - name: set files and directories owner/group
   file:
     path: "{{ prestashop_path }}"
     owner: apache
     group: apache
-    mode: 0644
+    mode: 0664
     state: directory
     recurse: yes
 
 - name: set directories permissions
-  command: find "{{ prestashop_path }}" -type d -exec chmod 0755 {} +
+  command: find "{{ prestashop_path }}" -type d -exec chmod 0775 {} +
 
 - name: set Nginx config
   template:

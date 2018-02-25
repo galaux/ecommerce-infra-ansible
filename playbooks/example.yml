@@ -17,3 +17,4 @@
     - { role: backup-instance,                  tags: ['backup-instance'] }
     - { role: phpmyadmin,                       tags: ['phpmyadmin'] }
     - { role: monit,                            tags: ['monit'] }
+    - { role: ftp,                              tags: ['ftp'] }

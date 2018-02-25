@@ -40,3 +40,5 @@ php_fpm_status_path: "/status-php-fpm"
 php_fpm_socket_path: "/run/php-fpm/php-fpm.sock"
 certificates_backup_name: "cert-{{ fqdn }}.tgz"
 htpasswd_path: "/etc/nginx/htpasswd"
+ro_user: "rouser"
+ro_password_hash: XXXXXXXX

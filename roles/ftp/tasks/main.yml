@@ -1,0 +1,27 @@
+---
+
+- name: install vsftpd
+  yum:
+    name: vsftpd
+    state: present
+
+- name: configure vsftpd
+  lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    regexp: "{{ item.name }}"
+    line: "{{ item.name }}={{ item.value }}"
+  with_items:
+    - { name: "anonymous_enable", value: "NO" }
+    - { name: "chown_uploads", value: "YES" }
+    - { name: "chown_username", value: "apache" }
+    - { name: "listen", value: "YES" }
+    - { name: "listen_ipv6", value: "NO" }
+    - { name: "pasv_enable", value: "NO" }
+
+- name: Add RO user
+  user:
+    name: "{{ ro_user }}"
+    group: apache
+    password: '{{ ro_password_hash }}'
+    createhome: no
+    home: "{{ www_path }}"
