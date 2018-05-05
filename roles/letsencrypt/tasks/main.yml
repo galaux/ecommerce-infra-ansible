@@ -2,7 +2,9 @@
 
 - name: install certbot
   yum:
-    name: certbot
+    name: >
+      certbot
+      python2-certbot-nginx
 
 # - name: install certbot dependencies
 #   shell: >
