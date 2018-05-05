@@ -62,6 +62,8 @@
     owner: root
     group: root
     mode: 0644
+  vars:
+    domains: "{{ [fqdn] + alt_domain_names }}"
 
 - name: set compression for logrotate
   lineinfile:

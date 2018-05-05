@@ -2,6 +2,13 @@
 
 with_backup_date: "LATEST"
 instance_name: "NO_NAME"
+subdomains:
+  - admin
+  - blog
+  - www
+alt_domain_names:
+  - test.example.fr
+  - test.example.de
 fqdn: "test.example.com"
 is_prod: false
 ssh_port: 22
