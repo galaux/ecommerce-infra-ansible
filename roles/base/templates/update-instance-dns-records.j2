@@ -1,0 +1,5 @@
+#!/bin/sh
+
+{% for hosted_zone in hosted_zones %}
+/usr/local/bin/update-dns-record '{{ hosted_zone.zone_id }}' '{{ hosted_zone.domain_name }}' {{ sub_domains | join(' ') }}
+{% endfor %}

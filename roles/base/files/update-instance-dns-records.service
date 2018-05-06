@@ -1,0 +1,10 @@
+[Unit]
+Description=Update Instance DNS records
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/update-instance-dns-records
+
+[Install]
+WantedBy=multi-user.target

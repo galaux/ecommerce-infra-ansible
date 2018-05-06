@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# $0 'Z0EXAMPLEZON01' 'test.example.fr' www blog admin
+
+if [ $# -lt 2 ];
+then
+  echo "Not enough arguments. No action performed."
+  exit 1
+fi
+
+zone_id=$1
+domain_name=$2
+sub_domains="${@:3}"
+
+LOCAL_IP_ADDR=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+TYPE='A'
+TTL=10
+
+echo -e "Zone id:\t\t$zone_id"
+echo -e "Domain name:\t\t$domain_name"
+echo -e "Alt sub-domain names:\t$sub_domains"
+echo -e "LOCAL_IP_ADDR:\t\t$LOCAL_IP_ADDR"
+
+PROD_DOMAIN_NAME='example.com'
+if [ "x$domain_name" == "x$PROD_DOMAIN_NAME" -o "x$domain_name" == "xwww.$PROD_DOMAIN_NAME" ];
+then
+  echo "Refusing to update production DNS! No action performed."
+  exit 2
+fi
+
+TMP_FILE=$(mktemp)
+
+function changeRecord() {
+  recordset=$1
+  cat > ${TMP_FILE} << EOF
+{
+    "Changes": [
+        {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "ResourceRecords": [
+                    {
+                        "Value": "$LOCAL_IP_ADDR"
+                    }
+                ],
+                "Name": "$recordset",
+                "Type": "$TYPE",
+                "TTL": $TTL
+            }
+        }
+    ]
+}
+EOF
+
+  aws \
+    route53 \
+    change-resource-record-sets \
+    --hosted-zone-id $zone_id \
+    --change-batch file://$TMP_FILE
+}
+
+changeRecord $domain_name
+for sub_domain in ${sub_domains[@]};
+do
+  changeRecord "$sub_domain.$domain_name"
+done
+
+rm $TMP_FILE

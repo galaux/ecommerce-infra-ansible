@@ -28,6 +28,48 @@
       vim-enhanced
     state: present
 
+- name: set hostname
+  command: /usr/bin/hostnamectl set-hostname "{{ fqdn }}"
+  check_mode: no
+  register: last_backup_date
+
+- name: install DNS update script 1
+  copy:
+    src: update-dns-record
+    dest: /usr/local/bin/update-dns-record
+    owner: root
+    group: root
+    mode: 0755
+  when: not is_prod
+
+- name: install DNS update script 2
+  template:
+    src: update-instance-dns-records.j2
+    dest: /usr/local/bin/update-instance-dns-records
+    owner: root
+    group: root
+    mode: 0755
+  when: not is_prod
+
+- name: install DNS update script Systemd servie
+  copy:
+    src: update-instance-dns-records.service
+    dest: /etc/systemd/system/update-instance-dns-records.service
+    owner: root
+    group: root
+    mode: 0644
+  when: not is_prod
+
+- name: enable DNS update script Systemd service at boot
+  service:
+    name: update-instance-dns-records
+    enabled: yes
+  when: not is_prod
+
+- name: update instance DNS records
+  command: /usr/local/bin/update-instance-dns-records
+  when: not is_prod
+
 - name: get 'latest' backup file from S3 backup
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
@@ -62,8 +104,6 @@
     owner: root
     group: root
     mode: 0644
-  vars:
-    domains: "{{ [fqdn] + alt_domain_names }}"
 
 - name: set compression for logrotate
   lineinfile:

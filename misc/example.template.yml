@@ -12,11 +12,6 @@ Mappings:
 
 Parameters:
 
-  InstanceName:
-    Description: (Optional) comprehensive name used to identify this instance
-    Type: String
-    Default: NO_NAME
-
   InstanceType:
     Description: EC2 instance type
     Type: String
@@ -74,7 +69,7 @@ Resources:
       Tags:
         -
           Key: Name
-          Value: !Ref InstanceName
+          Value: !Ref FQDN
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -110,8 +105,7 @@ Resources:
             --extra-vars '{
                             "with_backup_date": "${BackupDate}",
                             "fqdn": "${FQDN}",
-                            "is_prod": ${IsProduction},
-                            "instance_name": "${InstanceName}"
+                            "is_prod": ${IsProduction}
                           }'
 
 Outputs:

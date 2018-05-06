@@ -1,15 +1,14 @@
 ---
 
 with_backup_date: "LATEST"
-instance_name: "NO_NAME"
-subdomains:
+sub_domains:
   - admin
   - blog
   - www
-alt_domain_names:
-  - test.example.fr
-  - test.example.de
-fqdn: "test.example.com"
+hosted_zones:
+  - { domain_name: "test.example.com", zone_id: "Z0EXAMPLEZON02" }
+  - { domain_name: "test.example.fr",  zone_id: "Z0EXAMPLEZON01" }
+fqdn: "test.example.com" # FIXME use hosted_zones.1.domain_name instead!
 is_prod: false
 ssh_port: 22
 regular_user: "centos"
