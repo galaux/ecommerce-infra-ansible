@@ -29,7 +29,7 @@
     state: present
 
 - name: set hostname
-  command: /usr/bin/hostnamectl set-hostname "{{ fqdn }}"
+  command: /usr/bin/hostnamectl set-hostname "{{ main_domain_name }}"
   check_mode: no
   register: last_backup_date
 

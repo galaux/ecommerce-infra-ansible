@@ -9,18 +9,7 @@
 
 
 
-- [ ] rajouter variable Ansible domain_name (en fait elle existe déjà mais appelée 'fqdn') et alt_domain_names à utiliser pour
-  - [✓] mettre à jour le hostname
-  - [ ] TODO voir s'il n'est pas possible de le passer immédiatement au moment d'initialisation de l'instance
-  - [✓] mettre à jour les etc/hosts etc
-  - [✓] mettre ces variables en dur dans le template de script qui update-dns-records
-  - [✓] rajouter appel à ce script au démarrage de l'instance
-  - [✓] ne mettre la mise à jour des records DNS que pour test et test2 ???
-  - [ ] TODO voir s'il n'est pas possible de siloter les droits pour que test ne puisque changer que les records de test, test2 ceux de test2 et prod ceux de prod
-- [ ] dans le template cloudtruc
-  - [ ] supprimer Parameter et Tag "InstanceName"
-    - [ ] supprimer utilisation de instance_name dans Ansible
-     - [✓] PS1 peut maintenant utiliser la valeur de `hostname`
+- [ ] changer FQDN en hosted_zones.1.…
 - [ ] voir comment faire pour que sshd redémarre et prenne sa conf (et surtout le nouveau port)
 
 

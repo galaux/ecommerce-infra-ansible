@@ -1,16 +1,16 @@
 server {
     listen      80;
-    server_name admin.{{ fqdn }};
+    server_name admin.{{ main_domain_name }};
     return      301 https://$host$request_uri;
 }
 
 server {
     listen 443 ssl;
-    server_name  admin.{{ fqdn }};
+    server_name  admin.{{ main_domain_name }};
     root {{ www_path }};
 
-    ssl_certificate /etc/letsencrypt/live/admin.{{fqdn}}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/admin.{{fqdn}}/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/{{main_domain_name}}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{main_domain_name}}/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 

@@ -1,18 +1,18 @@
 server {
     listen      80;
-    server_name blog.{{ fqdn }};
+    server_name blog.{{ main_domain_name }};
     error_log   /var/log/nginx/blog.error.log;
     return      301 https://$server_name$request_uri;
 }
 
 server {
     listen      443 ssl;
-    server_name blog.{{ fqdn }};
+    server_name blog.{{ main_domain_name }};
     root        {{ wordpress_path }};
     error_log   /var/log/nginx/blog.error.log;
 
-    ssl_certificate     /etc/letsencrypt/live/blog.{{ fqdn }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/blog.{{ fqdn }}/privkey.pem;
+    ssl_certificate     /etc/letsencrypt/live/{{ main_domain_name }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ main_domain_name }}/privkey.pem;
     include             /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
 

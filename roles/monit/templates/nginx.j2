@@ -9,10 +9,10 @@ check process nginx with pidfile /var/run/nginx.pid
   if 3 restarts within 5 cycles then timeout
 
 #check host localhost with address localhost
-#    if failed url  http://www.{{ fqdn }} then alert
-#    if failed url https://www.{{ fqdn }} then alert
+#    if failed url  http://www.{{ main_domain_name }} then alert
+#    if failed url https://www.{{ main_domain_name }} then alert
 
-#check host localhost with address www.{{ fqdn }}
+#check host localhost with address www.{{ main_domain_name }}
 #    if failed
 #        port 80
 #        protocol http

@@ -39,7 +39,7 @@
     mysql \
       --execute="UPDATE wp_options \
                  SET \
-                   option_value = 'https://blog.{{ fqdn }}' \
+                   option_value = 'https://blog.{{ main_domain_name }}' \
                  WHERE option_name = 'siteurl';" \
       "{{ mysql_wp_db_name }}"
 
@@ -48,7 +48,7 @@
     mysql \
       --execute="UPDATE wp_options \
                  SET \
-                   option_value = 'https://blog.{{ fqdn }}' \
+                   option_value = 'https://blog.{{ main_domain_name }}' \
                  WHERE option_name = 'home ';" \
       "{{ mysql_wp_db_name }}"
 

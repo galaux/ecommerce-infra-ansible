@@ -11,7 +11,7 @@
     state: present
 
 - name: stat whether data is already present
-  command: test -d "/var/lib/collectd/rrd/{{ fqdn }}"
+  command: test -d "/var/lib/collectd/rrd/{{ main_domain_name }}"
   check_mode: no
   register: collectd_data_already_present
   failed_when: collectd_data_already_present.rc > 1

@@ -30,7 +30,7 @@
 
 - name: deploy certificates
   unarchive:
-    src: /tmp/cert-{{ fqdn }}.tgz
+    src: /tmp/cert-{{ main_domain_name }}.tgz
     dest: /etc
     remote_src: yes
     creates: "{{ letsencrypt_path }}"

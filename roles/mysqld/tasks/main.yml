@@ -67,8 +67,8 @@
     mysql \
       --execute="UPDATE pss_shop_url \
                  SET \
-                   domain = 'www.{{ fqdn }}', \
-                   domain_ssl = 'www.{{ fqdn }}' \
+                   domain = 'www.{{ main_domain_name }}', \
+                   domain_ssl = 'www.{{ main_domain_name }}' \
                  WHERE id_shop_url = 1;" \
       "{{ mysql_ps_db_name }}"
 
@@ -77,7 +77,7 @@
     mysql \
       --execute="UPDATE pss_configuration \
                  SET \
-                   value = 'www.{{ fqdn }}' \
+                   value = 'www.{{ main_domain_name }}' \
                  WHERE name = '{{ item }}';" \
       "{{ mysql_ps_db_name }}"
   with_items:
