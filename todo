@@ -1,16 +1,6 @@
-✓ lancer une nouvelle instance test (au lieu de test2)
-✓ configurer noms de domaines dans etc/host
-✓ configurer DNS dans route53
-✓ supprimer les certificats et générer LE SEUL nouveau certificat
-✓ lancer script de backup pour sauvegarder les certifs sur S3
-  ajouter conf nginx
-  rajouter alt_domain_names dans template cloud-truc
+- [ ] ajouter conf nginx
+- [ ] factorizer le blog de conf nginx qui déclare la partie SSL
 
-
-
-
-- [ ] changer FQDN en hosted_zones.1.…
-- [ ] voir comment faire pour que sshd redémarre et prenne sa conf (et surtout le nouveau port)
 
 
 
@@ -25,3 +15,28 @@ sub_domains
 - blog
 - admin
 - ''
+
+
+
+
+Done  SSL     prefix  ext     target
+
+✓     80      ✗       fr      → SSL www com /fr
+✓     80      www     fr      → SSL www com /fr
+✓     443     ✗       fr      → SSL www com /fr
+✓     443     www     fr      → SSL www com /fr
+✓     80      ✗       com     → SSL www com
+✓     80      www     com     → SSL www com
+✓     443     ✗       com     → SSL www com
+✓     443     www     com     → PS
+
+      80      blog    fr      → SSL blog com (/fr ?)
+      443     blog    fr      → SSL blog com (/fr ?)
+      80      blog    com     → SSL blog com
+      443     blog    com     → WP
+
+
+factoriser en
+- un "com return"
+- un "fr return"
+- et un normal

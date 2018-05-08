@@ -1,0 +1,36 @@
+#!/bin/sh
+
+DOMAIN_RADIX='test.example'
+
+function check_redir() {
+  expected=$1
+  to_check=$2
+  echo -n "Checking: $to_check"
+  result=$(curl -sI $to_check \
+    | dos2unix \
+    | grep Location \
+    | sed -E 's/^Location: (.*)$/\1/')
+
+  if [ "x$result" = "x$expected" ];
+  then
+    echo -e "\tOk"
+  else
+    echo -e "\tErr: $expected != $result"
+  fi
+}
+
+EXPECTED_COM="https://www.test.example.com/haha"
+EXPECTED_FR="https://www.test.example.com/fr/haha"
+
+# .fr
+check_redir $EXPECTED_FR "http://test.example.fr/haha"
+check_redir $EXPECTED_FR "http://www.test.example.fr/haha"
+check_redir $EXPECTED_FR "https://test.example.fr/haha"
+check_redir $EXPECTED_FR "https://www.test.example.fr/haha"
+
+# .com
+check_redir $EXPECTED_COM "http://test.example.com/haha"
+check_redir $EXPECTED_COM "http://www.test.example.com/haha"
+check_redir $EXPECTED_COM "https://test.example.com/haha"
+
+# blog

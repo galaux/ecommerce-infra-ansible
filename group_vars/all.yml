@@ -7,10 +7,11 @@ sub_domains:
   - www
 domain_prefix: "test"
 domain_prefix_dot: "{% if domain_prefix %}{{ domain_prefix }}.{% endif %}"
-hosted_zones:
-  - { domain_name: "{{ domain_prefix_dot }}example.com", zone_id: "Z0EXAMPLEZON02" }
-  - { domain_name: "{{ domain_prefix_dot }}example.fr",  zone_id: "Z0EXAMPLEZON01" }
-main_domain_name: "{{ hosted_zones.0.domain_name }}"
+main_hosted_zone: { domain_name: "{{ domain_prefix_dot }}example.com", path_prefix: "", zone_id: "Z0EXAMPLEZON02" }
+alt_hosted_zones:
+  - { domain_name: "{{ domain_prefix_dot }}example.fr", path_prefix: "/fr",  zone_id: "Z0EXAMPLEZON01" }
+hosted_zones: "{{ [main_hosted_zone] + alt_hosted_zones }}"
+main_domain_name: "{{ main_hosted_zone.domain_name }}"
 is_prod: false
 ssh_port: 22
 regular_user: "centos"
