@@ -23,6 +23,11 @@
 # - name: install motd
 #   template: src=motd.j2 dest=/etc/motd owner=root group=root mode=0644
 
+# Ensure OpenSSH reload its conf so that it uses the new Port
+# and we don't have to wait for the Playbook to finish
+- name: make sshd reload its conf
+  command: /usr/bin/systemctl reload sshd
+
 - name: start and enable sshd
   service:
     name: sshd
