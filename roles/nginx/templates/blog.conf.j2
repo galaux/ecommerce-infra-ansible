@@ -10,14 +10,6 @@ server {
     server_name blog.{{ main_domain_name }};
     root        {{ wordpress_path }};
     error_log   /var/log/nginx/blog.error.log;
-
-    ssl_certificate     /etc/letsencrypt/live/{{ main_domain_name }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{ main_domain_name }}/privkey.pem;
-    include             /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
-
-    # Load configuration files for the default server block.
-    include /etc/nginx/default.d/*.conf;
-
-    include /etc/nginx/conf.d/blog.conf-*;
+    include     /etc/nginx/default.d/*.conf;
+    include     /etc/nginx/conf.d/blog.conf-*;
 }

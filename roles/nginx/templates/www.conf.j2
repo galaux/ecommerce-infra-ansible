@@ -7,26 +7,14 @@ server {
 server {
     listen      443 ssl;
     server_name {{ main_domain_name }};
+    include     /etc/nginx/default.d/*.conf;
     return      301 https://www.$server_name$request_uri;
-
-    ssl_certificate     /etc/letsencrypt/live/{{ main_domain_name }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{ main_domain_name }}/privkey.pem;
-    include             /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
 }
 
 server {
     listen      443 ssl default_server;
     server_name www.{{ main_domain_name }};
     root        /var/www/prestashop;
-
-    ssl_certificate     /etc/letsencrypt/live/{{ main_domain_name }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{ main_domain_name }}/privkey.pem;
-    include             /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
-
-    # Load configuration files for the default server block.
-    include /etc/nginx/default.d/*.conf;
-
-    include /etc/nginx/conf.d/www.conf-*;
+    include     /etc/nginx/default.d/*.conf;
+    include     /etc/nginx/conf.d/www.conf-*;
 }

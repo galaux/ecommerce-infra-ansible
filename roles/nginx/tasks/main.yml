@@ -17,6 +17,16 @@
   notify:
     - restart nginx
 
+- name: configure nginx SSL
+  template:
+    src: ssl.conf.j2
+    dest: /etc/nginx/default.d/ssl.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart nginx
+
 - name: configure virtual hosts
   template:
     src: "{{ item }}.j2"

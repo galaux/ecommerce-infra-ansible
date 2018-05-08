@@ -5,17 +5,9 @@ server {
 }
 
 server {
-    listen 443 ssl;
-    server_name  admin.{{ main_domain_name }};
-    root {{ www_path }};
-
-    ssl_certificate /etc/letsencrypt/live/{{main_domain_name}}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{main_domain_name}}/privkey.pem;
-    include /etc/letsencrypt/options-ssl-nginx.conf;
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
-
-    # Load configuration files for the default server block.
-    include /etc/nginx/default.d/*.conf;
-
-    include /etc/nginx/conf.d/admin.conf-*;
+    listen      443 ssl;
+    server_name admin.{{ main_domain_name }};
+    root        {{ www_path }};
+    include     /etc/nginx/default.d/*.conf;
+    include     /etc/nginx/conf.d/admin.conf-*;
 }
