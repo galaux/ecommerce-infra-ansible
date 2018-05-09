@@ -35,9 +35,6 @@
     - { re: "^;listen.acl_users =",    name: "listen.acl_users",     value: "nginx"                             }
     - { re: "^pm =",                   name: "pm",                   value: "static"                            }
     - { re: "^pm.max_children =",      name: "pm.max_children",      value: 2                                   }
-    - { re: "^pm.start_servers =",     name: "pm.start_servers",     value: 3                                   }
-    - { re: "^pm.min_spare_servers =", name: "pm.min_spare_servers", value: 3                                   }
-    - { re: "^pm.max_spare_servers =", name: "pm.max_spare_servers", value: "6"                                 }
     - { re: "^;pm.max_requests =",     name: "pm.max_requests",      value: 7500                                }
     - { re: "^;pm.status_path =",      name: "pm.status_path",       value: "/status-php-fpm"                   }
   notify:
