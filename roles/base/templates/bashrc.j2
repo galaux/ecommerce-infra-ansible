@@ -33,9 +33,9 @@ LIGHT_CYAN='\[\033[1;36m\]'
 
 {% if is_prod %}
 {% if is_root %}
-export PS1="\n${DARK_RED}\u${RESET}@${DARK_PURPLE}\H${RESET} \w \\$ "
+export PS1="\n${DARK_RED}\u${RESET}@${DARK_RED}\H${RESET} \w \\$ "
 {% else %}
-export PS1="\n\u@${DARK_PURPLE}\H${RESET} \w \\$ "
+export PS1="\n\u@${DARK_RED}\H${RESET} \w \\$ "
 {% endif %}
 {% else %}
 {% if is_root %}
