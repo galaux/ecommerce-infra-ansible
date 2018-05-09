@@ -38,18 +38,18 @@ mysqldump \
   | bzip2 \
   > ${TEMP_DIR}/db_ps.sql.bz2
 
-# Wordpress
+# # Wordpress
 
-# TODO use a parameter name for this file
-tar -czf \
-  ${TEMP_DIR}/wordpress.tgz \
-  -C /var/www \
-  wordpress
+# # TODO use a parameter name for this file
+# tar -czf \
+#   ${TEMP_DIR}/wordpress.tgz \
+#   -C /var/www \
+#   wordpress
 
-mysqldump \
-  {{ mysql_wp_db_name }} \
-  | bzip2 \
-  > ${TEMP_DIR}/db_wp.sql.bz2
+# mysqldump \
+#   {{ mysql_wp_db_name }} \
+#   | bzip2 \
+#   > ${TEMP_DIR}/db_wp.sql.bz2
 
 
 aws s3 sync \
