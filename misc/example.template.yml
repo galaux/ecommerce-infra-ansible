@@ -39,21 +39,13 @@ Parameters:
     ConstraintDescription: "must be a valid S3 backup directory name (ex: '2017-12-25-023001')"
 
   DomainPrefix:
-    Description: Prefix to the domains ('[DomainPrefix].example.com') can be left empty for Production
+    Description: Prefix to the domains ('[DomainPrefix].example.com') can be left empty for Production in which case Monit will send emails, PS/WP will be backed-up to S3 and DNS records will be NOT be updated
     Type: String
     Default: test
     AllowedValues:
       - ''
       - test
       - test2
-
-  IsProduction:
-    Description: Is this a Production instance (if 'true' then Monit sends emails and full PrestaShop S3 backups are enabled)
-    Type: String
-    AllowedValues:
-      - true
-      - false
-    Default: false
 
 Resources:
   EC2Instance:
@@ -104,8 +96,7 @@ Resources:
             playbooks/example.yml \
             --extra-vars '{
                             "with_backup_date": "${BackupDate}",
-                            "domain_prefix": "${DomainPrefix}",
-                            "is_prod": ${IsProduction}
+                            "domain_prefix": "${DomainPrefix}"
                           }'
 
 Outputs:
