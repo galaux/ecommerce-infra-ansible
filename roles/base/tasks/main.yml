@@ -71,6 +71,7 @@
   when: not is_prod
 
 - name: get 'latest' backup file from S3 backup
+  check_mode: no
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
     object: "/latest"
