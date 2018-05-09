@@ -1,15 +1,28 @@
+## Main
+server {
+    listen      443 ssl;
+    server_name blog.{{ main_domain_name }};
+    root        /var/www/wordpress;
+    error_log   /var/log/nginx/blog.error.log;
+    include     /etc/nginx/default.d/*.conf;
+    include     /etc/nginx/conf.d/blog.conf-*;
+}
+
+## Main redirections
 server {
     listen      80;
     server_name blog.{{ main_domain_name }};
     error_log   /var/log/nginx/blog.error.log;
     return      301 https://$server_name$request_uri;
 }
+{% for alt_hosted_zone in alt_hosted_zones %}
 
+## {{ alt_hosted_zone.domain_name }} redirections
 server {
+    listen      80;
     listen      443 ssl;
-    server_name blog.{{ main_domain_name }};
-    root        {{ wordpress_path }};
-    error_log   /var/log/nginx/blog.error.log;
+    server_name blog.{{ alt_hosted_zone.domain_name }};
     include     /etc/nginx/default.d/*.conf;
-    include     /etc/nginx/conf.d/blog.conf-*;
+    return      301 https://blog.{{ main_domain_name }}{{ alt_hosted_zone.path_prefix }}$request_uri;
 }
+{% endfor %}

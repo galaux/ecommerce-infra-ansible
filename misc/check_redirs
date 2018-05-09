@@ -1,5 +1,21 @@
 #!/bin/sh
 
+# SSL     prefix  ext     target        path_prefix
+#
+# 80      -       fr      → SSL www com /fr
+# 80      www     fr      → SSL www com /fr
+# 443     -       fr      → SSL www com /fr
+# 443     www     fr      → SSL www com /fr
+# 80      -       com     → SSL www com
+# 80      www     com     → SSL www com
+# 443     -       com     → SSL www com
+# 443     www     com     → PS
+#
+# 80      blog    fr      → SSL blog com (/fr ?)
+# 443     blog    fr      → SSL blog com (/fr ?)
+# 80      blog    com     → SSL blog com
+# 443     blog    com     → WP
+
 DOMAIN_RADIX='test.example'
 
 function check_redir() {
@@ -34,3 +50,10 @@ check_redir $EXPECTED_COM "http://www.test.example.com/haha"
 check_redir $EXPECTED_COM "https://test.example.com/haha"
 
 # blog
+EXPECTED_COM="https://blog.test.example.com/haha"
+EXPECTED_FR="https://blog.test.example.com/fr/haha"
+
+check_redir $EXPECTED_FR "http://blog.test.example.fr/haha"
+check_redir $EXPECTED_FR "https://blog.test.example.fr/haha"
+
+check_redir $EXPECTED_COM "http://blog.test.example.com/haha"
