@@ -72,3 +72,17 @@ TODO next
 - setup PS to log in /var/log/nginx/www.error.log and www.access.log
 - setup cache for WP in nginx?
 
+Prochaine procédure de MAJ de PROD:
+===================================
+
+- générer les nouveaux certificats sur la prod
+- lancer un backup (les nouveaux certificats vont être sauvegardés dans S3 avec les anciens)
+- lancer ansible
+  - il va mettre à jour la conf (notamment base, nginx)
+  - il va relancer nginx qui va trouver les nouveaux certificats et ne va donc pas planter
+- supprimer les anciens certificats de /etc/letsencrypt/…
+- faire backup pour que le dernier backup ne comprenne que les nouveaux certificats
+
+
+ne changer le hostname que s'il n'est pas bon (idempotence)
+idem pour les DNS (idempotence)
