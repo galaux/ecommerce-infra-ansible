@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# $0 'Z0EXAMPLEZON01' 'test.example.fr' www blog admin
+# $0 '$ZONE_ID' 'test.example.fr' www blog admin
 
 if [ $# -lt 2 ];
 then
