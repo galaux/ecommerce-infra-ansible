@@ -8,6 +8,7 @@
   failed_when: ps_already_present.rc > 1
 
 - name: get Prestashop version file from S3 backup
+  check_mode: no
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ backup_date }}/prestashop_version"
