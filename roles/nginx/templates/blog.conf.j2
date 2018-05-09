@@ -1,4 +1,4 @@
-## Main
+# Main
 server {
     listen      443 ssl;
     server_name blog.{{ main_domain_name }};
@@ -8,7 +8,7 @@ server {
     include     /etc/nginx/conf.d/blog.conf-*;
 }
 
-## Main redirections
+# Main redirections
 server {
     listen      80;
     server_name blog.{{ main_domain_name }};
@@ -17,7 +17,7 @@ server {
 }
 {% for alt_hosted_zone in alt_hosted_zones %}
 
-## {{ alt_hosted_zone.domain_name }} redirections
+# {{ alt_hosted_zone.domain_name }} redirections
 server {
     listen      80;
     listen      443 ssl;
