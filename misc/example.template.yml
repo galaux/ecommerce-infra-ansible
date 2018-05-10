@@ -1,15 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: example instance
 
-Mappings:
-  ImageMap:
-    amazon-linux:
-      ImageId: "ami-bf2ba8d0"
-    centos:
-      ImageId: "ami-337be65c"
-    centos-up:
-      ImageId: "ami-337be65c"
-
 Parameters:
 
   InstanceType:
@@ -23,8 +14,8 @@ Parameters:
       - t2.medium
     ConstraintDescription: must be a valid EC2 instance type.
 
-  LinuxFlavour:
-    Description: Which Linux flavour to setup
+  Branch:
+    Description: Which Git branch to deploy
     Type: String
     Default: centos-up
     AllowedValues:
@@ -57,7 +48,7 @@ Resources:
         - example-ami
       IamInstanceProfile: example-ami
       KeyName: example-kp
-      ImageId: !FindInMap [ImageMap, !Ref "LinuxFlavour", "ImageId"]
+      ImageId: "ami-337be65c"
       Tags:
         -
           Key: Name
@@ -69,19 +60,13 @@ Resources:
           set -e
           GITLAB_TOKEN='REDACTED700000000000'
           PROJECT_NAME='example-ansible'
-          case ${LinuxFlavour} in
-            "amazon-linux") branch='master'; yum_param='--enablerepo=epel' ;;
-            "centos")       branch='centos'; yum_param='';;
-            "centos-up")    branch='centos-up'; yum_param='';;
-          esac
-          ARCHIVE_URL="https://gitlab.com/example/$PROJECT_NAME/repository/$branch/archive.tar.gz"
+          ARCHIVE_URL="https://gitlab.com/example/$PROJECT_NAME/repository/${Branch}/archive.tar.gz"
           yum --assumeyes clean all
           yum --assumeyes makecache
           yum --assumeyes install epel-release
           yum --assumeyes update
           yum \
             --assumeyes \
-            $yum_param \
             install \
             wget \
             python2-boto \
@@ -92,7 +77,7 @@ Resources:
           wget "$ARCHIVE_URL?private_token=$GITLAB_TOKEN" \
             -O $PROJECT_NAME.tar.gz
           tar xf $PROJECT_NAME.tar.gz
-          cd $PROJECT_NAME-$branch-*
+          cd $PROJECT_NAME-${Branch}-*
           ansible-playbook \
             --connection=local \
             --limit=localhost \
