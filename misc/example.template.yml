@@ -17,11 +17,7 @@ Parameters:
   Branch:
     Description: Which Git branch to deploy
     Type: String
-    Default: centos-up
-    AllowedValues:
-      - amazon-linux
-      - centos
-      - centos-up
+    Default: develop
 
   BackupDate:
     Description: Date of backup to restore or "LATEST"
