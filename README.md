@@ -61,22 +61,11 @@ Things to remember when pushing Wordpress to PROD for the first time:
 TODO next
 ---------
 
-- generate certificates and back them up for test
-- scratch test and set-it up again brand new
-- check:
-  - ftp works
-  - wordpress works
-- generate certificates and back them up for prod
-- create "blog" DNS entry for prod
-- create "blog" DNS entry for test
-- setup PS to log in /var/log/nginx/www.error.log and www.access.log
+- setup each nginx sub-domain to log in its own file
+  - /var/log/nginx/www.error.log and www.access.log
+  - /var/log/nginx/blog.error.log and blog.access.log
+  - /var/log/nginx/admin.error.log and admin.access.log
 - setup cache for WP in nginx?
-
-
-
-
-
-
 
 ne changer le hostname que s'il n'est pas bon (idempotence)
 idem pour les DNS (idempotence)
@@ -84,29 +73,21 @@ idem pour les DNS (idempotence)
 
 
 ```
-   certbot certonly \
-     --standalone \
-     -d 'test.example.com' \
-     -d 'blog.test.example.com' \
-     -d 'www.test.example.com' \
-     -d 'admin.test.example.com' \
-     -d 'test.example.fr' \
-     -d 'blog.test.example.fr' \
-     -d 'www.test.example.fr'
+certbot certonly \
+  --standalone \
+  -d 'test.example.com' \
+  -d 'blog.test.example.com' \
+  -d 'www.test.example.com' \
+  -d 'admin.test.example.com' \
+  -d 'test.example.fr' \
+  -d 'blog.test.example.fr' \
+  -d 'www.test.example.fr'
 ```
 run ansible
 
 
 
 
-
-TODO supprimer cette histoire "d'aller voir la dernière date de svgarde dans le fichier latest de S3"
-- dans backup
-  - ne pas créer le fichier latest
-  - à la fin du script de backup, faire un `aws s3 cp --recursive …/$DATE …/latest`
-- dans ansible
-  - dans all.yml utiliser un `backup-path: "/latest"` que l'on peut overrider comme on veut à la date qu'on veut
-  - dans role/base, plus besoin de tout ce bordel compliqué de déclaration de variable avec des if etc etc
 
 TODO bouger toute référence de blog dans une branche à part qu'il faudra maintenir
 
@@ -134,10 +115,8 @@ TODO dans le template CloudFormation (ainsi que dans all.yml)
   - drop la DB de PS
   - drop data de collectd
   - … autre? Voir en fait ce qu'on sauvegarde dans le script de backup!
-- créer un script qui installe les data depuis un backup S3
-  - récupère une version donnée de S3
-  - install PS et le dump de la DB
-  - cette partie du script n'est pas un appel à ansible mais bel et bien un script et ansible aussi doit l'appeler
+- ne pas créer un script qui installe les data depuis S3 :
+  - on appelera en fait les tasks Ansible depuis mon PC avec `--tags=data` (← tag à rajouter là où il faut c'est à dire "prestashop", "mysql" et "wordpress", …???)
 
 De cette manière, pour une màj de la PROD :
 - créer nouvelle instance EC2 version "PROD" mais avec CreateBackup=False
@@ -147,7 +126,7 @@ De cette manière, pour une màj de la PROD :
 - sur actuelle prod :
   - la mettre en maintenance
   - lancer backup
-- sur future prod, lancer script d'import des data
+- sur future prod, lancer Ansible avec seulement les tags qui importent des datas
 - switcher elastic IP
 - enlever site de nouvelle prod de maintenance
 - enable les backups sur la nouvelle prod en décommentant le cron

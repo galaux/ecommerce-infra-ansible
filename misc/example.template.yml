@@ -24,6 +24,14 @@ Parameters:
     Type: String
     Default: latest_backup
 
+  CreateBackups:
+    Description: Should this instance create daily backups on S3 (Do not enable for anything than the only production instance otherwise backup directories on S3 will collide)?
+    Type: String
+    Default: False
+    AllowedValues:
+      - True
+      - False
+
   DomainPrefix:
     Description: Prefix to the domains ('[DomainPrefix].example.com') can be left empty for Production in which case PS/WP will be backed-up to S3 and DNS records will be NOT be updated
     Type: String
@@ -86,6 +94,7 @@ Resources:
             --extra-vars '{
                             "backup_date": "${BackupDate}",
                             "alerting_sends_email": ${AlertingSendsEmail},
+                            "create_backups": ${CreateBackups},
                             "domain_prefix": "${DomainPrefix}"
                           }'
 
