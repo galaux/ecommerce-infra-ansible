@@ -19,13 +19,28 @@
 - name: install dependencies
   yum:
     name: >
-      awscli,
       bzip2,
       htop,
       python2-boto3,
       tree,
       unzip,
       vim-enhanced
+    state: present
+
+# Trick to circumvent dependency mess with awscli
+# Package base/awscli won't work with python2-boto3:
+# - python2-boto3 (require to use Ansible's aws_s3) depends on
+#   python2-s3transfert
+# - base/awscli depends on python-s3transfert but won't work with
+#   python2-s3transfert
+# - python2-s3transfert and python-s3transfert conflict!
+# To circumvent this, remove base/awscli and install epel/awscli
+# https://github.com/aws/aws-cli/issues/2999
+# https://bugs.centos.org/view.php?id=14756
+- name: install dependencies
+  yum:
+    name: awscli
+    disablerepo: base
     state: present
 
 - name: set hostname
