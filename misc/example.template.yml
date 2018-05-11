@@ -25,13 +25,21 @@ Parameters:
     Default: latest_backup
 
   DomainPrefix:
-    Description: Prefix to the domains ('[DomainPrefix].example.com') can be left empty for Production in which case Monit will send emails, PS/WP will be backed-up to S3 and DNS records will be NOT be updated
+    Description: Prefix to the domains ('[DomainPrefix].example.com') can be left empty for Production in which case PS/WP will be backed-up to S3 and DNS records will be NOT be updated
     Type: String
     Default: test
     AllowedValues:
       - ''
       - test
       - test2
+
+  AlertingSendsEmail:
+    Description: Do you want alerting to send emails when a one of its check fails (advised for production but not for test)?
+    Type: String
+    AllowedValues:
+      - True
+      - False
+    Default: False
 
 Resources:
   EC2Instance:
@@ -77,6 +85,7 @@ Resources:
             playbooks/example.yml \
             --extra-vars '{
                             "backup_date": "${BackupDate}",
+                            "alerting_sends_email": ${AlertingSendsEmail},
                             "domain_prefix": "${DomainPrefix}"
                           }'
 
