@@ -22,9 +22,7 @@
       awscli,
       bzip2,
       htop,
-      python2-boto,
       python2-boto3,
-      python2-botocore,
       tree,
       unzip,
       vim-enhanced
