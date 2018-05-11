@@ -20,10 +20,9 @@ Parameters:
     Default: develop
 
   BackupDate:
-    Description: Date of backup to restore or "LATEST"
+    Description: Date of S3 backup to restore or "latest_backup"
     Type: String
-    Default: LATEST
-    ConstraintDescription: "must be a valid S3 backup directory name (ex: '2017-12-25-023001')"
+    Default: latest_backup
 
   DomainPrefix:
     Description: Prefix to the domains ('[DomainPrefix].example.com') can be left empty for Production in which case Monit will send emails, PS/WP will be backed-up to S3 and DNS records will be NOT be updated
@@ -77,7 +76,7 @@ Resources:
             --limit=localhost \
             playbooks/example.yml \
             --extra-vars '{
-                            "with_backup_date": "${BackupDate}",
+                            "backup_date": "${BackupDate}",
                             "domain_prefix": "${DomainPrefix}"
                           }'
 

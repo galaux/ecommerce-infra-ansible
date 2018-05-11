@@ -67,15 +67,14 @@ tar -czf \
 aws s3 cp \
   ${TEMP_DIR}/{{ certificates_backup_name }} \
   s3://{{ prestashop_backup_bucket }}/
-
 {% if is_prod %}
 
-# "latest" backup version file
-echo ${BACKUP_TIME} > ${TEMP_DIR}/latest
-aws s3 cp \
-  ${TEMP_DIR}/latest \
-  s3://{{ prestashop_backup_bucket }}/latest
+aws s3 rm --recursive \
+  s3://{{ prestashop_backup_bucket }}/{{ backup_date_latest_label }}
 
+aws s3 sync \
+  s3://{{ prestashop_backup_bucket }}/${BACKUP_TIME}/ \
+  s3://{{ prestashop_backup_bucket }}/{{ backup_date_latest_label }}
 {% endif %}
 
 rm -rf ${TEMP_DIR}
