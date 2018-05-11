@@ -1,0 +1,14 @@
+#!/bin/sh
+
+certbot -n renew
+
+tar -czf \
+  /tmp/{{ certificates_backup_name }} \
+  -C /etc \
+  letsencrypt
+
+aws s3 cp \
+  /tmp/{{ certificates_backup_name }} \
+  s3://{{ prestashop_backup_bucket }}/
+
+rm /tmp/{{ certificates_backup_name }}

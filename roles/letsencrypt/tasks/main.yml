@@ -36,12 +36,37 @@
     creates: "{{ letsencrypt_path }}"
   when: letsencrypt_already_present.rc == 1
 
-- name: setup cron to update letsencrypt certificates
+- name: install script to renew and backup certificates
+  template:
+    src: renew-and-backup-certificates.sh.j2
+    dest: /usr/local/bin/renew-and-backup-certificates
+    owner: root
+    group: root
+    mode: 0775
+
+- name: production instance only - install cron to renew and backup certificates
   copy:
-    src: cron
-    dest: /etc/cron.d/renew-certificates
+    src: renew-and-backup-certificates.cron
+    dest: /etc/cron.d/renew-and-backup-certificates
     owner: root
     group: root
     mode: 0644
   notify:
     - reload crond
+  when: is_prod and create_backups
+
+- name: test instance only - install Systemd service to renew and backup certificates at boot
+  copy:
+    src: renew-and-backup-certificates.service
+    dest: /etc/systemd/system/renew-and-backup-certificates.service
+    owner: root
+    group: root
+    mode: 0644
+  when: not is_prod
+
+- name: test instance only - enable Systemd service to renew and backup certificates at boot
+  service:
+    name: renew-and-backup-certificates.service
+    enabled: yes
+  when: not is_prod
+
