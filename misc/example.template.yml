@@ -25,7 +25,10 @@ Parameters:
     Default: latest_backup
 
   CreateBackups:
-    Description: Should this instance create daily backups on S3 (Do not enable for anything than the only production instance otherwise backup directories on S3 will collide)?
+    Description: |
+      Should this instance create daily backups on S3
+      (Do not enable for anything than the only production instance otherwise
+      backup directories on S3 will collide)?
     Type: String
     Default: False
     AllowedValues:
@@ -33,7 +36,11 @@ Parameters:
       - False
 
   DomainPrefix:
-    Description: Prefix to the domains ('[DomainPrefix].example.com') can be left empty for Production in which case PS/WP will be backed-up to S3 and DNS records will be NOT be updated
+    Description: |
+      Prefix of the domain ('[DomainPrefix].example.com').
+      Leave empty for Production in which case DNS records will be NOT be
+      updated and all data backup scripts will be installed
+      (but not necessarily activated. See CreateBackups for this).
     Type: String
     Default: test
     AllowedValues:
@@ -42,7 +49,9 @@ Parameters:
       - test2
 
   AlertingSendsEmail:
-    Description: Do you want alerting to send emails when a one of its check fails (advised for production but not for test)?
+    Description: |
+      Do you want alerting to send emails when a one of its check fails
+      (advised for production but not for test)?
     Type: String
     AllowedValues:
       - True
