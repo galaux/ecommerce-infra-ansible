@@ -2,14 +2,13 @@
 
 - name: install main backup script
   template:
-    src: backup-data.j2
-    dest: /usr/local/bin/backup-data
+    src: backup-instance.sh.j2
+    dest: /usr/local/bin/backup-instance
     owner: root
     group: root
     mode: 0755
-  when: is_prod
 
-- name: create install snippet directory
+- name: create snippet directory
   file:
     path: "{{ backup_data_snippet_dir }}"
     state: directory
@@ -17,13 +16,29 @@
     group: root
     mode: 0755
 
-- name: setup cron to backup instance
+- name: production instance only - setup cron to backup instance
   copy:
-    src: cron
-    dest: /etc/cron.d/backup-data
+    src: backup-instance.cron
+    dest: /etc/cron.d/backup-instance
     owner: root
     group: root
     mode: 0644
   notify:
     - reload crond
   when: is_prod and create_backups
+
+- name: test instance only - install Systemd service to backup instance at boot
+  copy:
+    src: backup-instance.service
+    dest: /etc/systemd/system/backup-instance.service
+    owner: root
+    group: root
+    mode: 0644
+  when: not is_prod
+
+- name: test instance only - enable Systemd service to backup instance at boot
+  service:
+    name: backup-instance.service
+    enabled: yes
+  when: not is_prod
+

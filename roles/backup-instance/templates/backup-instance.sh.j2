@@ -1,0 +1,27 @@
+#!/bin/sh
+
+if [ -n $(ls -A {{ backup_data_snippet_dir }}) ];
+then
+  BACKUP_TIME=$(date +%F-%H%M%S)
+  echo "New backup: ${BACKUP_TIME}"
+
+  TEMP_DIR=$(mktemp -d)
+
+  for snippet in {{ backup_data_snippet_dir }}/*;
+  do
+    ${snippet} "${TEMP_DIR}/${BACKUP_TIME}" "${TEMP_DIR}"
+  done
+
+  # aws s3 sync \
+  #   ${TEMP_DIR}/ \
+  #   s3://{{ prestashop_backup_bucket }}/
+
+  # aws s3 rm --recursive \
+  #   s3://{{ prestashop_backup_bucket }}/{{ backup_date_latest_label }}
+
+  # aws s3 sync \
+  #   s3://{{ prestashop_backup_bucket }}/${BACKUP_TIME}/ \
+  #   s3://{{ prestashop_backup_bucket }}/{{ backup_date_latest_label }}
+
+  rm -rf ${TEMP_DIR}
+fi

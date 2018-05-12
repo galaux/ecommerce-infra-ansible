@@ -1,0 +1,2 @@
+# Renew certificates 30' before the instance is backed-up
+0 2 * * * root /bin/certbot -n renew

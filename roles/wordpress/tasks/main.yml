@@ -84,7 +84,7 @@
 
 - name: set data backup snippet
   template:
-    src: backup-data.sh.j2
+    src: backup-instance.sh.j2
     dest: "{{ backup_data_snippet_dir }}/wordpress"
     owner: root
     group: root
