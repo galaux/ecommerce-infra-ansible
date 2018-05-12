@@ -57,6 +57,14 @@
   notify:
     - restart collectd
 
+- name: create SQL account
+  mysql_user:
+    name: "{{ collectd_sql_user }}"
+    host: 'localhost'
+    password: "{{ collectd_sql_password }}"
+    priv: '{{ mysql_ps_db_name }}.*:SELECT'
+    state: present
+
 - name: append specific php-fpm types
   lineinfile:
     path: /usr/share/collectd/types.db

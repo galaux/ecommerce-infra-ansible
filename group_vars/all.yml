@@ -61,3 +61,5 @@ certificates_backup_name: "cert-{{ main_domain_name }}.tgz"
 htpasswd_path: "/etc/nginx/htpasswd"
 ro_user: "rouser"
 ro_password_hash: XXXXXXXX
+collectd_sql_user: "collectd"
+collectd_sql_password: XXXXXXXX
