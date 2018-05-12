@@ -36,67 +36,16 @@
     enabled: yes
     state: started
 
-- name: stat whether DB is already present
-  shell: mysql -e 'USE {{ mysql_ps_db_name }};'
-  register: db_already_present
-  check_mode: no
-  failed_when: db_already_present.rc > 1
-
-- name: create DB
-  mysql_db:
-    name: "{{ mysql_ps_db_name }}"
-    state: present
-
-- name: retrieve DB backup from S3
-  aws_s3:
-    bucket: "{{ prestashop_backup_bucket }}"
-    object: "/{{ backup_date }}/db_ps.sql.bz2"
-    dest: /tmp/db_ps.sql.bz2
-    mode: get
-  when: db_already_present.rc == 1
-
-- name: Restore DB
-  mysql_db:
-    name: "{{ mysql_ps_db_name }}"
-    state: import
-    target: /tmp/db_ps.sql.bz2
-  when: db_already_present.rc == 1
-
-- name: set shop URL 1
-  shell: >
-    mysql \
-      --execute="UPDATE pss_shop_url \
-                 SET \
-                   domain = 'www.{{ main_domain_name }}', \
-                   domain_ssl = 'www.{{ main_domain_name }}' \
-                 WHERE id_shop_url = 1;" \
-      "{{ mysql_ps_db_name }}"
-
-- name: set shop URL 2
-  shell: >
-    mysql \
-      --execute="UPDATE pss_configuration \
-                 SET \
-                   value = 'www.{{ main_domain_name }}' \
-                 WHERE name = '{{ item }}';" \
-      "{{ mysql_ps_db_name }}"
-  with_items:
-    - PS_SHOP_DOMAIN
-    - PS_SHOP_DOMAIN_SSL
-
 - name: remove anonymous accounts
   mysql_user:
     name: ''
     host_all: yes
     state: absent
 
-- name: create PS account
-  mysql_user:
-    name: '{{ mysql_ps_user }}'
-    host: 'localhost'
-    password: '{{ mysql_ps_password }}'
-    priv: '{{ mysql_ps_db_name }}.*:ALL'
-    state: present
+- name: drop test database
+  mysql_db:
+    db: test
+    state: absent
 
 - name: create read only account
   mysql_user:
