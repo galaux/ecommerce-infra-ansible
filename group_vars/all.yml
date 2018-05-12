@@ -38,6 +38,8 @@ wordpress_path: "{{ www_path }}/wordpress"
 prestashop_admin_page_name: "FuckMyAdm1n"
 monitoring_url_path: "monitoring"
 phpmyadmin_url_path: "phpmyadmin"
+phpmyadmin_sql_user: "phpmyadmin"
+phpmyadmin_sql_password: XXXXXXXX
 monitoring_path: "{{ www_path }}/{{ monitoring_url_path }}"
 letsencrypt_path: "/etc/letsencrypt"
 mysql_pid_path: "/var/lib/mysql/mysql.pid"

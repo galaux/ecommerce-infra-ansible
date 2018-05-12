@@ -18,13 +18,21 @@
         value: 'config' }
     - { re: "^\\$cfg\\['Servers'\\]\\[\\$i\\]\\['user'\\]",
         name: "$cfg['Servers'][$i]['user']",
-        value: '{{ mysql_ps_user }}' }
+        value: '{{ phpmyadmin_sql_user }}' }
     - { re: "^\\$cfg\\['Servers'\\]\\[\\$i\\]\\['password'\\]",
         name: "$cfg['Servers'][$i]['password']",
-        value: '{{ mysql_ps_password }}' }
+        value: '{{ phpmyadmin_sql_password }}' }
     - { re: "^\\$cfg\\['Servers'\\]\\[\\$i\\]\\['hide_db'\\]",
         name: "$cfg['Servers'][$i]['hide_db']",
         value: 'information_schema' }
+
+- name: create SQL account
+  mysql_user:
+    name: "{{ phpmyadmin_sql_user }}"
+    host: 'localhost'
+    password: "{{ phpmyadmin_sql_password }}"
+    priv: '{{ mysql_ps_db_name }}.*:SELECT'
+    state: present
 
 - name: configure phpMyAdmin for Nginx 1
   file:
