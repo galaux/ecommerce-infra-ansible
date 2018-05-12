@@ -125,6 +125,15 @@
   notify:
     - restart nginx
 
+- name: set data backup snippet
+  template:
+    src: backup-data.sh.j2
+    dest: "{{ backup_data_snippet_dir }}/collectd"
+    owner: root
+    group: root
+    mode: 0755
+  when: is_prod
+
 - name: enable collectd
   service:
     name: collectd

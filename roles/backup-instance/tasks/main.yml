@@ -1,9 +1,18 @@
 ---
 
-- name: install backup script
+- name: install main backup script
   template:
-    src: backup-instance.j2
-    dest: /usr/local/bin/backup-instance
+    src: backup-data.j2
+    dest: /usr/local/bin/backup-data
+    owner: root
+    group: root
+    mode: 0755
+  when: is_prod
+
+- name: create install snippet directory
+  file:
+    path: "{{ backup_data_snippet_dir }}"
+    state: directory
     owner: root
     group: root
     mode: 0755
@@ -11,9 +20,10 @@
 - name: setup cron to backup instance
   copy:
     src: cron
-    dest: /etc/cron.d/backup-instance
+    dest: /etc/cron.d/backup-data
     owner: root
     group: root
     mode: 0644
   notify:
     - reload crond
+  when: is_prod and create_backups

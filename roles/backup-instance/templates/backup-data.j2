@@ -1,80 +1,27 @@
-#!/bin/bash
+#!/bin/sh
 
-TEMP_DIR=$(mktemp -d)
+if [ -n $(ls -A {{ backup_data_snippet_dir }}) ];
+then
+  DEST_DIR=$(mktemp -d)
 
-{% if is_prod %}
-PS_DIR={{ prestashop_path }}
-BACKUP_TIME=$(date +%F-%H%M%S)
+  BACKUP_TIME=$(date +%F-%H%M%S)
+  echo "New backup: ${BACKUP_TIME}"
 
-TO_BACKUP=(
-{% for p in prestashop_backups %}
-           '{{ p.relpath }}'
-{% endfor %})
+  for snippet in {{ backup_data_snippet_dir }}/*;
+  do
+    ${snippet} ${DEST_DIR}
+  done
 
-echo "New backup: ${BACKUP_TIME}"
+  aws s3 sync \
+    ${DEST_DIR}/ \
+    s3://{{ prestashop_backup_bucket }}/${BACKUP_TIME}/
 
-# Main files
-for d in ${TO_BACKUP[@]}; do
-  tar -czf \
-    ${TEMP_DIR}/${d/\//_}.tgz \
-    -C ${PS_DIR} \
-    ${d}
-done
+  aws s3 rm --recursive \
+    s3://{{ prestashop_backup_bucket }}/{{ backup_date_latest_label }}
 
-tar -czf \
-  ${TEMP_DIR}/collectd-data.tgz \
-  -C /var/lib \
-  collectd
+  aws s3 sync \
+    s3://{{ prestashop_backup_bucket }}/${BACKUP_TIME}/ \
+    s3://{{ prestashop_backup_bucket }}/{{ backup_date_latest_label }}
 
-cp ${PS_DIR}/robots.txt \
-  ${TEMP_DIR}
-
-grep '_PS_VERSION_' '{{ prestashop_path }}/config/settings.inc.php' \
-  | sed -E "s/define[(]'_PS_VERSION_', '(.*)'[)];/\1/" \
-  > ${TEMP_DIR}/{{ prestashop_version_file_name }}
-
-mysqldump \
-  {{ mysql_ps_db_name }} \
-  | bzip2 \
-  > ${TEMP_DIR}/db_ps.sql.bz2
-
-# # Wordpress
-
-# # TODO use a parameter name for this file
-# tar -czf \
-#   ${TEMP_DIR}/wordpress.tgz \
-#   -C /var/www \
-#   wordpress
-
-# mysqldump \
-#   {{ mysql_wp_db_name }} \
-#   | bzip2 \
-#   > ${TEMP_DIR}/db_wp.sql.bz2
-
-
-aws s3 sync \
-  ${TEMP_DIR}/ \
-  s3://{{ prestashop_backup_bucket }}/${BACKUP_TIME}/
-
-{% endif %}
-
-# Certificates
-tar -czf \
-  ${TEMP_DIR}/{{ certificates_backup_name }} \
-  -C /etc \
-  letsencrypt
-
-aws s3 cp \
-  ${TEMP_DIR}/{{ certificates_backup_name }} \
-  s3://{{ prestashop_backup_bucket }}/
-{% if is_prod %}
-
-aws s3 rm --recursive \
-  s3://{{ prestashop_backup_bucket }}/{{ backup_date_latest_label }}
-
-aws s3 sync \
-  s3://{{ prestashop_backup_bucket }}/${BACKUP_TIME}/ \
-  s3://{{ prestashop_backup_bucket }}/{{ backup_date_latest_label }}
-{% endif %}
-
-rm -rf ${TEMP_DIR}
+  rm -rf ${DEST_DIR}
+fi

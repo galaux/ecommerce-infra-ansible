@@ -82,3 +82,12 @@
 - name: set directories permissions
   command: find "{{ wordpress_path }}" -type d -exec chmod 0775 {} +
 
+- name: set data backup snippet
+  template:
+    src: backup-data.sh.j2
+    dest: "{{ backup_data_snippet_dir }}/wordpress"
+    owner: root
+    group: root
+    mode: 0755
+  when: is_prod
+

@@ -65,7 +65,7 @@
     mode: 0755
   when: not is_prod
 
-- name: install DNS update script Systemd servie
+- name: install DNS update script Systemd service
   copy:
     src: update-instance-dns-records.service
     dest: /etc/systemd/system/update-instance-dns-records.service

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+DEST_DIR=$1
+
+PS_DIR={{ prestashop_path }}
+
+TO_BACKUP=(
+{% for p in prestashop_backups %}
+           '{{ p.relpath }}'
+{% endfor %})
+
+# Main files
+for d in ${TO_BACKUP[@]}; do
+  tar -czf \
+    ${DEST_DIR}/${d/\//_}.tgz \
+    -C ${PS_DIR} \
+    ${d}
+done
+
+cp ${PS_DIR}/robots.txt \
+  ${DEST_DIR}
+
+grep '_PS_VERSION_' "${PS_DIR}/config/settings.inc.php" \
+  | sed -E "s/define[(]'_PS_VERSION_', '(.*)'[)];/\1/" \
+  > ${DEST_DIR}/{{ prestashop_version_file_name }}
+
+mysqldump \
+  {{ mysql_ps_db_name }} \
+  | bzip2 \
+  > ${DEST_DIR}/db_ps.sql.bz2
+
