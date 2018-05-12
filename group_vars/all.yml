@@ -65,3 +65,4 @@ ro_user: "rouser"
 ro_password_hash: XXXXXXXX
 collectd_sql_user: "collectd"
 collectd_sql_password: XXXXXXXX
+collectd_socket_path: "/var/run/collectd-unixsock"
