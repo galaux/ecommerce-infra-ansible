@@ -42,8 +42,8 @@ monitoring_path: "{{ www_path }}/{{ monitoring_url_path }}"
 letsencrypt_path: "/etc/letsencrypt"
 mysql_pid_path: "/var/lib/mysql/mysql.pid"
 mysql_socket_path: "/var/lib/mysql/mysql.sock"
-mysql_ro_user: "shop-ro"
-mysql_ro_password: XXXXXXXX
+# mysql_ro_user: "shop-ro"
+# mysql_ro_password: "XXXXXXXX"
 mysql_ps_user: "ps_std"
 mysql_ps_password: XXXXXXXX
 mysql_ps_db_name: "ps_std"

@@ -47,13 +47,13 @@
     db: test
     state: absent
 
-- name: create read only account
-  mysql_user:
-    name: "{{ mysql_ro_user }}"
-    host: 'localhost'
-    password: "{{ mysql_ro_password }}"
-    priv: '{{ mysql_ps_db_name }}.*:SELECT'
-    state: present
+# - name: create read only account
+#   mysql_user:
+#     name: "{{ mysql_ro_user }}"
+#     host: 'localhost'
+#     password: "{{ mysql_ro_password }}"
+#     priv: '{{ mysql_ps_db_name }}.*:SELECT'
+#     state: present
 
 - name: create/set root account
   mysql_user:
