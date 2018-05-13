@@ -29,6 +29,8 @@
     - { section: "mysqld", option: "thread_cache_size", value: 1 }
     - { section: "mysqld", option: "query_cache_type",  value: 'ON' }
     - { section: "mysqld", option: "query_cache_size",  value: 41943040 }
+  notify:
+    - restart mariadb
 
 - name: start and enable MariaDB
   service:

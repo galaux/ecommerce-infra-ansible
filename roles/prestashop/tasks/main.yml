@@ -3,7 +3,10 @@
 ## Database
 
 - name: stat whether DB is already present
-  shell: mysql -e 'USE {{ mysql_ps_db_name }};'
+  shell: >
+    mysql \
+      --defaults-extra-file=/root/.my.cnf \
+      --execute 'USE {{ mysql_ps_db_name }};'
   register: db_already_present
   check_mode: no
   failed_when: db_already_present.rc > 1
@@ -39,6 +42,7 @@
 - name: set shop URL 1
   shell: >
     mysql \
+      --defaults-extra-file=/root/.my.cnf \
       --execute="UPDATE pss_shop_url \
                  SET \
                    domain = 'www.{{ main_domain_name }}', \
@@ -49,6 +53,7 @@
 - name: set shop URL 2
   shell: >
     mysql \
+      --defaults-extra-file=/root/.my.cnf \
       --execute="UPDATE pss_configuration \
                  SET \
                    value = 'www.{{ main_domain_name }}' \
