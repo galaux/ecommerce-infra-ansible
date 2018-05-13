@@ -61,17 +61,6 @@ Things to remember when pushing Wordpress to PROD for the first time:
 TODO next
 ---------
 
-- setup each nginx sub-domain to log in its own file
-  - /var/log/nginx/www.error.log and www.access.log
-  - /var/log/nginx/blog.error.log and blog.access.log
-  - /var/log/nginx/admin.error.log and admin.access.log
-- setup cache for WP in nginx?
-
-ne changer le hostname que s'il n'est pas bon (idempotence)
-idem pour les DNS (idempotence)
-
-
-
 ```
 certbot certonly \
   --standalone \
@@ -89,25 +78,6 @@ run ansible
 
 
 
-TODO bouger toute référence de blog dans une branche à part qu'il faudra maintenir
-
-TODO créer une adresse "tech" genre tech@example.com ou admin@example.com qui redirige vers les adresses de GDB et GAX
-
-TODO dans le template CloudFormation (ainsi que dans all.yml)
-- créer un Parameter `MonitSendsEmails`
-  - Boolean
-  - default: False
-- créer un Parameter `CreateBackup`
-  - Boolean
-  - default: True
-  - si =False → déployer le script normalement mais simplement commenter le cron
-- DomainPrefix ne devrait en fait conditionner que la màj des DNS puisque c'est directement lié au préfix du domaine
-- Cette modif permettra
-  - lors des mises en prod, de popper une nouvelle instance de PROD qui n'écrasera pas les vrais backups de prod
-  - arrêter de cacher plusieurs choses derrière ce nom de variable peu informatif :
-    - le fait que Monit envoie ou non des emails
-    - le fait que l'instance fait des backups ou pas
-
 
 - créer un script qui vire toutes les "data"
   - (prévoir des sécurités – confirmations)
@@ -118,8 +88,36 @@ TODO dans le template CloudFormation (ainsi que dans all.yml)
 - ne pas créer un script qui installe les data depuis S3 :
   - on appelera en fait les tasks Ansible depuis mon PC avec `--tags=data` (← tag à rajouter là où il faut c'est à dire "prestashop", "mysql" et "wordpress", …???)
 
+- setup each nginx sub-domain to log in its own file
+  - /var/log/nginx/www.error.log and www.access.log
+  - /var/log/nginx/blog.error.log and blog.access.log
+  - /var/log/nginx/admin.error.log and admin.access.log
+- setup cache for WP in nginx?
+
+- ne changer le hostname que s'il n'est pas bon (idempotence)
+  idem pour les DNS (idempotence)
+
+- au sujet du bucket S3 "prestashop-data"
+  - renommer le bucket "prestashop-data" en "backup_bucket: example-backup"
+  - utiliser des sous-répertoires pour chaque role
+  - Attention à la compat avec l'état actuel des backups
+    D'ailleurs pour plus de simplicité
+    - on pourrait créer un nouveau bucket
+    - une fois la nouvelle hiérarchie mise en place, mv les anciens backups dans le nouveau bucket (et en enlever certains)
+- bouger toute référence de blog dans une branche à part qu'il faudra maintenir
+- créer une adresse "tech" genre tech@example.com ou admin@example.com qui redirige vers les adresses de GDB et GAX
+  donner cette adresse à :
+  - letsencrypt
+  - AWS route53
+- changer les crons pour des timers systemd
+
+- php-fpm log toutes les requêtes mais sans aucune information utile dans /var/log/php-fpm/www.access.log → désactiver les logs
+
+TODO vérifier que les slow-queries de mysql sont bien enable
+
+
 De cette manière, pour une màj de la PROD :
-- créer nouvelle instance EC2 version "PROD" mais avec CreateBackup=False
+- créer nouvelle instance EC2 version "PROD" mais avec CreateBackup=False (pour éviter qu'elle n'écrase les vrais backups actuels de PROD)
 - attendre que cette instance soit up, la rebooter
 - vérifier que tout fonctionne (pour cette MEP il faudra générer et copier les nouveaux certificats à la main depuis actuelle prod vers nouvelle prod)
 - sur future prod : lancer script qui drop les data
@@ -129,5 +127,5 @@ De cette manière, pour une màj de la PROD :
 - sur future prod, lancer Ansible avec seulement les tags qui importent des datas
 - switcher elastic IP
 - enlever site de nouvelle prod de maintenance
-- enable les backups sur la nouvelle prod en décommentant le cron
+- enable les backups sur la nouvelle prod
 - supprimer ancienne prod
