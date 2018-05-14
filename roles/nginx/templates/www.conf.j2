@@ -3,6 +3,8 @@ server {
     listen      443 ssl default_server;
     server_name www.{{ main_domain_name }};
     root        /var/www/prestashop;
+    access_log  /var/log/nginx/www-access.log main;
+    error_log   /var/log/nginx/www-error.log;
     include     /etc/nginx/default.d/*.conf;
     include     /etc/nginx/conf.d/www.conf-*;
 }
@@ -11,12 +13,16 @@ server {
 server {
     listen      80;
     server_name www.{{ main_domain_name }} {{ main_domain_name }};
+    access_log  /var/log/nginx/www-access.log main;
+    error_log   /var/log/nginx/www-error.log;
     return      301 https://www.{{ main_domain_name }}$request_uri;
 }
 
 server {
     listen      443 ssl;
     server_name {{ main_domain_name }};
+    access_log  /var/log/nginx/www-access.log main;
+    error_log   /var/log/nginx/www-error.log;
     include     /etc/nginx/default.d/*.conf;
     return      301 https://www.{{ main_domain_name }}$request_uri;
 }
@@ -27,6 +33,8 @@ server {
     listen      80;
     listen      443 ssl;
     server_name www.{{ alt_hosted_zone.domain_name }} {{ alt_hosted_zone.domain_name }};
+    access_log  /var/log/nginx/www-access.log main;
+    error_log   /var/log/nginx/www-error.log;
     include     /etc/nginx/default.d/*.conf;
     return      301 https://www.{{ main_domain_name }}{{ alt_hosted_zone.path_prefix }}$request_uri;
 }

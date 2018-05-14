@@ -4,6 +4,8 @@ server {
     server_name blog.{{ main_domain_name }};
     root        /var/www/wordpress;
     error_log   /var/log/nginx/blog.error.log;
+    access_log  /var/log/nginx/blog-access.log main;
+    error_log   /var/log/nginx/blog-error.log;
     include     /etc/nginx/default.d/*.conf;
     include     /etc/nginx/conf.d/blog.conf-*;
 }
@@ -12,7 +14,8 @@ server {
 server {
     listen      80;
     server_name blog.{{ main_domain_name }};
-    error_log   /var/log/nginx/blog.error.log;
+    access_log  /var/log/nginx/blog-access.log main;
+    error_log   /var/log/nginx/blog-error.log;
     return      301 https://$server_name$request_uri;
 }
 {% for alt_hosted_zone in alt_hosted_zones %}
@@ -22,6 +25,8 @@ server {
     listen      80;
     listen      443 ssl;
     server_name blog.{{ alt_hosted_zone.domain_name }};
+    access_log  /var/log/nginx/blog-access.log main;
+    error_log   /var/log/nginx/blog-error.log;
     include     /etc/nginx/default.d/*.conf;
     return      301 https://blog.{{ main_domain_name }}{{ alt_hosted_zone.path_prefix }}$request_uri;
 }

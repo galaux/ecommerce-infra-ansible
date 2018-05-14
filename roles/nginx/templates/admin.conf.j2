@@ -1,6 +1,8 @@
 server {
     listen      80;
     server_name admin.{{ main_domain_name }};
+    access_log  /var/log/nginx/admin-access.log main;
+    error_log   /var/log/nginx/admin-error.log;
     return      301 https://$host$request_uri;
 }
 
@@ -8,6 +10,8 @@ server {
     listen      443 ssl;
     server_name admin.{{ main_domain_name }};
     root        {{ www_path }};
+    access_log  /var/log/nginx/admin-access.log main;
+    error_log   /var/log/nginx/admin-error.log;
     include     /etc/nginx/default.d/*.conf;
     include     /etc/nginx/conf.d/admin.conf-*;
 }
