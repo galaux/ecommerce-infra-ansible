@@ -1,0 +1,42 @@
+---
+
+- name: install postfix
+  yum:
+    name: postfix
+    state: present
+
+- name: configure postfix
+  lineinfile:
+    path: /etc/postfix/main.cf
+    regexp: "^#?{{ item.key }}"
+    line: "{{ item.key }} = {{ item.value }}"
+  with_items:
+    - { key: "mydomain",                value: "{{ main_domain_name }}" }
+    - { key: "virtual_alias_domains",   value: "{{ main_domain_name }}" }
+    - { key: "virtual_alias_maps",      value: "hash:/etc/postfix/virtual" }
+  notify:
+    - restart postfix
+
+- name: configure redirections
+  lineinfile:
+    path: /etc/postfix/virtual
+    regexp: "^#?{{ item.key }}@{{ main_domain_name }}"
+    line: "{{ item.key }}@{{ main_domain_name }} {{ item.value }}"
+  with_items:
+    - { key: "contact",    value: "owner@gmail" }
+    - { key: "galaux",     value: "guillaume@alaux.net" }
+    - { key: "guillaume",  value: "owner@example.com" }
+    - { key: "postmaster", value: "owner@example.com" }
+    - { key: "root",       value: "guillaume@alaux.net" }
+    - { key: "",           value: "owner@example.com" } # Catch-all
+  notify:
+    - restart postfix
+
+- name: update the postfix lookup table
+  command: /sbin/postmap /etc/postfix/virtual
+
+- name: enable postfix
+  service:
+    name: postfix
+    state: started
+    enabled: yes

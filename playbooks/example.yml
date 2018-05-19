@@ -7,6 +7,7 @@
   roles:
     - { role: base,                             tags: ['base'] }
     - { role: sshd,                             tags: ['sshd'] }
+    - { role: postfix,                          tags: ['postfix'] }
     - { role: backup-instance,                  tags: ['backup-instance'] }
     - { role: letsencrypt,                      tags: ['letsencrypt'] }
     - { role: nginx,                            tags: ['nginx'] }
