@@ -19,9 +19,10 @@
 - name: install dependencies
   yum:
     name: >
+      awscli,
       bzip2,
       htop,
-      python2-boto3,
+      python-boto3,
       tree,
       unzip,
       vim-enhanced
