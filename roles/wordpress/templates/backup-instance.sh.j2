@@ -1,15 +1,16 @@
 #!/bin/sh
 
-DEST_DIR=$1
+DEST_DIR=$1/wordpress
 
-# # TODO use a parameter name for this file
-# tar -czf \
-#   ${DEST_DIR}/wordpress.tgz \
-#   -C /var/www \
-#   wordpress
+mkdir -p ${DEST_DIR}
 
-# mysqldump \
-#   {{ mysql_wp_db_name }} \
-#   | bzip2 \
-#   > ${DEST_DIR}/db_wp.sql.bz2
+tar -czf \
+  ${DEST_DIR}/wordpress.tgz \
+  -C /var/www \
+  wordpress
+
+mysqldump \
+  {{ mysql_wp_db_name }} \
+  | bzip2 \
+  > ${DEST_DIR}/db_wp.sql.bz2
 

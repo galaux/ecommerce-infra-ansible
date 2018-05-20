@@ -15,7 +15,7 @@
     - { role: php-fpm,                          tags: ['php-fpm'] }
     - { role: mysqld,                           tags: ['mysqld'] }
     - { role: prestashop,                       tags: ['prestashop'] }
-    # - { role: wordpress,                        tags: ['wordpress'] }
+    - { role: wordpress,                        tags: ['wordpress'] }
     - { role: collectd,                         tags: ['collectd'] }
     - { role: phpmyadmin,                       tags: ['phpmyadmin'] }
     - { role: monit,                            tags: ['monit'] }
