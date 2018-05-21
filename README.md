@@ -44,23 +44,6 @@ TODO
 - write ansible role for vsftp
 
 
-Things to remember when pushing Wordpress to PROD for the first time:
----------------------------------------------------------------------
-
-- remember to run the following roles (for the following reasons)
-  - base (adds `blog` as FQDN)
-  - nginx (add `blog` config)
-  - wordpress
-  - backup instance
-- watchout: a `yum update` might be needed for cacert to work. Watchout for the 3 previous files with rpmnew!
-- remember to check that /var/www/{wordpress,prestashop} are group traversable (see changes made by commit for vsftpd and wordpress)
-- check "blog" DNS entry for prod
-- check prod certificates are on prod
-
-
-TODO next
----------
-
 ```
 certbot certonly \
   --standalone \
@@ -79,23 +62,12 @@ run ansible
 
 
 
-- créer un script qui vire toutes les "data"
-  - (prévoir des sécurités – confirmations)
-  - supprime les fichiers PS de /var/www/prestashop/
-  - drop la DB de PS
-  - drop data de collectd
-  - … autre? Voir en fait ce qu'on sauvegarde dans le script de backup!
-- ne pas créer un script qui installe les data depuis S3 :
-  - on appelera en fait les tasks Ansible depuis mon PC avec `--tags=data` (← tag à rajouter là où il faut c'est à dire "prestashop", "mysql" et "wordpress", …???)
-
-- setup each nginx sub-domain to log in its own file
-  - /var/log/nginx/www.error.log and www.access.log
-  - /var/log/nginx/blog.error.log and blog.access.log
-  - /var/log/nginx/admin.error.log and admin.access.log
 - setup cache for WP in nginx?
 
-- ne changer le hostname que s'il n'est pas bon (idempotence)
-  idem pour les DNS (idempotence)
+Nice to have
+------------
+
+- ne changer le hostname que s'il n'est pas bon (idempotence) idem pour les DNS (idempotence)
 
 - au sujet du bucket S3 "prestashop-data"
   - renommer le bucket "prestashop-data" en "backup_bucket: example-backup"
@@ -115,6 +87,15 @@ run ansible
 
 TODO vérifier que les slow-queries de mysql sont bien enable
 
+
+- créer un script qui vire toutes les "data"
+  - (prévoir des sécurités – confirmations)
+  - supprime les fichiers PS de /var/www/prestashop/
+  - drop la DB de PS
+  - drop data de collectd
+  - … autre? Voir en fait ce qu'on sauvegarde dans le script de backup!
+- ne pas créer un script qui installe les data depuis S3 :
+  - on appelera en fait les tasks Ansible depuis mon PC avec `--tags=data` (← tag à rajouter là où il faut c'est à dire "prestashop", "mysql" et "wordpress", …???)
 
 De cette manière, pour une màj de la PROD :
 - créer nouvelle instance EC2 version "PROD" mais avec CreateBackup=False (pour éviter qu'elle n'écrase les vrais backups actuels de PROD)
