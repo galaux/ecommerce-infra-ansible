@@ -44,6 +44,7 @@
 - name: set WP SiteUrl in DB
   shell: >
     mysql \
+      --defaults-extra-file=/root/.my.cnf \
       --execute="UPDATE wp_options \
                  SET \
                    option_value = 'https://blog.{{ main_domain_name }}' \
@@ -53,6 +54,7 @@
 - name: set WP Home in DB
   shell: >
     mysql \
+      --defaults-extra-file=/root/.my.cnf \
       --execute="UPDATE wp_options \
                  SET \
                    option_value = 'https://blog.{{ main_domain_name }}' \
