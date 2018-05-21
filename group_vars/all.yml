@@ -66,3 +66,4 @@ ro_password_hash: XXXXXXXX
 collectd_sql_user: "collectd"
 collectd_sql_password: XXXXXXXX
 collectd_socket_path: "/var/run/collectd-unixsock"
+collectd_path: "/var/lib/collectd/rrd/{{ main_domain_name }}"

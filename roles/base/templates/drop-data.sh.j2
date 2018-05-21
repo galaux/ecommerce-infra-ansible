@@ -1,0 +1,22 @@
+#!/bin/sh
+
+echo "You are going to wipe this instance's data. Please type 'CONTINUE'."
+read answer
+if [ "x$answer" != 'xCONTINUE' ];
+then
+  echo "Nothing done."
+  exit 1
+fi
+
+echo "Removing data"
+
+systemctl stop nginx
+
+rm -rf {{ prestashop_path }}
+mysql --execute "DROP DATABASE IF EXISTS {{ mysql_ps_db_name }}"
+
+rm -rf {{ wordpress_path }}
+mysql --execute "DROP DATABASE IF EXISTS {{ mysql_wp_db_name }}"
+
+systemctl stop collectd
+rm -rf {{ collectd_path }}
