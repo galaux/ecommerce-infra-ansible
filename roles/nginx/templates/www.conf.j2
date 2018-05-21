@@ -36,6 +36,6 @@ server {
     access_log  /var/log/nginx/www-access.log main;
     error_log   /var/log/nginx/www-error.log;
     include     /etc/nginx/default.d/*.conf;
-    return      301 https://www.{{ main_domain_name }}{{ alt_hosted_zone.path_prefix }}$request_uri;
+    return      301 https://www.{{ main_domain_name }}{{ alt_hosted_zone.ps_path_prefix }}$request_uri;
 }
 {% endfor %}

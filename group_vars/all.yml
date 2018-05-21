@@ -8,9 +8,9 @@ sub_domains:
   - www
 domain_prefix: "test"
 domain_prefix_dot: "{% if domain_prefix %}{{ domain_prefix }}.{% endif %}"
-main_hosted_zone: { domain_name: "{{ domain_prefix_dot }}example.com", path_prefix: "", zone_id: "Z0EXAMPLEZON02" }
+main_hosted_zone: { domain_name: "{{ domain_prefix_dot }}example.com", ps_path_prefix: "", zone_id: "Z0EXAMPLEZON02" }
 alt_hosted_zones:
-  - { domain_name: "{{ domain_prefix_dot }}example.fr", path_prefix: "/fr",  zone_id: "Z0EXAMPLEZON01" }
+  - { domain_name: "{{ domain_prefix_dot }}example.fr", ps_path_prefix: "/fr",  zone_id: "Z0EXAMPLEZON01" }
 hosted_zones: "{{ [main_hosted_zone] + alt_hosted_zones }}"
 main_domain_name: "{{ main_hosted_zone.domain_name }}"
 alerting_sends_email: False

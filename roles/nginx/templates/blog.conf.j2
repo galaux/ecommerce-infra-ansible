@@ -28,6 +28,6 @@ server {
     access_log  /var/log/nginx/blog-access.log main;
     error_log   /var/log/nginx/blog-error.log;
     include     /etc/nginx/default.d/*.conf;
-    return      301 https://blog.{{ main_domain_name }}{{ alt_hosted_zone.path_prefix }}$request_uri;
+    return      301 https://blog.{{ main_domain_name }}$request_uri;
 }
 {% endfor %}
