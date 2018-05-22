@@ -2,7 +2,7 @@
 
 ## Database
 
-- name: stat whether DB is already present
+- name: state whether Worpress is already installed
   shell: >
     mysql \
       --defaults-extra-file=/root/.my.cnf \
