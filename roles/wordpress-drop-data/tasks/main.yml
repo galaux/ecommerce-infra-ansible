@@ -1,0 +1,12 @@
+---
+
+- name: remove Wordpress files
+  file:
+    state: absent
+    path: "{{ wordpress_path }}"
+
+- name: drop DB
+  mysql_db:
+    name: "{{ mysql_wp_db_name }}"
+    state: absent
+

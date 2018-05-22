@@ -1,0 +1,6 @@
+---
+
+- name: stop monit daemon
+  service:
+    name: monit
+    state: stopped

@@ -100,14 +100,6 @@
     regexp: "^#compress"
     line: "compress"
 
-- name: install drop-data script
-  template:
-    src: drop-data.sh.j2
-    dest: /usr/local/bin/drop-data
-    owner: root
-    group: root
-    mode: 0755
-
 - name: configure Bash for root
   template:
     src: bashrc.j2

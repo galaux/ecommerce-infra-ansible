@@ -11,7 +11,7 @@
     state: present
 
 - name: stat whether data is already present
-  command: test -d "{{ collectd_path }}"
+  command: test -d "{{ collectd_instance_data_path }}"
   check_mode: no
   register: collectd_data_already_present
   failed_when: collectd_data_already_present.rc > 1

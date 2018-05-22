@@ -1,0 +1,20 @@
+---
+
+- name: stop collectd
+  service:
+    name: collectd
+    state: stopped
+
+- name: remove Collectd data directory
+  file:
+    state: absent
+    path: "{{ collectd_var_path }}"
+
+- name: recreate Collectd data directory
+  file:
+    state: directory
+    path: "{{ collectd_var_path }}"
+    owner: root
+    group: root
+    mode: 0755
+

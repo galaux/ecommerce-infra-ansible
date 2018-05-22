@@ -1,0 +1,12 @@
+---
+
+- name: remove Prestashop files
+  file:
+    state: absent
+    path: "{{ prestashop_path }}"
+
+- name: drop DB
+  mysql_db:
+    name: "{{ mysql_ps_db_name }}"
+    state: absent
+
