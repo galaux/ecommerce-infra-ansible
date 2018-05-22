@@ -2,14 +2,16 @@
 
 ## Database
 
-- name: state whether DB is already present
+- name: state whether Prestashop is already installed
   shell: >
     mysql \
       --defaults-extra-file=/root/.my.cnf \
-      --execute 'USE {{ mysql_ps_db_name }};'
-  register: db_already_present
+      --execute 'USE {{ mysql_ps_db_name }};' \
+      && \
+      test -d "{{ prestashop_path }}"
+  register: ps_already_present
   check_mode: no
-  failed_when: db_already_present.rc > 1
+  failed_when: ps_already_present.rc > 1
 
 - name: create DB
   mysql_db:
@@ -30,14 +32,14 @@
     object: "/{{ backup_date }}/db_ps.sql.bz2"
     dest: /tmp/db_ps.sql.bz2
     mode: get
-  when: db_already_present.rc == 1
+  when: ps_already_present.rc == 1
 
 - name: Restore DB
   mysql_db:
     name: "{{ mysql_ps_db_name }}"
     state: import
     target: /tmp/db_ps.sql.bz2
-  when: db_already_present.rc == 1
+  when: ps_already_present.rc == 1
 
 - name: set shop URL 1
   shell: >
@@ -65,13 +67,6 @@
 
 
 ## Web files
-
-- name: state whether Prestashop is already present
-  command: test -d "{{ prestashop_path }}"
-  # https://github.com/ansible/ansible-modules-core/issues/3356
-  check_mode: no
-  register: ps_already_present
-  failed_when: ps_already_present.rc > 1
 
 - name: get Prestashop version file from S3 backup
   check_mode: no
