@@ -60,7 +60,23 @@ run ansible
 
 
 
+Priorités
+- MEP de blog
 
+- créer un script qui vire toutes les "data"
+  - (prévoir des sécurités – confirmations)
+  - supprime les fichiers PS de /var/www/prestashop/
+  - drop la DB de PS
+  - drop data de collectd
+  - … autre? Voir en fait ce qu'on sauvegarde dans le script de backup!
+- ne pas créer un script qui installe les data depuis S3 :
+  - on appelera en fait les tasks Ansible depuis mon PC avec `--tags=data` (← tag à rajouter là où il faut c'est à dire "prestashop", "mysql" et "wordpress", …???)
+
+- remplacer les utilisation de "template" par "lineinfile" quand c'est un fichier qui initialement appartient à un package
+
+- dans le role prestashop on check si la db existe et on check s'il y a des fichiers dans /var/www/prestashop
+  - si la DB est absente mais que les fichiers sont présents dans /var/www/prestashop on va installer la dernière DB avec les "anciens" fichiers de /var/www/prestashop
+  - même si ce cas a peu de chances d'arriver, il faudrait plutôt register une variable "should_install" qui vérifie que les deux sont absents
 
 - setup cache for WP in nginx?
 
@@ -83,7 +99,19 @@ Nice to have
   - AWS route53
 - changer les crons pour des timers systemd
 
+- voir s'il n'est pas intéressant de faire mettre à jour l'IP des instance de test dans le template cloudformation comme ça on peut ssh et pinger l'instance de test même si un des rôles ansible plante
+
+- voir s'il n'est pas possible d'utiliser une option de tar qui préserve les user/group comme ça plus besoin de faire de chown etc
 - php-fpm log toutes les requêtes mais sans aucune information utile dans /var/log/php-fpm/www.access.log → désactiver les logs
+
+- setup DNS SPF record
+- setup postfix and DNS MX record for .fr ???
+    guillaume       → owner@example.com
+    galaux          → guillaume@alaux.net
+    contact         → contact@example.com → GDB + GAX
+    postmaster      → owner@example.com # TODO à dégager
+    root            → guillaume@alaux.net
+    *               → owner@example.com
 
 TODO vérifier que les slow-queries de mysql sont bien enable
 
