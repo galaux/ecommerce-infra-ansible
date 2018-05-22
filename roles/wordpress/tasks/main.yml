@@ -8,7 +8,7 @@
       --defaults-extra-file=/root/.my.cnf \
       --execute 'USE {{ mysql_wp_db_name }};' \
       && \
-      test -d /var/www/wordpress
+      test -d "{{ wordpress_path }}"
   register: wp_already_present
   check_mode: no
   failed_when: wp_already_present.rc > 1
