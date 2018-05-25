@@ -7,12 +7,55 @@ example
 Generate LetsEncrypt certificates
 ---------------------------------
 
-`certbot certonly --webroot  -d blog.test2.example.com`
+```
+certbot certonly \
+  --standalone \
+  -d 'test.example.com' \
+  -d 'blog.test.example.com' \
+  -d 'www.test.example.com' \
+  -d 'admin.test.example.com' \
+  -d 'test.example.fr' \
+  -d 'blog.test.example.fr' \
+  -d 'www.test.example.fr'
+```
 
 
-TODO
-----
+Nice to have **for next PROD delivery**
+---------------------------------------
 
+- changer les crons pour des timers systemd
+
+
+Nice to have
+------------
+
+- ne changer le hostname que s'il n'est pas bon (idempotence) idem pour les DNS (idempotence)
+- remplacer les utilisation de "template" par "lineinfile" quand c'est un fichier qui initialement appartient à un package
+- setup cache for WP in nginx?
+- au sujet du bucket S3 "prestashop-data"
+  - renommer le bucket "prestashop-data" en "backup_bucket: example-backup"
+  - utiliser des sous-répertoires pour chaque role
+  - Attention à la compat avec l'état actuel des backups
+    D'ailleurs pour plus de simplicité
+    - on pourrait créer un nouveau bucket
+    - une fois la nouvelle hiérarchie mise en place, mv les anciens backups dans le nouveau bucket (et en enlever certains)
+- configurer les services suivants pour qu'ils utilisent l'adresse commune contact@example.com
+  - letsencrypt
+  - AWS route53
+- voir s'il n'est pas intéressant de faire mettre à jour l'IP des instance de test dans le template cloudformation comme ça on peut ssh et pinger l'instance de test même si un des rôles ansible plante
+- voir s'il n'est pas possible d'utiliser une option de tar qui préserve les user/group comme ça plus besoin de faire de chown etc
+- php-fpm log toutes les requêtes mais sans aucune information utile dans /var/log/php-fpm/www.access.log → désactiver les logs
+- vérifier que les slow-queries de mysql sont bien enable
+- setup DNS SPF record pour les instances de test
+  - les configurer dans route53
+  - les faire mettre à jour dans le script au démarrage des instances de test
+- setup postfix and DNS MX record for .fr ???
+    guillaume       → owner@example.com
+    galaux          → guillaume@alaux.net
+    contact         → contact@example.com → GDB + GAX
+    postmaster      → owner@example.com # TODO à dégager
+    root            → guillaume@alaux.net
+    *               → owner@example.com
 - run mysql script that removes test db
 - backup results of mysqltuner etc to S3
 - report install of php56-pecl-acpu to ansible (do not forget that this must be enabled in PS backend … but this should be backuped by our DB dump)
@@ -31,110 +74,29 @@ TODO
   - set these users in the htpasswd
 - See if possible to change the mysql parameter 40xxxx to sthing like "40M"
 - enhance CloudFormation with [Grouping and Labeling](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudformation-interface.html)
-- enable setup of any `*.shop.company` instance with automatic Route53 DNS creation/update!
-- remove `lineinfile` option `backrefs` and rather use sthing such as `"^#?compress"` instead of `"^#compress"`
-- optionally add collectd `collectdctl` config: `LoadPlugin unixsock` to be able to `collectdctl  getval test.example.com/df-root/df_complex-used`
-
-- push latest monit conf from PROD to ansible
-- in Ansible, put a _vanilla then modified_ /etc/monitrc file to git (simplifies the `yum updates`)
-- perform a `yum update in prod`. Watchout for files:
-  - /etc/php.ini.rpmnew
-  - /etc/monitrc.rpmnew
-  - /etc/php-fpm.d/www.conf.rpmnew
-- write ansible role for vsftp
 
 
-```
-certbot certonly \
-  --standalone \
-  -d 'test.example.com' \
-  -d 'blog.test.example.com' \
-  -d 'www.test.example.com' \
-  -d 'admin.test.example.com' \
-  -d 'test.example.fr' \
-  -d 'blog.test.example.fr' \
-  -d 'www.test.example.fr'
-```
-run ansible
+Procédure de MEP
+----------------
 
-
-
-
-Priorités
-- MEP de blog
-
-- créer un script qui vire toutes les "data"
-  - (prévoir des sécurités – confirmations)
-  - supprime les fichiers PS de /var/www/prestashop/
-  - drop la DB de PS
-  - drop data de collectd
-  - … autre? Voir en fait ce qu'on sauvegarde dans le script de backup!
-- ne pas créer un script qui installe les data depuis S3 :
-  - on appelera en fait les tasks Ansible depuis mon PC avec `--tags=data` (← tag à rajouter là où il faut c'est à dire "prestashop", "mysql" et "wordpress", …???)
-
-- remplacer les utilisation de "template" par "lineinfile" quand c'est un fichier qui initialement appartient à un package
-
-- dans le role prestashop on check si la db existe et on check s'il y a des fichiers dans /var/www/prestashop
-  - si la DB est absente mais que les fichiers sont présents dans /var/www/prestashop on va installer la dernière DB avec les "anciens" fichiers de /var/www/prestashop
-  - même si ce cas a peu de chances d'arriver, il faudrait plutôt register une variable "should_install" qui vérifie que les deux sont absents
-
-- setup cache for WP in nginx?
-
-Nice to have
-------------
-
-- ne changer le hostname que s'il n'est pas bon (idempotence) idem pour les DNS (idempotence)
-
-- au sujet du bucket S3 "prestashop-data"
-  - renommer le bucket "prestashop-data" en "backup_bucket: example-backup"
-  - utiliser des sous-répertoires pour chaque role
-  - Attention à la compat avec l'état actuel des backups
-    D'ailleurs pour plus de simplicité
-    - on pourrait créer un nouveau bucket
-    - une fois la nouvelle hiérarchie mise en place, mv les anciens backups dans le nouveau bucket (et en enlever certains)
-- bouger toute référence de blog dans une branche à part qu'il faudra maintenir
-- créer une adresse "tech" genre tech@example.com ou admin@example.com qui redirige vers les adresses de GDB et GAX
-  donner cette adresse à :
-  - letsencrypt
-  - AWS route53
-- changer les crons pour des timers systemd
-
-- voir s'il n'est pas intéressant de faire mettre à jour l'IP des instance de test dans le template cloudformation comme ça on peut ssh et pinger l'instance de test même si un des rôles ansible plante
-
-- voir s'il n'est pas possible d'utiliser une option de tar qui préserve les user/group comme ça plus besoin de faire de chown etc
-- php-fpm log toutes les requêtes mais sans aucune information utile dans /var/log/php-fpm/www.access.log → désactiver les logs
-
-- setup DNS SPF record
-- setup postfix and DNS MX record for .fr ???
-    guillaume       → owner@example.com
-    galaux          → guillaume@alaux.net
-    contact         → contact@example.com → GDB + GAX
-    postmaster      → owner@example.com # TODO à dégager
-    root            → guillaume@alaux.net
-    *               → owner@example.com
-
-TODO vérifier que les slow-queries de mysql sont bien enable
-
-
-- créer un script qui vire toutes les "data"
-  - (prévoir des sécurités – confirmations)
-  - supprime les fichiers PS de /var/www/prestashop/
-  - drop la DB de PS
-  - drop data de collectd
-  - … autre? Voir en fait ce qu'on sauvegarde dans le script de backup!
-- ne pas créer un script qui installe les data depuis S3 :
-  - on appelera en fait les tasks Ansible depuis mon PC avec `--tags=data` (← tag à rajouter là où il faut c'est à dire "prestashop", "mysql" et "wordpress", …???)
-
-De cette manière, pour une màj de la PROD :
-- créer nouvelle instance EC2 version "PROD" mais avec CreateBackup=False (pour éviter qu'elle n'écrase les vrais backups actuels de PROD)
+- créer nouvelle instance EC2
+  - AlertingSendsEmail: false
+  - BackupDate: latest_backup
+  - Branch: develop
+  - CreateBackups: false (pour éviter qu'elle n'écrase les vrais backups actuels de PROD)
+  - DomainPrefix: '' ← empty
+  - InstanceType: 't2.micro'
 - attendre que cette instance soit up, la rebooter
 - vérifier que tout fonctionne (pour cette MEP il faudra générer et copier les nouveaux certificats à la main depuis actuelle prod vers nouvelle prod)
-- sur future prod : lancer script qui drop les data
+- sur nouvelle prod : lancer ansible sur le playbook `drop-data`
 - sur actuelle prod :
-  - la mettre en maintenance
-  - lancer backup
-- sur future prod, lancer Ansible avec seulement les tags qui importent des datas
+  - mettre PS en maintenance
+  - lancer script de backup
+- configurer `~/.ssh/config` et `/etc/hosts` pour pouvoir ssh facilement sur la nouvelle prod et rajouter son nom de domaine temporaire dans fichier Ansible `hosts`
+- lancer Ansible sur nouvelle prod **avec tous les roles** pour remettre la conf au carat (enable les emails par Monit, enable les backups de certifs et tous les backups, …)
 - switcher elastic IP
 - enlever site de nouvelle prod de maintenance
-- enable les backups sur la nouvelle prod
-- supprimer ancienne prod
+- sur ancienne prod
+  - disable backups!
+  - disable envoi de mails par monit
+- éteindre/supprimer ancienne prod
