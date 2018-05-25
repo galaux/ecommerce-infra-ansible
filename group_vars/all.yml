@@ -14,7 +14,6 @@ alt_hosted_zones:
   - { domain_name: "{{ domain_prefix_dot }}example.fr", ps_path_prefix: "/fr",  zone_id: "Z0EXAMPLEZON01" }
 hosted_zones: "{{ [main_hosted_zone] + alt_hosted_zones }}"
 main_domain_name: "{{ main_hosted_zone.domain_name }}"
-create_backups: False
 backup_data_snippet_dir: "/etc/backup-instance.d"
 is_prod: "{% if main_domain_name == 'example.com' %}True{% else %}False{% endif %}"
 ssh_port: 22

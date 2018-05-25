@@ -24,23 +24,10 @@ Parameters:
     Type: String
     Default: latest_backup
 
-  CreateBackups:
-    Description: |
-      Should this instance create daily backups on S3
-      (Do not enable for anything than the only production instance otherwise
-      backup directories on S3 will collide)?
-    Type: String
-    Default: False
-    AllowedValues:
-      - True
-      - False
-
   DomainPrefix:
     Description: |
       Prefix of the domain ('[DomainPrefix].example.com').
-      Leave empty for Production in which case DNS records will be NOT be
-      updated and all data backup scripts will be installed
-      (but not necessarily activated. See CreateBackups for this).
+      Leave empty for Production.
     Type: String
     Default: test
     AllowedValues:
@@ -92,7 +79,6 @@ Resources:
             playbooks/example.yml \
             --extra-vars '{
                             "backup_date": "${BackupDate}",
-                            "create_backups": ${CreateBackups},
                             "domain_prefix": "${DomainPrefix}"
                           }'
 
