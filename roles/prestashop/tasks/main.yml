@@ -177,3 +177,9 @@
     mode: 0755
   when: is_prod
 
+- name: test instance only - remove any data backup snippet
+  file:
+    path: "{{ backup_data_snippet_dir }}/prestashop"
+    state: absent
+  when: not is_prod
+
