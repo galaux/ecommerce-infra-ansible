@@ -100,3 +100,34 @@ Procédure de MEP
   - disable backups!
   - disable envoi de mails par monit
 - éteindre/supprimer ancienne prod
+
+
+
+- base
+  - bashrc
+  - test instance only - enable DNS update script at boot
+  - test instance only - update instance DNS records
+  - production instance only - disable DNS update script at boot
+- collectd
+  - production instance only - set data backup snippet
+  - test instance only - remove any data backup snippet
+- letsencrypt
+  - production instance only - install timer to renew certificates
+  - production instance only - disable certificates renewal at boot
+  - test instance only - remove any timer to renew certificates
+  - test instance only - enable certificates renewal at boot
+- monit
+- backup-instance
+  - production instance only - setup cron to backup instance
+  - test instance only - install Systemd service to backup instance at boot
+  - test instance only - enable Systemd service to backup instance at boot
+- wordpress
+  - production instance only - set data backup snippet
+  - test instance only - remove any data backup snippet
+- prestashop
+  - set data backup snippet
+  - test instance only - remove any data backup snippet
+
+
+TODO supprimer les certificats dans le playbook drop-data
+TODO arrêter nginx aussi!
