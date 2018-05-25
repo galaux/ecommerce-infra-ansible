@@ -25,7 +25,7 @@
     mode: 0644
   notify:
     - reload crond
-  when: is_prod and create_backups
+  when: is_prod
 
 - name: test instance only - install Systemd service to backup instance at boot
   copy:
