@@ -1,5 +1,6 @@
 ---
 
+production_eip: "203.0.113.10"
 backup_date_latest_label: "latest_backup"
 backup_date: "{{ backup_date_latest_label }}"
 sub_domains:

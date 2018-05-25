@@ -1,5 +1,14 @@
 #!/bin/sh
 
+PROD_EIP='{{ production_eip }}'
+local_ip_addr=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+
+if [ "x${local_ip_addr}" = "x${PROD_EIP}" ];
+then
+  echo "This instance's IP is the Production Elastic IP. Refusing the update."
+  exit 1
+fi
+
 {% for hosted_zone in hosted_zones %}
 /usr/local/bin/update-dns-record '{{ hosted_zone.zone_id }}' '{{ hosted_zone.domain_name }}' {{ sub_domains | join(' ') }}
 {% endfor %}
