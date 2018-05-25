@@ -34,6 +34,8 @@
     owner: root
     group: root
     mode: 0644
+  notify:
+    - daemon reload
   when: not is_prod
 
 - name: test instance only - enable Systemd service to backup instance at boot
