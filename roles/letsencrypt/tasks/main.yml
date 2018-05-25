@@ -36,21 +36,6 @@
     creates: "{{ letsencrypt_path }}"
   when: letsencrypt_already_present.rc == 1
 
-# We setup cron to update the certificates regardless of create_backups
-# If create_backups=True then this instance is a "soon to become" production.
-# Renewing certificates will fail as production DNS do not point at it
-# but chances are this instance will shortly replace the real production.
-# Doing so prevent forgetting to re-enable renewal of certificates at low cost.
-- name: production instance only - install cron to renew certificates
-  copy:
-    src: renew-certificates.cron
-    dest: /etc/cron.d/renew-certificates
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - reload crond
-  when: is_prod
 
 - name: set data backup snippet
   template:
@@ -60,3 +45,49 @@
     group: root
     mode: 0755
 
+- name: install certificates renewal service
+  copy:
+    src: renew-certificates.service
+    dest: /etc/systemd/system/renew-certificates.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - daemon reload
+
+
+# Production only config
+
+- name: production instance only - install timer to renew certificates
+  copy:
+    src: renew-certificates.timer
+    dest: /etc/systemd/system/renew-certificates.timer
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - daemon reload
+  when: is_prod
+
+- name: production instance only - disable certificates renewal at boot
+  service:
+    name: renew-certificates
+    enabled: no
+  when: is_prod
+
+
+# Test only config
+
+- name: test instance only - remove any timer to renew certificates
+  file:
+    path: /etc/systemd/system/renew-certificates.timer
+    state: absent
+  notify:
+    - daemon reload
+  when: not is_prod
+
+- name: test instance only - enable certificates renewal at boot
+  service:
+    name: renew-certificates
+    enabled: yes
+  when: not is_prod

@@ -1,0 +1,7 @@
+[Unit]
+Description=Certificates renewal
+
+[Service]
+Type=oneshot
+ExecStart=/bin/certbot -n renew
+ExecStartPost=/bin/systemctl reload nginx.service
