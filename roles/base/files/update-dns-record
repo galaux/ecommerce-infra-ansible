@@ -22,7 +22,7 @@ echo -e "Alt sub-domain names:\t$sub_domains"
 echo -e "LOCAL_IP_ADDR:\t\t$LOCAL_IP_ADDR"
 
 PROD_DOMAIN_NAME='example.com'
-if [ "x$domain_name" == "x$PROD_DOMAIN_NAME" -o "x$domain_name" == "xwww.$PROD_DOMAIN_NAME" ];
+if [ "x$domain_name" = "x$PROD_DOMAIN_NAME" -o "x$domain_name" = "xwww.$PROD_DOMAIN_NAME" ];
 then
   echo "Refusing to update production DNS! No action performed."
   exit 2
