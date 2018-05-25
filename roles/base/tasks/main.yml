@@ -55,7 +55,6 @@
     owner: root
     group: root
     mode: 0755
-  when: not is_prod
 
 - name: install DNS update script 2
   template:
@@ -64,7 +63,6 @@
     owner: root
     group: root
     mode: 0755
-  when: not is_prod
 
 - name: install DNS update script Systemd service
   copy:
@@ -75,17 +73,22 @@
     mode: 0644
   notify:
     - daemon reload
-  when: not is_prod
 
-- name: enable DNS update script Systemd service at boot
+- name: test instance only - enable DNS update script at boot
   service:
     name: update-instance-dns-records
-    enabled: yes
+    enabled: true
   when: not is_prod
 
-- name: update instance DNS records
+- name: test instance only - update instance DNS records
   command: /usr/local/bin/update-instance-dns-records
   when: not is_prod
+
+- name: production instance only - disable DNS update script at boot
+  service:
+    name: update-instance-dns-records
+    enabled: false
+  when: is_prod
 
 - name: configure hosts file
   template:
