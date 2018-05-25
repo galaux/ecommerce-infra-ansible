@@ -95,7 +95,7 @@
 - name: set directories permissions
   command: find "{{ wordpress_path }}" -type d -exec chmod 0775 {} +
 
-- name: set data backup snippet
+- name: production instance only - set data backup snippet
   template:
     src: backup-instance.sh.j2
     dest: "{{ backup_data_snippet_dir }}/wordpress"
@@ -103,4 +103,10 @@
     group: root
     mode: 0755
   when: is_prod
+
+- name: test instance only - remove any data backup snippet
+  file:
+    path: "{{ backup_data_snippet_dir }}/wordpress"
+    state: absent
+  when: not is_prod
 
