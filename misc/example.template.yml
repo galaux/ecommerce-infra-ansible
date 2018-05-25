@@ -48,16 +48,6 @@ Parameters:
       - test
       - test2
 
-  AlertingSendsEmail:
-    Description: |
-      Do you want alerting to send emails when a one of its check fails
-      (advised for production but not for test)?
-    Type: String
-    AllowedValues:
-      - True
-      - False
-    Default: False
-
 Resources:
   EC2Instance:
     Type: 'AWS::EC2::Instance'
@@ -102,7 +92,6 @@ Resources:
             playbooks/example.yml \
             --extra-vars '{
                             "backup_date": "${BackupDate}",
-                            "alerting_sends_email": ${AlertingSendsEmail},
                             "create_backups": ${CreateBackups},
                             "domain_prefix": "${DomainPrefix}"
                           }'

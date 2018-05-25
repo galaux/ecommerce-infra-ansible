@@ -7,7 +7,7 @@ set mailserver smtp.gmail.com port 587
   with timeout 30 seconds
 
 # Address(es) to send alerts
-{% if alerting_sends_email %}
+{% if is_prod %}
 set alert owner@example.com
 set alert monit.example@alaux.net
 {% else %}
