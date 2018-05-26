@@ -65,3 +65,14 @@
     name: php-fpm
     state: started
     enabled: yes
+
+- name: monit snippet installed
+  template:
+    src: monit.j2
+    dest: /etc/monit.d/php-fpm
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - reload monit
+
