@@ -89,7 +89,7 @@
     regexp: "^#compress"
     line: "compress"
 
-- name: configure Bash for root
+- name: configure Bash for Unix users
   template:
     src: bashrc.j2
     dest: "{{ item.dest_dir }}/.bashrc"

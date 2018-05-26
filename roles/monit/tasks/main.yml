@@ -5,7 +5,7 @@
     name: monit
     state: present
 
-- name: configure monit (1)
+- name: monit configured
   template:
     src: monit.j2
     dest: /etc/monitrc
@@ -15,7 +15,8 @@
   notify:
     - restart monit
 
-- name: configure monit (2)
+# FIXME each should belong to its own role
+- name: monit snippets installed
   template:
     src: "{{ item }}.j2"
     dest: "/etc/monit.d/{{ item }}"
@@ -29,7 +30,8 @@
   notify:
     - restart monit
 
-- name: configure monit (3)
+# FIXME each should belong to its own role
+- name: more monit snippets installed
   copy:
     src: "{{ item }}"
     dest: "/etc/monit.d/{{ item }}"
