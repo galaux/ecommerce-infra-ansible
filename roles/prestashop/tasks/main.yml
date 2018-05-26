@@ -168,7 +168,19 @@
   notify:
     - restart nginx
 
-- name: set data backup snippet
+
+# Test config only
+
+- name: test instance only - data backup snippet absent
+  file:
+    path: "{{ backup_data_snippet_dir }}/prestashop"
+    state: absent
+  when: not is_prod
+
+
+# Production config only
+
+- name: production instance only - data backup snippet present
   template:
     src: backup-instance.sh.j2
     dest: "{{ backup_data_snippet_dir }}/prestashop"
@@ -176,10 +188,4 @@
     group: root
     mode: 0755
   when: is_prod
-
-- name: test instance only - remove any data backup snippet
-  file:
-    path: "{{ backup_data_snippet_dir }}/prestashop"
-    state: absent
-  when: not is_prod
 
