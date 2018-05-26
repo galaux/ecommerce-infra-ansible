@@ -16,18 +16,7 @@
     group: root
     mode: 0755
 
-- name: production instance only - setup cron to backup instance
-  copy:
-    src: backup-instance.cron
-    dest: /etc/cron.d/backup-instance
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - reload crond
-  when: is_prod
-
-- name: test instance only - install Systemd service to backup instance at boot
+- name: Systemd service to run backup instance installed
   copy:
     src: backup-instance.service
     dest: /etc/systemd/system/backup-instance.service
@@ -36,11 +25,41 @@
     mode: 0644
   notify:
     - daemon reload
-  when: not is_prod
 
-- name: test instance only - enable Systemd service to backup instance at boot
+
+# Test config only
+
+- name: test instance only - instance backup enabled at boot
   service:
     name: backup-instance.service
     enabled: yes
   when: not is_prod
+
+- name: test instance only - instance backup timer disabled
+  file:
+    path: /etc/systemd/system/backup-instance.timer
+    state: absent
+  notify:
+    - daemon reload
+  when: not is_prod
+
+
+# Production config only
+
+- name: production instance only - instance backup disabled at boot
+  service:
+    name: backup-instance.service
+    enabled: no
+  when: is_prod
+
+- name: production instance only - instance backup timer enabled
+  copy:
+    src: backup-instance.timer
+    dest: /etc/systemd/system/backup-instance.timer
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - daemon reload
+  when: is_prod
 

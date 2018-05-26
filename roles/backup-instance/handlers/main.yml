@@ -2,8 +2,3 @@
 
 - name: daemon reload
   command: systemctl daemon-reload
-
-- name: reload crond
-  service:
-    name: crond
-    state: restarted
