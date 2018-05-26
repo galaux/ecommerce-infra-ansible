@@ -1,7 +1,0 @@
----
-
-- name: monit is stopped and disabled at boot
-  service:
-    name: monit
-    state: stopped
-    enabled: no
