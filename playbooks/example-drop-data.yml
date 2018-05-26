@@ -6,6 +6,7 @@
   become_user: root
   roles:
     - { role: monit-drop-data,                  tags: ['monit-drop-data'] }
+    - { role: nginx-drop-data,                  tags: ['nginx-drop-data'] }
     - { role: prestashop-drop-data,             tags: ['prestashop-drop-data'] }
     - { role: wordpress-drop-data,              tags: ['wordpress-drop-data'] }
     - { role: collectd-drop-data,               tags: ['collectd-drop-data'] }

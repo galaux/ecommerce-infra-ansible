@@ -1,0 +1,8 @@
+---
+
+- name: nginx is stopped and disabled at boot
+  service:
+    name: nginx
+    state: stopped
+    enabled: no
+
