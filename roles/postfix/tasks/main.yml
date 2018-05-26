@@ -1,11 +1,11 @@
 ---
 
-- name: install postfix
+- name: postfix installed
   yum:
     name: postfix
     state: present
 
-- name: configure postfix
+- name: postfix configured
   lineinfile:
     path: /etc/postfix/main.cf
     regexp: "^#?{{ item.key }}"
@@ -19,7 +19,7 @@
   notify:
     - restart postfix
 
-- name: configure redirections
+- name: email redirections configured
   lineinfile:
     path: /etc/postfix/virtual
     regexp: "^#?{{ item.key }}@{{ main_domain_name }}"
@@ -34,10 +34,10 @@
   notify:
     - restart postfix
 
-- name: update the postfix lookup table
+- name: postfix lookup table updated
   command: /sbin/postmap /etc/postfix/virtual
 
-- name: enable postfix
+- name: postfix started and enabled at boot
   service:
     name: postfix
     state: started

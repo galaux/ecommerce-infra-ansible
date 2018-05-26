@@ -1,6 +1,6 @@
 ---
 
-- name: install collectd
+- name: collectd installed
   yum:
     name: >
       collectd,
@@ -10,13 +10,13 @@
       collectd-rrdtool
     state: present
 
-- name: stat whether data is already present
+- name: state whether data is already present
   command: test -d "{{ collectd_instance_data_path }}"
   check_mode: no
   register: collectd_data_already_present
   failed_when: collectd_data_already_present.rc > 1
 
-- name: retrieve previously collected data
+- name: collected data backup available
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ backup_date }}/collectd-data.tgz"
@@ -24,14 +24,14 @@
     mode: get
   when: collectd_data_already_present.rc == 1
 
-- name: extract previously collected data
+- name: collected data backup deployed
   unarchive:
     src: /tmp/collectd-data.tgz
     dest: /var/lib
     remote_src: yes
   when: collectd_data_already_present.rc == 1
 
-- name: setup collectd
+- name: collectd configured
   template:
     src: collectd.conf.j2
     dest: /etc/collectd.conf
@@ -41,7 +41,7 @@
   notify:
     - restart collectd
 
-- name: setup collectd snippets
+- name: collectd snippets installed
   template:
     src: "{{ item }}.conf.j2"
     dest: /etc/collectd.d/{{ item }}.conf
@@ -58,7 +58,7 @@
   notify:
     - restart collectd
 
-- name: create SQL account
+- name: collectd SQL account created
   mysql_user:
     name: "{{ collectd_sql_user }}"
     host: 'localhost'
@@ -66,7 +66,7 @@
     priv: '{{ mysql_ps_db_name }}.*:SELECT'
     state: present
 
-- name: append specific php-fpm types
+- name: specific php-fpm types configured
   lineinfile:
     path: /usr/share/collectd/types.db
     regexp: "^{{ item.key }}"
@@ -79,13 +79,13 @@
   notify:
     - restart collectd
 
-- name: stat whether CGP is already present
+- name: state whether CGP is already present
   command: test -d "{{ monitoring_path }}"
   check_mode: no
   register: cgp_already_present
   failed_when: cgp_already_present.rc > 1
 
-- name: create CGP directory
+- name: CGP directory created
   file:
     path: "{{ monitoring_path }}"
     state: directory
@@ -93,7 +93,7 @@
     group: apache
     mode: 0755
 
-- name: install CGP
+- name: CGP files installed
   unarchive:
     remote_src: yes
     src: "https://github.com/pommi/CGP/archive/v1.tar.gz"
@@ -104,7 +104,7 @@
     mode: 0755
   when: cgp_already_present.rc == 1
 
-- name: set files and directories owner/group
+- name: files and directories owner/group set
   file:
     path: "{{ monitoring_path }}"
     owner: apache
@@ -113,7 +113,7 @@
     state: directory
     recurse: yes
 
-- name: configure CGP
+- name: CGP configured
   lineinfile:
     path: "{{ monitoring_path }}/conf/config.php"
     regexp: "^\\$CONFIG\\['{{ item.key }}'\\]"
@@ -121,10 +121,10 @@
   with_items:
     - { key: "graph_smooth", value: "true" }
 
-- name: set directories permissions
+- name: directories permissions set
   command: find "{{ monitoring_path }}" -type d -exec chmod 0755 {} +
 
-- name: configure '/monitoring' nginx access
+- name: /monitoring nginx access configured
   template:
     src: vhost-nginx.j2
     dest: /etc/nginx/conf.d/admin.conf-monitoring
@@ -134,7 +134,7 @@
   notify:
     - restart nginx
 
-- name: enable collectd
+- name: collectd started and enabled at boot
   service:
     name: collectd
     state: started

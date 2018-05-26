@@ -1,13 +1,13 @@
 ---
 
-- name: install nginx
+- name: nginx installed
   yum:
     name: nginx
     state: present
 
 # http://doc.prestashop.com/display/PS16/System+Administrator+Guide#SystemAdministratorGuide-NginxfriendlyURLs
 # https://github.com/PrestaShop/PrestaShop/blob/develop/docs/server_config/nginx.conf.dist
-- name: configure nginx
+- name: main nginx configuration file installed
   template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
@@ -17,7 +17,7 @@
   notify:
     - restart nginx
 
-- name: configure nginx SSL
+- name: nginx SSL configuration file installed
   template:
     src: ssl.conf.j2
     dest: /etc/nginx/default.d/ssl.conf
@@ -27,7 +27,7 @@
   notify:
     - restart nginx
 
-- name: configure virtual hosts
+- name: virtual hosts configuration files installed
   template:
     src: "{{ item }}.j2"
     dest: /etc/nginx/conf.d/{{ item }}
@@ -44,7 +44,7 @@
     - blog.conf
 
 # TODO use Ansible `htpasswd` here
-- name: install htpasswd
+- name: htpasswd file installed
   template:
     src: htpasswd.j2
     dest: "{{ htpasswd_path }}"
@@ -54,13 +54,13 @@
   notify:
     - restart nginx
 
-- name: enable nginx
+- name: nginx started and enabled
   service:
     name: nginx
     state: started
     enabled: yes
 
-- name: monit snippet installed
+- name: nginx monit snippet installed
   template:
     src: monit.j2
     dest: /etc/monit.d/nginx

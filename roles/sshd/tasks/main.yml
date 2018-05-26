@@ -1,11 +1,11 @@
 ---
 
-- name: install openssh
+- name: openssh installed
   yum:
     name: openssh
     state: present
 
-- name: configure sshd
+- name: sshd configured
   template:
     src: sshd_config.j2
     dest: /etc/ssh/sshd_config
@@ -15,12 +15,12 @@
   notify:
     - restart sshd
 
-- name: set file permissions
+- name: restricted file permissions set
   file:
     path: /etc/ssh
     mode: 0600
 
-# - name: install motd
+# - name: motd installed
 #   template: src=motd.j2 dest=/etc/motd owner=root group=root mode=0644
 
 # Ensure OpenSSH reload its conf so that it uses the new Port
@@ -28,7 +28,7 @@
 - name: make sshd reload its conf
   command: /usr/bin/systemctl reload sshd
 
-- name: start and enable sshd
+- name: sshd started and enabled
   service:
     name: sshd
     enabled: yes

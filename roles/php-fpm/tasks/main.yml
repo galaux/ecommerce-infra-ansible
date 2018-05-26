@@ -1,18 +1,18 @@
 ---
 
-- name: install php-fpm
+- name: php-fpm installed
   yum:
     name: php-fpm
     state: present
 
-- name: configure php-fpm base
+- name: php-fpm configuration file installed
   ini_file:
     path: /etc/php-fpm.conf
     section: "global"
     option: "pid"
     value: "{{ php_fpm_pid_path }}"
 
-- name: configure php-fpm
+- name: php-fpm nginx configuration file installed
   template:
     src: php-fpm.conf.j2
     dest: /etc/nginx/conf.d/php-fpm.conf
@@ -22,7 +22,7 @@
   notify:
     - restart nginx
 
-- name: configure php-fpm pool
+- name: php-fpm pool configured
   lineinfile:
     backrefs: yes
     path: /etc/php-fpm.d/www.conf
@@ -40,7 +40,7 @@
   notify:
     - restart php-fpm
 
-- name: add configuration for PHP applications
+- name: configuration for PHP applications added
   copy:
     src: php.conf
     dest: /etc/nginx/default.d/php.conf
@@ -50,7 +50,7 @@
   notify:
     - restart nginx
 
-- name: configure php-fpm status page in Nginx
+- name: php-fpm status page in Nginx configured
   template:
     src: vhost-nginx.conf.j2
     dest: /etc/nginx/conf.d/local.conf-php-fpm
@@ -60,7 +60,7 @@
   notify:
     - restart php-fpm
 
-- name: enable php-fpm
+- name: php-fpm started and enabled
   service:
     name: php-fpm
     state: started

@@ -5,18 +5,18 @@
   register: selinux_state
   check_mode: no
 
-- name: set SELinux current state to permissive mode
+- name: SELinux current state set to permissive mode
   shell: /sbin/setenforce permissive
   when: selinux_state.stdout == 'Enforcing'
 
-- name: set SELinux next reboot state to permissive mode
+- name: SELinux set to permissive mode for next reboots
   lineinfile:
     backrefs: yes
     path: /etc/selinux/config
     regexp: "^SELINUX=enforcing"
     line: "SELINUX=permissive"
 
-- name: install dependencies
+- name: base packages are installed
   yum:
     name: >
       bzip2,
@@ -30,25 +30,25 @@
 
 # https://bugs.centos.org/view.php?id=14771
 # TODO: remove `patch` from dependencies when removing this
-- name: add missing import in python-boto3
+- name: missing import in python-boto3 file present
   patch:
     basedir: /
     src: python-boto3-add-sys-import.patch
 
 # Dirty awscli install to circumvent its python dependency mess in CentOS
-- name: install pip
+- name: pip installed
   yum:
     name: python2-pip
     state: present
 
-- name: install awscli
+- name: awscli installed
   command: /bin/pip install awscli
 
-- name: set hostname
+- name: hostname set
   command: /usr/bin/hostnamectl set-hostname "{{ main_domain_name }}"
   check_mode: no
 
-- name: install DNS update script 1
+- name: DNS record update script installed
   copy:
     src: update-dns-record
     dest: /usr/local/bin/update-dns-record
@@ -56,7 +56,7 @@
     group: root
     mode: 0755
 
-- name: install DNS update script 2
+- name: instance DNS records update script installed
   template:
     src: update-instance-dns-records.j2
     dest: /usr/local/bin/update-instance-dns-records
@@ -64,7 +64,7 @@
     group: root
     mode: 0755
 
-- name: install DNS update script Systemd service
+- name: DNS Systemd service installed
   copy:
     src: update-instance-dns-records.service
     dest: /etc/systemd/system/update-instance-dns-records.service
@@ -74,7 +74,7 @@
   notify:
     - daemon reload
 
-- name: configure hosts file
+- name: hosts file configured
   template:
     src: etc-hosts.j2
     dest: /etc/hosts
@@ -82,14 +82,14 @@
     group: root
     mode: 0644
 
-- name: set compression for logrotate
+- name: compression for logrotate set
   lineinfile:
     backrefs: yes
     path: /etc/logrotate.conf
     regexp: "^#compress"
     line: "compress"
 
-- name: configure Bash for Unix users
+- name: Bash configured for Unix users
   template:
     src: bashrc.j2
     dest: "{{ item.dest_dir }}/.bashrc"

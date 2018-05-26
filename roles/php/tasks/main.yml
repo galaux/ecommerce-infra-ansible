@@ -1,14 +1,14 @@
 ---
 
-- name: install PHP repository
+- name: PHP RPM repository installed
   yum:
     name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
 
-- name: enable PHP repo
+- name: PHP RPM repository enabled
   shell: yum-config-manager --assumeyes --enable remi-php56
 
-- name: install PHP
+- name: PHP installed
   yum:
     name: >
       php,
@@ -20,7 +20,7 @@
       php-xml
     state: present
 
-- name: configure PHP
+- name: PHP configured
   ini_file:
     path: /etc/php.ini
     section: "{{ item.section }}"

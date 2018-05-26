@@ -1,11 +1,11 @@
 ---
 
-- name: install vsftpd
+- name: vsftpd installed
   yum:
     name: vsftpd
     state: present
 
-- name: configure vsftpd
+- name: vsftpd config file installed
   lineinfile:
     path: /etc/vsftpd/vsftpd.conf
     regexp: "{{ item.name }}"
@@ -18,7 +18,7 @@
     - { name: "listen_ipv6", value: "NO" }
     - { name: "pasv_enable", value: "NO" }
 
-- name: Add RO user
+- name: Read only Unix user created
   user:
     name: "{{ ro_user }}"
     group: apache
@@ -26,7 +26,7 @@
     createhome: no
     home: "{{ www_path }}"
 
-- name: enable vsftpd
+- name: vsftpd stopped and disabled at boot
   service:
     name: vsftpd
     state: stopped

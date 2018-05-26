@@ -13,12 +13,12 @@
   check_mode: no
   failed_when: wp_already_present.rc > 1
 
-- name: create WP DB
+- name: Wordpress DB created
   mysql_db:
     name: "{{ mysql_wp_db_name }}"
     state: present
 
-- name: create WP DB account
+- name: Wordpress SQL account created
   mysql_user:
     name: '{{ mysql_wp_user }}'
     host: 'localhost'
@@ -26,7 +26,7 @@
     priv: '{{ mysql_wp_db_name }}.*:ALL'
     state: present
 
-- name: retrieve DB backup from S3
+- name: DB backup from S3 available
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ backup_date }}/wordpress/db_wp.sql.bz2"
@@ -34,14 +34,14 @@
     mode: get
   when: wp_already_present.rc == 1
 
-- name: Restore DB
+- name: Wordpress DB populated
   mysql_db:
     name: "{{ mysql_wp_db_name }}"
     state: import
     target: /tmp/db_wp.sql.bz2
   when: wp_already_present.rc == 1
 
-- name: set WP SiteUrl in DB
+- name: Wordpress SiteUrl set in DB
   shell: >
     mysql \
       --defaults-extra-file=/root/.my.cnf \
@@ -51,7 +51,7 @@
                  WHERE option_name = 'siteurl';" \
       "{{ mysql_wp_db_name }}"
 
-- name: set WP Home in DB
+- name: Wordpress Home set in DB
   shell: >
     mysql \
       --defaults-extra-file=/root/.my.cnf \
@@ -64,7 +64,7 @@
 
 ## Web files
 
-- name: retrieve Wordpress files from S3
+- name: Wordpress files from S3 available
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ backup_date }}/wordpress/wordpress.tgz"
@@ -72,7 +72,7 @@
     mode: get
   when: wp_already_present.rc == 1
 
-- name: install Wordpress files
+- name: Wordpress files installed
   unarchive:
     remote_src: yes
     src: /tmp/wordpress.tgz
@@ -83,7 +83,7 @@
     mode: 0664
   when: wp_already_present.rc == 1
 
-- name: set files and directories owner/group
+- name: files and directories owner/group set
   file:
     path: "{{ wordpress_path }}"
     owner: apache
@@ -92,7 +92,7 @@
     state: directory
     recurse: yes
 
-- name: set directories permissions
+- name: directories permissions set
   command: find "{{ wordpress_path }}" -type d -exec chmod 0775 {} +
 
 

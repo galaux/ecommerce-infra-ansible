@@ -1,6 +1,6 @@
 ---
 
-- name: install main backup script
+- name: main backup script installed
   template:
     src: backup-instance.sh.j2
     dest: /usr/local/bin/backup-instance
@@ -8,7 +8,7 @@
     group: root
     mode: 0755
 
-- name: create snippet directory
+- name: snippet directory exists
   file:
     path: "{{ backup_data_snippet_dir }}"
     state: directory

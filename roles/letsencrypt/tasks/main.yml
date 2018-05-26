@@ -1,12 +1,12 @@
 ---
 
-- name: install certbot
+- name: certbot installed
   yum:
     name: >
       certbot,
       python2-certbot-nginx
 
-# - name: install certbot dependencies
+# - name: certbot dependencies installed
 #   shell: >
 #     unset $PYTHON_INSTALL_LAYOUT && \
 #     /usr/local/bin/certbot-auto \
@@ -14,13 +14,13 @@
 #       --non-interactive \
 #       --version
 
-- name: stat whether certificates are already present
+- name: state whether certificates are already present
   command: test -d "{{ letsencrypt_path }}"
   check_mode: no
   register: letsencrypt_already_present
   failed_when: letsencrypt_already_present.rc > 1
 
-- name: retrieve backup certificates from S3
+- name: certificates backup available
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ certificates_backup_name }}"
@@ -28,7 +28,7 @@
     mode: get
   when: letsencrypt_already_present.rc == 1
 
-- name: deploy certificates
+- name: certificates installed
   unarchive:
     src: /tmp/cert-{{ main_domain_name }}.tgz
     dest: /etc
@@ -37,7 +37,7 @@
   when: letsencrypt_already_present.rc == 1
 
 
-- name: set data backup snippet
+- name: data backup snippet installed
   template:
     src: backup-instance.sh.j2
     dest: "{{ backup_data_snippet_dir }}/certificates"
@@ -45,7 +45,7 @@
     group: root
     mode: 0755
 
-- name: install certificates renewal service
+- name: certificates renewal service installed
   copy:
     src: renew-certificates.service
     dest: /etc/systemd/system/renew-certificates.service

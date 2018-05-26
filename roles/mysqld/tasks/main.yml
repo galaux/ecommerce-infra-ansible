@@ -1,6 +1,6 @@
 ---
 
-- name: install MariaDB repository
+- name: MariaDB RPM repository enabled
   copy:
     src: mariadb.repo
     dest: /etc/yum.repos.d/mariadb.repo
@@ -8,7 +8,7 @@
     group: root
     mode: 0644
 
-- name: install MariaDB and dependencies
+- name: MariaDB and dependencies installed
   yum:
     # MySQL-python required by Ansible `mysql_user`
     name: >
@@ -16,7 +16,7 @@
       MySQL-python
     state: present
 
-- name: set global my.cnf
+- name: global my.cnf installed
   ini_file:
     path: /etc/my.cnf.d/server.cnf
     section: "{{ item.section }}"
@@ -32,24 +32,24 @@
   notify:
     - restart mariadb
 
-- name: start and enable MariaDB
+- name: MariaDB started and enabled
   service:
     name: mariadb
     enabled: yes
     state: started
 
-- name: remove anonymous accounts
+- name: anonymous accounts removed
   mysql_user:
     name: ''
     host_all: yes
     state: absent
 
-- name: drop test database
+- name: test database dropped
   mysql_db:
     db: test
     state: absent
 
-# - name: create read only account
+# - name: read only account created
 #   mysql_user:
 #     name: "{{ mysql_ro_user }}"
 #     host: 'localhost'
@@ -57,14 +57,14 @@
 #     priv: '{{ mysql_ps_db_name }}.*:SELECT'
 #     state: present
 
-- name: create/set root account
+- name: root account configured
   mysql_user:
     name: 'root'
     host_all: yes
     password: '{{ mysql_root_password }}'
     state: present
 
-- name: set local my.cnf
+- name: local my.cnf for root installed
   template:
     src: local-my.cnf.j2
     dest: /root/.my.cnf

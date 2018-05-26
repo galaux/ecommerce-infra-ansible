@@ -1,11 +1,11 @@
 ---
 
-- name: install monit
+- name: monit installed
   yum:
     name: monit
     state: present
 
-- name: monit configured
+- name: monit configuration installed
   template:
     src: monit.j2
     dest: /etc/monitrc
@@ -15,7 +15,7 @@
   notify:
     - restart monit
 
-- name: enable monit daemon
+- name: monit started and enabled at boot
   service:
     name: monit
     state: started

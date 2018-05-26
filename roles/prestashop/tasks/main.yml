@@ -13,12 +13,12 @@
   check_mode: no
   failed_when: ps_already_present.rc > 1
 
-- name: create DB
+- name: SQL DB created
   mysql_db:
     name: "{{ mysql_ps_db_name }}"
     state: present
 
-- name: create PS account
+- name: Prestashop SQL account created
   mysql_user:
     name: '{{ mysql_ps_user }}'
     host: 'localhost'
@@ -26,7 +26,7 @@
     priv: '{{ mysql_ps_db_name }}.*:ALL'
     state: present
 
-- name: retrieve DB backup from S3
+- name: Prestashop DB backup available
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ backup_date }}/db_ps.sql.bz2"
@@ -34,14 +34,14 @@
     mode: get
   when: ps_already_present.rc == 1
 
-- name: Restore DB
+- name: Prestashop DB populated
   mysql_db:
     name: "{{ mysql_ps_db_name }}"
     state: import
     target: /tmp/db_ps.sql.bz2
   when: ps_already_present.rc == 1
 
-- name: set shop URL 1
+- name: Prestashop shop URL set
   shell: >
     mysql \
       --defaults-extra-file=/root/.my.cnf \
@@ -52,7 +52,7 @@
                  WHERE id_shop_url = 1;" \
       "{{ mysql_ps_db_name }}"
 
-- name: set shop URL 2
+- name: Prestashop shop URL in configuration set
   shell: >
     mysql \
       --defaults-extra-file=/root/.my.cnf \
@@ -68,7 +68,7 @@
 
 ## Web files
 
-- name: get Prestashop version file from S3 backup
+- name: Prestashop version file downloaded from S3 backup
   check_mode: no
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
@@ -77,12 +77,12 @@
     mode: get
 
 # Watch out, prestashop_version is used in settings.inc.php
-- name: read Prestashop version from S3 backup
+- name: Prestashop version read from S3 backup
   shell: cat /tmp/{{ prestashop_version_file_name }}
   check_mode: no
   register: prestashop_version
 
-- name: download Prestashop vanilla files
+- name: Prestashop vanilla files downloaded
   unarchive:
     remote_src: yes
     src: "https://www.prestashop.com/download/old/prestashop_{{ prestashop_version.stdout }}.zip"
@@ -94,17 +94,17 @@
     exclude: Install_PrestaShop.html
   when: ps_already_present.rc == 1
 
-- name: remove install directory
+- name: install directory removed
   file:
     state: absent
     path: "{{ prestashop_path }}/install"
   when: ps_already_present.rc == 1
 
-- name: rename admin directory
+- name: admin directory renamed
   command: mv "{{ prestashop_path }}/admin" "{{ prestashop_path }}/{{ prestashop_admin_page_name }}"
   when: ps_already_present.rc == 1
 
-- name: retrieve backups from S3
+- name: backups from S3 available
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ backup_date }}/{{ item.tarball }}"
@@ -113,7 +113,7 @@
   with_items: "{{ prestashop_backups }}"
   when: ps_already_present.rc == 1
 
-- name: deploy backups
+- name: backups deployed
   unarchive:
     src: "/tmp/{{ item.tarball }}"
     dest: "{{ prestashop_path }}"
@@ -122,7 +122,7 @@
   when: ps_already_present.rc == 1
 
 # Without this file, some PS features do not work (such as disabling cache)
-- name: create compulsory .htaccess
+- name: compulsory .htaccess created
   copy:
     content: ""
     dest: "{{ prestashop_path }}/.htaccess"
@@ -130,7 +130,7 @@
     group: apache
     mode: 0644
 
-- name: retrieve robots.txt from S3
+- name: robots.txt downloaded from S3
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
     object: "/{{ backup_date }}/robots.txt"
@@ -138,7 +138,7 @@
     mode: get
   when: ps_already_present.rc == 1
 
-- name: install config file
+- name: Prestashop configuration file installed
   template:
     src: settings.inc.php.j2
     dest: "{{ prestashop_path }}/config/settings.inc.php"
@@ -146,7 +146,7 @@
     group: apache
     mode: 0664
 
-- name: set files and directories owner/group
+- name: files and directories owner/group set
   file:
     path: "{{ prestashop_path }}"
     owner: apache
@@ -155,10 +155,10 @@
     state: directory
     recurse: yes
 
-- name: set directories permissions
+- name: directories permissions set
   command: find "{{ prestashop_path }}" -type d -exec chmod 0775 {} +
 
-- name: set Nginx config
+- name: Nginx configuration installed
   template:
     src: vhost-nginx.conf
     dest: /etc/nginx/conf.d/www.conf-prestashop

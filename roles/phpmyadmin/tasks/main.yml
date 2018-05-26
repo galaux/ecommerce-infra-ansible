@@ -1,12 +1,12 @@
 ---
 
-- name: install phpMyAdmin
+- name: phpMyAdmin installed
   yum:
     name: phpMyAdmin
     enablerepo: epel
     state: present
 
-- name: configure phpMyAdmin
+- name: phpMyAdmin configured
   lineinfile:
     backrefs: yes
     path: /etc/phpMyAdmin/config.inc.php
@@ -26,7 +26,7 @@
         name: "$cfg['Servers'][$i]['hide_db']",
         value: 'information_schema' }
 
-- name: create SQL account
+- name: phpMyAdmin SQL account created
   mysql_user:
     name: "{{ phpmyadmin_sql_user }}"
     host: 'localhost'
@@ -34,7 +34,7 @@
     priv: '{{ mysql_ps_db_name }}.*:SELECT'
     state: present
 
-- name: configure phpMyAdmin for Nginx 1
+- name: phpMyAdmin files available for Nginx
   file:
     src: "/usr/share/phpMyAdmin/"
     dest: "{{ www_path }}/{{ phpmyadmin_url_path }}"
@@ -42,7 +42,7 @@
   notify:
     - restart nginx
 
-- name: configure phpMyAdmin for Nginx 2
+- name: phpMyAdmin Nginx config installed
   template:
     src: vhost-nginx.j2
     dest: /etc/nginx/conf.d/admin.conf-phpmyadmin
