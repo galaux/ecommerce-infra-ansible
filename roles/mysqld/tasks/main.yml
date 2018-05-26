@@ -71,3 +71,14 @@
     owner: root
     group: root
     mode: 0600
+
+- name: monit snippet installed
+  template:
+    src: monit.j2
+    dest: /etc/monit.d/mysqld
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - reload monit
+

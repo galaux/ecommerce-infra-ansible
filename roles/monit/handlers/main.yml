@@ -5,3 +5,8 @@
     name: monit
     state: restarted
 
+- name: reload monit
+  service:
+    name: monit
+    state: reloaded
+

@@ -24,7 +24,6 @@
     group: root
     mode: 0600
   with_items:
-    - mysqld
     - nginx
     - php-fpm
   notify:
