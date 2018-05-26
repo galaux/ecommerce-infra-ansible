@@ -15,19 +15,6 @@
   notify:
     - restart monit
 
-# FIXME each should belong to its own role
-- name: more monit snippets installed
-  copy:
-    src: "{{ item }}"
-    dest: "/etc/monit.d/{{ item }}"
-    owner: root
-    group: root
-    mode: 0600
-  with_items:
-    - system
-  notify:
-    - restart monit
-
 - name: enable monit daemon
   service:
     name: monit
