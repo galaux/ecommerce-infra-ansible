@@ -74,22 +74,6 @@
   notify:
     - daemon reload
 
-- name: test instance only - enable DNS update script at boot
-  service:
-    name: update-instance-dns-records
-    enabled: true
-  when: not is_prod
-
-- name: test instance only - update instance DNS records
-  command: /usr/local/bin/update-instance-dns-records
-  when: not is_prod
-
-- name: production instance only - disable DNS update script at boot
-  service:
-    name: update-instance-dns-records
-    enabled: false
-  when: is_prod
-
 - name: configure hosts file
   template:
     src: etc-hosts.j2
@@ -117,3 +101,25 @@
   with_items:
     - { dest_dir: "/root",                    ownergp: "root",               is_root: true }
     - { dest_dir: "/home/{{ regular_user }}", ownergp: "{{ regular_user }}", is_root: false }
+
+
+# Test config only
+
+- name: test instance only - DNS update enabled at boot
+  service:
+    name: update-instance-dns-records
+    enabled: true
+  when: not is_prod
+
+- name: test instance only - instance DNS records updated
+  command: /usr/local/bin/update-instance-dns-records
+  when: not is_prod
+
+
+# Production config only
+
+- name: production instance only - DNS update disabled at boot
+  service:
+    name: update-instance-dns-records
+    enabled: false
+  when: is_prod
