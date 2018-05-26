@@ -5,7 +5,6 @@
   become: true
   become_user: root
   roles:
-    - { role: nginx-drop-data,                  tags: ['nginx-drop-data'] }
     - { role: prestashop-drop-data,             tags: ['prestashop-drop-data'] }
     - { role: wordpress-drop-data,              tags: ['wordpress-drop-data'] }
     - { role: collectd-drop-data,               tags: ['collectd-drop-data'] }
