@@ -7,5 +7,6 @@
   roles:
     - { role: prestashop-drop-data,             tags: ['prestashop-drop-data'] }
     - { role: wordpress-drop-data,              tags: ['wordpress-drop-data'] }
+    - { role: letsencrypt-drop-data,            tags: ['letsencrypt-drop-data'] }
     - { role: collectd-drop-data,               tags: ['collectd-drop-data'] }
 

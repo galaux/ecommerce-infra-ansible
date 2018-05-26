@@ -4,3 +4,4 @@
   service:
     name: monit
     state: restarted
+

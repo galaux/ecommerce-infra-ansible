@@ -1,11 +1,21 @@
 ---
 
-- name: remove Wordpress files
+- name: monit, nginx and php-fpm are stopped and disabled at boot
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items:
+    - monit
+    - nginx
+    - php-fpm
+
+- name: Wordpress files are absent
   file:
     state: absent
     path: "{{ wordpress_path }}"
 
-- name: drop DB
+- name: Wordpress DB does not exist
   mysql_db:
     name: "{{ mysql_wp_db_name }}"
     state: absent

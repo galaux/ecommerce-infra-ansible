@@ -1,11 +1,21 @@
 ---
 
-- name: remove Prestashop files
+- name: monit, nginx and php-fpm are stopped and disabled at boot
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items:
+    - monit
+    - nginx
+    - php-fpm
+
+- name: Prestashop files are absent
   file:
     state: absent
     path: "{{ prestashop_path }}"
 
-- name: drop DB
+- name: Prestashop DB does not exist
   mysql_db:
     name: "{{ mysql_ps_db_name }}"
     state: absent

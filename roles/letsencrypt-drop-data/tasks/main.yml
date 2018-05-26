@@ -1,0 +1,17 @@
+---
+
+- name: monit, nginx and php-fpm are stopped and disabled at boot
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items:
+    - monit
+    - nginx
+    - php-fpm
+
+- name: certificates are absent
+  file:
+    state: absent
+    path: "{{ letsencrypt_path }}"
+
