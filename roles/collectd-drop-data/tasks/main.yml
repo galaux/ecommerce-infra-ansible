@@ -1,9 +1,10 @@
 ---
 
-- name: stop collectd
+- name: collectd is stopped and disabled at boot
   service:
     name: collectd
     state: stopped
+    enabled: no
 
 - name: remove Collectd data directory
   file:
