@@ -41,6 +41,7 @@
   notify:
     - restart collectd
 
+# FIXME try to split processes snippet and put each line inside its role
 - name: collectd snippets installed
   template:
     src: "{{ item }}.conf.j2"
