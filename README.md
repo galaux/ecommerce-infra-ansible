@@ -23,14 +23,18 @@ certbot certonly \
 Nice to have **for next PROD delivery**
 ---------------------------------------
 
-- changer les crons pour des timers systemd
-
+EMPTY :)
 
 Nice to have
 ------------
 
 - ne changer le hostname que s'il n'est pas bon (idempotence) idem pour les DNS (idempotence)
-- remplacer les utilisation de "template" par "lineinfile" quand c'est un fichier qui initialement appartient à un package
+- lineinfile
+  - remplacer les utilisation de "template" par "lineinfile" quand c'est un fichier qui initialement appartient à un package
+  - ré-écrire les utilisations de lineinfile pour qu'elles soient plus claires (extraire le caractére de commentaire optionel du `with_items`)
+  - voir s'il y a toujours besoin du `backrefs`
+  - ré-écrire le lineinfile de phpmyadmin pour utiliser des `with_items` du style:
+    `{ key: "auth_type" value: "config" }`
 - setup cache for WP in nginx?
 - au sujet du bucket S3 "prestashop-data"
   - renommer le bucket "prestashop-data" en "backup_bucket: example-backup"
@@ -58,15 +62,7 @@ Nice to have
     *               → owner@example.com
 - run mysql script that removes test db
 - backup results of mysqltuner etc to S3
-- report install of php56-pecl-acpu to ansible (do not forget that this must be enabled in PS backend … but this should be backuped by our DB dump)
 - see deactivation of apache engine in php.ini
-- Nginx optimisation
-  - See this [Nginx tweak guide](https://tweaked.io/guide/nginx/)
-    - see "client caching"
-    - see "Tuning for PHP"
-    - as advised, installer APC (see about that. Aren't there as many advice NOT to do so?)
-  - Compare our Nginx conf with [official suggestion](https://github.com/PrestaShop/PrestaShop/blob/develop/docs/server_config/nginx.conf.dist)
-  - [If need to optimize Nginx some more](https://linode.com/docs/web-servers/nginx/configure-nginx-for-optimized-performance/)
 - decrease backup script verbosity and/or configure logrotate with compression
 - Create ansible "users" and update
   - monit conf (user email addresses)
@@ -74,17 +70,32 @@ Nice to have
   - set these users in the htpasswd
 - See if possible to change the mysql parameter 40xxxx to sthing like "40M"
 - enhance CloudFormation with [Grouping and Labeling](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudformation-interface.html)
+- dans la conf postfix et autres endroits où on envoit des mails, faire envoyer les mails à guillaume+test@alaux.net ou guillaume@alaux.net en afonction de is_prod
+- use Ansible `htpasswd` in roles/nginx
+- voir si on ne peut pas utiliser le module ansible `service: state=reloaded` plutôt que des handlers
+- sur prod : sauvegarder les IP blacklistées et les faire restorer par ansible
+  - idée : ces infos devraient être backupées dans un fichier text commun `config.yml` dans lequel je pourrais aussi mettre la version de PS, …
+- changer les "tel_service restart" par de simples "tel_service reload" 
+- vérifier que Monit recharge bien sa conf quand on lui "systemctl reload monit"
+- bouger les snippets collectd dans leurs roles respectifs
+- voir si selinux n'est pas un process qu'il faudrait `notify` quand on change sa conf dans `base`
+
+- Nginx optimisation
+  - See this [Nginx tweak guide](https://tweaked.io/guide/nginx/)
+    - see "client caching"
+    - see "Tuning for PHP"
+    - as advised, installer APC (see about that. Aren't there as many advice NOT to do so?)
+  - Compare our Nginx conf with [official suggestion](https://github.com/PrestaShop/PrestaShop/blob/develop/docs/server_config/nginx.conf.dist)
+  - [If need to optimize Nginx some more](https://linode.com/docs/web-servers/nginx/configure-nginx-for-optimized-performance/)
 
 
 Procédure de MEP
 ----------------
 
-- créer nouvelle instance EC2
-  - AlertingSendsEmail: false
+- créer nouvelle instance EC2 "test"
   - BackupDate: latest_backup
   - Branch: develop
-  - CreateBackups: false (pour éviter qu'elle n'écrase les vrais backups actuels de PROD)
-  - DomainPrefix: '' ← empty
+  - DomainPrefix: 'test'
   - InstanceType: 't2.micro'
 - attendre que cette instance soit up, la rebooter
 - vérifier que tout fonctionne (pour cette MEP il faudra générer et copier les nouveaux certificats à la main depuis actuelle prod vers nouvelle prod)
@@ -92,42 +103,14 @@ Procédure de MEP
 - sur actuelle prod :
   - mettre PS en maintenance
   - lancer script de backup
-- configurer `~/.ssh/config` et `/etc/hosts` pour pouvoir ssh facilement sur la nouvelle prod et rajouter son nom de domaine temporaire dans fichier Ansible `hosts`
-- lancer Ansible sur nouvelle prod **avec tous les roles** pour remettre la conf au carat (enable les emails par Monit, enable les backups de certifs et tous les backups, …)
+- lancer Ansible sur nouvelle prod **avec tous les roles** pour remettre la conf au carat
 - switcher elastic IP
 - enlever site de nouvelle prod de maintenance
-- sur ancienne prod
-  - disable backups!
-  - disable envoi de mails par monit
+- sur ancienne prod :
+  - attention elle ne répond plus au nom de example.com !!!
+  - relancer ansible pour la configurer en "test" (ou prévoire un autre subdomain genre `oldprod.example.com`?)
 - éteindre/supprimer ancienne prod
 
 
 
-- base
-  - bashrc
-  - test instance only - enable DNS update script at boot
-  - test instance only - update instance DNS records
-  - production instance only - disable DNS update script at boot
-- collectd
-  - production instance only - set data backup snippet
-  - test instance only - remove any data backup snippet
-- letsencrypt
-  - production instance only - install timer to renew certificates
-  - production instance only - disable certificates renewal at boot
-  - test instance only - remove any timer to renew certificates
-  - test instance only - enable certificates renewal at boot
-- monit
-- backup-instance
-  - production instance only - setup cron to backup instance
-  - test instance only - install Systemd service to backup instance at boot
-  - test instance only - enable Systemd service to backup instance at boot
-- wordpress
-  - production instance only - set data backup snippet
-  - test instance only - remove any data backup snippet
-- prestashop
-  - set data backup snippet
-  - test instance only - remove any data backup snippet
-
-
-TODO supprimer les certificats dans le playbook drop-data
-TODO arrêter nginx aussi!
+- voir pourquoi j'ai retrouvé 30 "volumes" dans la console AWS (mes instances générées via CloudFormation génèrent-elles des backups automatiquement?)
