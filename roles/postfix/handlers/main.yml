@@ -4,3 +4,7 @@
   service:
     name: postfix
     state: restarted
+
+- name: update postfix lookup table
+  command: /sbin/postmap /etc/postfix/virtual
+

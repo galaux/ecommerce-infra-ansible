@@ -32,10 +32,8 @@
     - { key: "root",       value: "guillaume@alaux.net" }
     - { key: "",           value: "owner@example.com" } # Catch-all
   notify:
+    - update postfix lookup table
     - restart postfix
-
-- name: postfix lookup table updated
-  command: /sbin/postmap /etc/postfix/virtual
 
 - name: postfix started and enabled at boot
   service:
