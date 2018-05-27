@@ -26,17 +26,17 @@
   lineinfile:
     backrefs: yes
     path: /etc/php-fpm.d/www.conf
-    regexp: "{{ item.re }}"
-    line: "{{ item.name }} = {{ item.value }}"
+    regexp: "^;?{{ item.key }} ="
+    line: "{{ item.key }} = {{ item.value }}"
     # https://stackoverflow.com/a/21934455/2681752
   with_items:
-    - { re: "^;access.log =",          name: "access.log",           value: "/var/log/php-fpm/$pool.access.log" }
-    - { re: "^listen =",               name: "listen",               value: "/var/run/php-fpm/php-fpm.sock"     }
-    - { re: "^;listen.acl_users =",    name: "listen.acl_users",     value: "nginx"                             }
-    - { re: "^pm =",                   name: "pm",                   value: "static"                            }
-    - { re: "^pm.max_children =",      name: "pm.max_children",      value: 2                                   }
-    - { re: "^;pm.max_requests =",     name: "pm.max_requests",      value: 7500                                }
-    - { re: "^;pm.status_path =",      name: "pm.status_path",       value: "/status-php-fpm"                   }
+    - { key: "access.log",           value: "/var/log/php-fpm/$pool.access.log" }
+    - { key: "listen",               value: "/var/run/php-fpm/php-fpm.sock"     }
+    - { key: "listen.acl_users",     value: "nginx"                             }
+    - { key: "pm",                   value: "static"                            }
+    - { key: "pm.max_children",      value: 2                                   }
+    - { key: "pm.max_requests",      value: 7500                                }
+    - { key: "pm.status_path",       value: "/status-php-fpm"                   }
   notify:
     - restart php-fpm
 
@@ -94,8 +94,8 @@
   with_items:
     - { key: "phpfpm_listen_queue",  value: "value:GAUGE:0:65535" }
     - { key: "phpfpm_processes",     value: "value:GAUGE:0:65535" }
-    - { key: "phpfpm_requests",      value: "value:DERIVE:0:U"    }
-    - { key: "phpfpm_slow_requests", value: "value:DERIVE:0:U"    }
+    - { key: "phpfpm_requests",      value: "value:DERIVE:0:U" }
+    - { key: "phpfpm_slow_requests", value: "value:DERIVE:0:U" }
   notify:
     - restart collectd
 
