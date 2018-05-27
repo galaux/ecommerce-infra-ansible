@@ -31,18 +31,47 @@
     remote_src: yes
   when: collectd_data_already_present.rc == 1
 
-- name: collectd configured
-  template:
-    src: collectd.conf.j2
-    dest: /etc/collectd.conf
-    owner: root
-    group: root
-    mode: 0644
+- name: collectd base configured
+  lineinfile:
+    path: /etc/collectd.conf
+    regexp: '^#?{{ item.key }}.*'
+    line: "{{ item.key }} {{ item.value }}"
+  with_items:
+    - { key: "Hostname",                value: '"{{ main_domain_name }}"' }
+    - { key: "BaseDir",                 value: '"/var/lib/collectd"' }
+    - { key: "PIDFile",                 value: '"/var/run/collectd.pid"' }
+    - { key: "PluginDir",               value: '"/usr/lib64/collectd"' }
+    - { key: "TypesDB",                 value: '"/usr/share/collectd/types.db"' }
+    - { key: "AutoLoadPlugin",          value: 'false' }
+    - { key: "CollectInternalStats",    value: 'false' }
+    - { key: "Interval",                value: '30' }
+    - { key: "MaxReadInterval",         value: '86400' }
+    - { key: "Timeout",                 value: '2' }
+    - { key: "ReadThreads",             value: '5' }
+    - { key: "WriteThreads",            value: '5' }
+    - { key: "WriteQueueLimitHigh",     value: '1000000' }
+    - { key: "WriteQueueLimitLow",      value: '800000' }
+  notify:
+    - restart collectd
+
+- name: collectd base plugins configured
+  lineinfile:
+    path: /etc/collectd.conf
+    regexp: '^#?{{ item.key }}\s+{{ item.value }}$'
+    line: "{{ item.key }} {{ item.value }}"
+  with_items:
+    - { key: "LoadPlugin",  value: 'syslog' }
+    - { key: "#LoadPlugin", value: 'logfile' }
+    - { key: "LoadPlugin",  value: 'cpu' }
+    - { key: "LoadPlugin",  value: 'interface' }
+    - { key: "LoadPlugin",  value: 'load' }
+    - { key: "LoadPlugin",  value: 'memory' }
+    - { key: "Include",     value: '"/etc/collectd.d"' }
   notify:
     - restart collectd
 
 # FIXME try to split processes snippet and put each line inside its role
-- name: collectd snippets installed
+- name: collectd additional base plugins configured
   template:
     src: "{{ item }}.conf.j2"
     dest: /etc/collectd.d/{{ item }}.conf
