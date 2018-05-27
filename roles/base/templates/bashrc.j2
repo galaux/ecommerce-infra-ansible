@@ -31,16 +31,4 @@ LIGHT_BLUE='\[\033[1;34m\]'
 DARK_CYAN='\[\033[0;36m\]'
 LIGHT_CYAN='\[\033[1;36m\]'
 
-{% if is_prod %}
-{% if is_root %}
-export PS1="\n${DARK_RED}\u${RESET}@${DARK_RED}\H${RESET} \w \\$ "
-{% else %}
-export PS1="\n\u@${DARK_RED}\H${RESET} \w \\$ "
-{% endif %}
-{% else %}
-{% if is_root %}
-export PS1="\n${DARK_RED}\u${RESET}@${DARK_YELLOW}\H${RESET} \w \\$ "
-{% else %}
-export PS1="\n\u@${DARK_YELLOW}\H${RESET} \w \\$ "
-{% endif %}
-{% endif %}
+export PS1="\n${{ item.user_color }}\u${RESET}@${{ hostname_color }}\H${RESET} \w \\$ "

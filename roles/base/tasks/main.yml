@@ -97,10 +97,11 @@
     group: "{{ item.ownergp }}"
     mode: 0644
   vars:
-    is_root: "{{ item.is_root }}"
+    user_color: "{{ item.user_color }}"
+    hostname_color: "{% if is_prod %}DARK_RED{% else %}DARK_YELLOW{% endif %}"
   with_items:
-    - { dest_dir: "/root",                    ownergp: "root",               is_root: true }
-    - { dest_dir: "/home/{{ regular_user }}", ownergp: "{{ regular_user }}", is_root: false }
+    - { dest_dir: "/root",                    ownergp: "root",               user_color: "DARK_RED" }
+    - { dest_dir: "/home/{{ regular_user }}", ownergp: "{{ regular_user }}", user_color: "DARK_GREY" }
 
 - name: monit snippet installed
   copy:
