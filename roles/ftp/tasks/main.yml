@@ -17,6 +17,8 @@
     - { name: "listen", value: "YES" }
     - { name: "listen_ipv6", value: "NO" }
     - { name: "pasv_enable", value: "NO" }
+  notify:
+    - restart vsftpd
 
 - name: Read only Unix user created
   user:

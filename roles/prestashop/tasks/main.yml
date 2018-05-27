@@ -145,6 +145,8 @@
     owner: apache
     group: apache
     mode: 0664
+  notify:
+    - restart nginx
 
 - name: files and directories owner/group set
   file:
