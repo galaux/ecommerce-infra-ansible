@@ -82,3 +82,13 @@
   notify:
     - reload monit
 
+- name: collectd snippet installed
+  template:
+    src: collectd.conf.j2
+    dest: /etc/collectd.d/mysqld.conf
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - restart collectd
+

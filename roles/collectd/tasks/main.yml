@@ -50,7 +50,6 @@
     mode: 0644
   with_items:
     - df
-    - mysql
     - processes
     - unixsock
   notify:
