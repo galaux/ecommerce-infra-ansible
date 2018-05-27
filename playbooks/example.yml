@@ -7,6 +7,7 @@
   roles:
     - { role: base,                             tags: ['base'] }
     - { role: sshd,                             tags: ['sshd'] }
+    - { role: collectd,                         tags: ['collectd'] }
     - { role: postfix,                          tags: ['postfix'] }
     - { role: backup-instance,                  tags: ['backup-instance'] }
     - { role: letsencrypt,                      tags: ['letsencrypt'] }
@@ -16,7 +17,6 @@
     - { role: mysqld,                           tags: ['mysqld'] }
     - { role: prestashop,                       tags: ['prestashop'] }
     - { role: wordpress,                        tags: ['wordpress'] }
-    - { role: collectd,                         tags: ['collectd'] }
     - { role: phpmyadmin,                       tags: ['phpmyadmin'] }
     - { role: monit,                            tags: ['monit'] }
     - { role: ftp,                              tags: ['ftp'] }
