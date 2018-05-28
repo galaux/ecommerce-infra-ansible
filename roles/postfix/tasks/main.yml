@@ -25,7 +25,7 @@
     regexp: "^#?{{ item.key }}@{{ main_domain_name }}"
     line: "{{ item.key }}@{{ main_domain_name }} {{ item.value }}"
   with_items:
-    - { key: "contact",    value: "owner@gmail" }
+    - { key: "contact",    value: "owner@example.com" }
     - { key: "galaux",     value: "guillaume@alaux.net" }
     - { key: "guillaume",  value: "owner@example.com" }
     - { key: "postmaster", value: "owner@example.com" }
