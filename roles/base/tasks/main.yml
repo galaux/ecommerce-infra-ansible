@@ -103,6 +103,14 @@
     - { dest_dir: "/root",                    ownergp: "root",               user_color: "DARK_RED" }
     - { dest_dir: "/home/{{ regular_user }}", ownergp: "{{ regular_user }}", user_color: "DARK_GREY" }
 
+- name: backup snippet installed
+  copy:
+    src: backup-instance-banned-ips.sh
+    dest: /etc/backup-instance.d/banned-ips
+    owner: root
+    group: root
+    mode: 0755
+
 - name: monit snippet installed
   copy:
     src: monit
