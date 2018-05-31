@@ -70,7 +70,6 @@
   notify:
     - restart collectd
 
-# FIXME try to split processes snippet and put each line inside its role
 - name: collectd additional base plugins configured
   template:
     src: "{{ item }}.conf.j2"
@@ -80,7 +79,6 @@
     mode: 0644
   with_items:
     - df
-    - processes
     - unixsock
   notify:
     - restart collectd

@@ -2,3 +2,8 @@ LoadPlugin nginx
 <Plugin nginx>
       URL "http://localhost{{ nginx_status_path }}"
 </Plugin>
+
+LoadPlugin processes
+<Plugin "processes">
+  ProcessMatch "Nginx" "nginx"
+</Plugin>

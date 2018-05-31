@@ -6,3 +6,8 @@ LoadPlugin mysql
       Password "{{ collectd_sql_password }}"
   </Database>
 </Plugin>
+
+LoadPlugin processes
+<Plugin "processes">
+  ProcessMatch "MySQL"  "mysqld"
+</Plugin>
