@@ -13,7 +13,7 @@
     group: root
     mode: 0600
   notify:
-    - restart monit
+    - reload monit
 
 - name: monit started and enabled at boot
   service:
