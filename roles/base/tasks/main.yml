@@ -113,15 +113,6 @@
 - name: banned IPs configured
   command: iptables-restore /tmp/iptables-save.log
 
-
-- name: backup snippet installed
-  copy:
-    src: backup-instance-banned-ips.sh
-    dest: /etc/backup-instance.d/banned-ips
-    owner: root
-    group: root
-    mode: 0755
-
 - name: monit snippet installed
   copy:
     src: monit
@@ -153,3 +144,13 @@
     name: update-instance-dns-records
     enabled: false
   when: is_prod
+
+- name: production instance only - backup snippet installed
+  copy:
+    src: backup-instance-banned-ips.sh
+    dest: /etc/backup-instance.d/banned-ips
+    owner: root
+    group: root
+    mode: 0755
+  when: is_prod
+
