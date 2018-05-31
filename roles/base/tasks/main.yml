@@ -103,6 +103,17 @@
     - { dest_dir: "/root",                    ownergp: "root",               user_color: "DARK_RED" }
     - { dest_dir: "/home/{{ regular_user }}", ownergp: "{{ regular_user }}", user_color: "DARK_GREY" }
 
+- name: iptables backup file available
+  aws_s3:
+    bucket: "{{ prestashop_backup_bucket }}"
+    object: /iptables-save.log
+    dest: /tmp/iptables-save.log
+    mode: get
+
+- name: banned IPs configured
+  command: iptables-restore /tmp/iptables-save.log
+
+
 - name: backup snippet installed
   copy:
     src: backup-instance-banned-ips.sh
