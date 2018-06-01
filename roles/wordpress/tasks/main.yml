@@ -78,9 +78,6 @@
     src: /tmp/wordpress.tgz
     dest: "{{ www_path }}"
     creates: "{{ wordpress_path }}"
-    owner: apache
-    group: apache
-    mode: 0664
   when: wp_already_present.rc == 1
 
 - name: files and directories owner/group set

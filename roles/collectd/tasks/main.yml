@@ -111,9 +111,6 @@
     src: "https://github.com/pommi/CGP/archive/v1.tar.gz"
     dest: "{{ monitoring_path }}"
     extra_opts: [--strip-components=1]
-    owner: apache
-    group: apache
-    mode: 0755
   when: cgp_already_present.rc == 1
 
 - name: files and directories owner/group set

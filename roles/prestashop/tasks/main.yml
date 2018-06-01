@@ -88,9 +88,6 @@
     src: "https://www.prestashop.com/download/old/prestashop_{{ prestashop_version.stdout }}.zip"
     dest: "{{ www_path }}"
     creates: "{{ prestashop_path }}"
-    owner: apache
-    group: apache
-    mode: 0664
     exclude: Install_PrestaShop.html
   when: ps_already_present.rc == 1
 
