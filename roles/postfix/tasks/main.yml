@@ -12,7 +12,6 @@
     line: "{{ item.key }} = {{ item.value }}"
   with_items:
     - { key: "mydomain",                value: "{{ main_domain_name }}" }
-    - { key: "virtual_alias_domains",   value: "{{ main_domain_name }}" }
     - { key: "virtual_alias_maps",      value: "hash:/etc/postfix/virtual" }
     - { key: "inet_interfaces",         value: "all" }
     - { key: "inet_protocols",          value: "ipv4" }
