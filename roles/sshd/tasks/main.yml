@@ -11,7 +11,7 @@
     regexp: "^#?{{ item.key }}"
     line: "{{ item.key }} {{ item.value }}"
   notify:
-    - restart sshd
+    - reload sshd
   with_items:
     - { key: "Port", value: "{{ ssh_port }}" }
 
