@@ -8,7 +8,6 @@
 
 - name: phpMyAdmin configured
   lineinfile:
-    backrefs: yes
     path: /etc/phpMyAdmin/config.inc.php
     regexp: "^\\$cfg\\['Servers'\\]\\[\\$i\\]\\['{{ item.key }}'\\]"
     line: "$cfg['Servers'][$i]['{{ item.key }}'] = '{{ item.value }}';"

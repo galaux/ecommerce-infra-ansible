@@ -24,7 +24,6 @@
 
 - name: php-fpm pool configured
   lineinfile:
-    backrefs: yes
     path: /etc/php-fpm.d/www.conf
     regexp: "^;?{{ item.key }} ="
     line: "{{ item.key }} = {{ item.value }}"
