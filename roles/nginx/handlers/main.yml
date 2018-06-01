@@ -1,5 +1,9 @@
 ---
 
+# At the moment, `systemctl reload nginx` performs a `kill -s HUP $MAINPID`
+# rather than a `nginx -s reload` Let's keep a "restart nginx" handler
+# rather than a "reload nginx"
+# https://bugzilla.redhat.com/show_bug.cgi?id=1565377
 - name: restart nginx
   service:
     name: nginx
