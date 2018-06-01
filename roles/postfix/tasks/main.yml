@@ -17,7 +17,7 @@
     - { key: "inet_interfaces",         value: "all" }
     - { key: "inet_protocols",          value: "ipv4" }
   notify:
-    - restart postfix
+    - reload postfix
 
 - name: email redirections configured
   lineinfile:
@@ -33,7 +33,7 @@
     - { key: "",           value: "owner@example.com.guillaume@alaux.net" } # Catch-all
   notify:
     - update postfix lookup table
-    - restart postfix
+    - reload postfix
 
 - name: postfix started and enabled at boot
   service:

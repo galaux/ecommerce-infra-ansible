@@ -1,9 +1,9 @@
 ---
 
-- name: restart postfix
+- name: reload postfix
   service:
     name: postfix
-    state: restarted
+    state: reloaded
 
 - name: update postfix lookup table
   command: /sbin/postmap /etc/postfix/virtual
