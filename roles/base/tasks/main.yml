@@ -115,8 +115,8 @@
   command: iptables-restore /tmp/iptables-save.log
 
 - name: monit snippet installed
-  copy:
-    src: monit
+  template:
+    src: monit.j2
     dest: /etc/monit.d/system
     owner: root
     group: root

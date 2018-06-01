@@ -1,4 +1,4 @@
-check system example
+check system {{ main_domain_name }}
   if loadavg (1min) > 1 then alert
   if loadavg (5min) > 0.4 then alert
   if loadavg (15min) > 0.4 then alert

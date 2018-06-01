@@ -52,8 +52,6 @@ mysql_root_password: XXXXXXXX
 mysql_wp_user: "wp_std"
 mysql_wp_password: XXXXXXXX
 mysql_wp_db_name: "wp_std"
-mailer_address: "monit@example.com"
-mailer_password: XXXXXXXX
 nginx_status_path: "/status-nginx"
 php_fpm_pid_path: "/run/php-fpm/php-fpm.pid"
 php_fpm_status_path: "/status-php-fpm"

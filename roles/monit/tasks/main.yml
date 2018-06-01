@@ -6,12 +6,21 @@
     state: present
 
 - name: monit configuration installed
-  template:
-    src: monit.j2
-    dest: /etc/monitrc
-    owner: root
-    group: root
-    mode: 0600
+  lineinfile:
+    path: /etc/monit.d/monit-alert-email
+    regexp: "^#?set alert {{ item }}"
+    line: "{% if not is_prod %}#{% endif %}set alert {{ item }}"
+    create: yes
+  with_items:
+    - "owner@example.com"
+    - "monit.example@alaux.net"
+  notify:
+    - reload monit
+
+- name: monit logs to system
+  file:
+    path: /etc/monit.d/logging
+    state: absent
   notify:
     - reload monit
 
