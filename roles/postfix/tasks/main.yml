@@ -30,7 +30,7 @@
     - { key: "guillaume",  value: "owner@example.com" }
     - { key: "postmaster", value: "owner@example.com" }
     - { key: "root",       value: "owner@example.com,guillaume@alaux.net" }
-    - { key: "",           value: "owner@example.com" } # Catch-all
+    - { key: "",           value: "owner@example.com.guillaume@alaux.net" } # Catch-all
   notify:
     - update postfix lookup table
     - restart postfix
