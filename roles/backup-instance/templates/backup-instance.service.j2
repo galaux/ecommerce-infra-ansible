@@ -1,6 +1,7 @@
 [Unit]
 Description=Backup instance
-After=network.target
+After=network.target{% if not is_prod %} renew-certificates.service{% endif %}
+
 
 [Service]
 Type=oneshot

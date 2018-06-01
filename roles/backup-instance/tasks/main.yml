@@ -17,8 +17,8 @@
     mode: 0755
 
 - name: Systemd service to run backup instance installed
-  copy:
-    src: backup-instance.service
+  template:
+    src: backup-instance.service.j2
     dest: /etc/systemd/system/backup-instance.service
     owner: root
     group: root

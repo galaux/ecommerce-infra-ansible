@@ -2,12 +2,6 @@
 
 # DEST_DIR=$1
 DEST_DIR_NO_DATE=$2
-{% if not is_prod %}
-
-# On test instances, we don't setup any cron to renew the certificates
-# so ensure they are renewed right before we back them up.
-certbot -n renew
-{% endif %}
 
 tar -czf \
   ${DEST_DIR_NO_DATE}/{{ certificates_backup_name }} \
