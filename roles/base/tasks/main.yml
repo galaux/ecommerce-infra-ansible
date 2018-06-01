@@ -15,6 +15,8 @@
     regexp: "^#?SELINUX="
     line: "SELINUX=permissive"
 
+# boto3 required for Ansible module aws_s3
+# passlib required for Ansible module htpasswd
 - name: base packages are installed
   yum:
     name: >
@@ -22,6 +24,7 @@
       htop,
       patch,
       python-boto3,
+      python-passlib,
       tree,
       unzip,
       vim-enhanced

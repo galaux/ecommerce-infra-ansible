@@ -43,11 +43,13 @@
     - admin.conf
     - blog.conf
 
-# TODO use Ansible `htpasswd` here
+# Crypt scheme set to plain text in order to store password encrypted
 - name: htpasswd file installed
-  template:
-    src: htpasswd.j2
-    dest: "{{ htpasswd_path }}"
+  htpasswd:
+    path: "{{ htpasswd_path }}"
+    name: postmaster
+    password: '$apr1$XXXXXXXX'
+    crypt_scheme: plaintext
     owner: root
     group: root
     mode: 0644
