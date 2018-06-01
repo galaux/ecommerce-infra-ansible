@@ -6,14 +6,15 @@
     state: present
 
 - name: sshd configured
-  template:
-    src: sshd_config.j2
-    dest: /etc/ssh/sshd_config
-    owner: root
-    group: root
-    mode: 0644
+  lineinfile:
+    backrefs: yes
+    path: /etc/ssh/sshd_config
+    regexp: "^#?{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
   notify:
     - restart sshd
+  with_items:
+    - { key: "Port", value: "{{ ssh_port }}" }
 
 - name: restricted file permissions set
   file:
