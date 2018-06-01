@@ -13,7 +13,7 @@
   lineinfile:
     backrefs: yes
     path: /etc/selinux/config
-    regexp: "^SELINUX=enforcing"
+    regexp: "^#?SELINUX="
     line: "SELINUX=permissive"
 
 - name: base packages are installed

@@ -8,7 +8,7 @@
 - name: vsftpd config file installed
   lineinfile:
     path: /etc/vsftpd/vsftpd.conf
-    regexp: "{{ item.name }}"
+    regexp: "^#?{{ item.name }}="
     line: "{{ item.name }}={{ item.value }}"
   with_items:
     - { name: "anonymous_enable", value: "NO" }
