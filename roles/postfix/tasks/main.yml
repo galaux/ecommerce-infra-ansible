@@ -34,6 +34,26 @@
     - update postfix lookup table
     - reload postfix
 
+- name: Systemd sendmail script installed
+  copy:
+    src: systemd-email.sh
+    dest: /usr/local/bin/systemd-email
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Systemd sendmail service installed
+  template:
+    src: status-email-user@.service.j2
+    dest: /etc/systemd/system/status-email-user@.service
+    owner: root
+    group: root
+    mode: 0644
+  vars:
+    to_addresses: "owner@example.com,guillaume@alaux.net"
+  notify:
+    - daemon reload
+
 - name: postfix started and enabled at boot
   service:
     name: postfix
