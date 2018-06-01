@@ -1,7 +1,10 @@
 [Unit]
 Description=Certificates renewal
+OnFailure=status-email-user@%n.service
 
 [Service]
 Type=oneshot
+StandardOutput=syslog
+StandardError=syslog
 ExecStart=/bin/certbot -n renew
 ExecStartPost=/bin/systemctl reload nginx.service
