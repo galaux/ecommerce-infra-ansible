@@ -12,8 +12,7 @@
     line: "{% if not is_prod %}#{% endif %}set alert {{ item }}"
     create: yes
   with_items:
-    - "owner@example.com"
-    - "monit.example@alaux.net"
+    "{{ admins_email_list }}"
   notify:
     - reload monit
 

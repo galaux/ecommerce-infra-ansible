@@ -24,12 +24,12 @@
     regexp: "^#?{{ item.key }}@{{ main_domain_name }}"
     line: "{{ item.key }}@{{ main_domain_name }} {{ item.value }}"
   with_items:
-    - { key: "contact",    value: "owner@example.com" }
-    - { key: "galaux",     value: "guillaume@alaux.net" }
-    - { key: "guillaume",  value: "owner@example.com" }
-    - { key: "postmaster", value: "owner@example.com" }
-    - { key: "root",       value: "owner@example.com,guillaume@alaux.net" }
-    - { key: "",           value: "owner@example.com.guillaume@alaux.net" } # Catch-all
+    - { key: "contact",    value: "{{ gdb_email }}" }
+    - { key: "galaux",     value: "{{ gax_email }}" }
+    - { key: "guillaume",  value: "{{ gdb_email }}" }
+    - { key: "postmaster", value: "{{ gdb_email }}" }
+    - { key: "root",       value: "{{ gdb_email }},{{ gax_email }}" }
+    - { key: "",           value: "{{ gdb_email }}.{{ gax_email }}" } # Catch-all
   notify:
     - update postfix lookup table
     - reload postfix
@@ -50,7 +50,7 @@
     group: root
     mode: 0644
   vars:
-    to_addresses: "owner@example.com,guillaume@alaux.net"
+    to_addresses: "{{ admins_emails_str }}"
   notify:
     - daemon reload
 
