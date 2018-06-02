@@ -1,0 +1,65 @@
+#!/bin/sh
+
+PS_DB_NAME='{{ mysql_ps_db_name }}'
+
+PS_OPEN='1'
+PS_CLOSED='0'
+
+PS_TABLE="pss_configuration"
+
+QUERY_SET_OPEN="UPDATE ${PS_TABLE} SET value=${PS_OPEN} WHERE name='PS_SHOP_ENABLE';"
+QUERY_SET_CLOSE="UPDATE ${PS_TABLE} SET value=${PS_CLOSED} WHERE name='PS_SHOP_ENABLE';"
+QUERY_GET="SELECT value FROM ${PS_TABLE} WHERE name='PS_SHOP_ENABLE';"
+
+function run_sql_query() {
+  query=$1
+  mysql \
+    --batch \
+    --skip-column-names \
+    --execute "${query}" \
+    ${PS_DB_NAME}
+}
+
+function get_status() {
+  retval=$(run_sql_query "${QUERY_GET}")
+  case "x${retval}" in
+    "x${PS_OPEN}")
+      echo "Site is OPEN"
+      break
+      ;;
+    "x${PS_CLOSED}")
+      echo "Site is CLOSED"
+      break
+      ;;
+    *)
+      echo "Error. Unknown value in DB: ${retval}."
+      break
+      ;;
+  esac
+}
+
+
+action=$1
+
+case ${action} in
+  'get')
+    get_status
+    break
+    ;;
+  'open')
+    run_sql_query "${QUERY_SET_OPEN}"
+    get_status
+    break
+    ;;
+  'close')
+    run_sql_query "${QUERY_SET_CLOSE}"
+    get_status
+    break
+    ;;
+  *)
+    echo "Unknown action specified: '${action}'."
+    echo "Must be one of 'get', 'open' or 'close'."
+    echo "Nothing done."
+    exit 1
+    ;;
+esac

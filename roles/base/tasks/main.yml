@@ -84,6 +84,14 @@
     group: root
     mode: 0644
 
+- name: script to open/close shop installed
+  template:
+    src: prestashop-status.sh.j2
+    dest: /usr/local/bin/prestashop-status
+    owner: root
+    group: root
+    mode: 0755
+
 - name: compression for logrotate set
   lineinfile:
     path: /etc/logrotate.conf
