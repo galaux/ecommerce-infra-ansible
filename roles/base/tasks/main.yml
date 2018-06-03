@@ -22,20 +22,12 @@
     name: >
       bzip2,
       htop,
-      patch,
       python-boto3,
       python-passlib,
       tree,
       unzip,
       vim-enhanced
     state: present
-
-# https://bugs.centos.org/view.php?id=14771
-# TODO: remove `patch` from dependencies when removing this
-- name: missing import in python-boto3 file present
-  patch:
-    basedir: /
-    src: python-boto3-add-sys-import.patch
 
 # Dirty awscli install to circumvent its python dependency mess in CentOS
 - name: pip installed
