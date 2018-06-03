@@ -16,13 +16,14 @@
     line: "SELINUX=permissive"
 
 # boto3 required for Ansible module aws_s3
+# - watchout python-boto3 is buggy: https://bugs.centos.org/view.php?id=14771
 # passlib required for Ansible module htpasswd
 - name: base packages are installed
   yum:
     name: >
       bzip2,
       htop,
-      python-boto3,
+      python2-boto3,
       python-passlib,
       python2-pip,
       tree,

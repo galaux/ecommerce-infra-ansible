@@ -66,7 +66,7 @@ Resources:
             --assumeyes \
             install \
             wget \
-            python-boto3 \
+            python2-boto3 \
             ansible
           cd /tmp
           wget "$ARCHIVE_URL?private_token=$GITLAB_TOKEN" \
