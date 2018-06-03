@@ -5,18 +5,18 @@
   become: true
   become_user: root
   roles:
-    - { role: base,                             tags: ['base'] }
-    - { role: sshd,                             tags: ['sshd'] }
-    - { role: collectd,                         tags: ['collectd'] }
-    - { role: postfix,                          tags: ['postfix'] }
-    - { role: backup-instance,                  tags: ['backup-instance'] }
-    - { role: letsencrypt,                      tags: ['letsencrypt'] }
-    - { role: nginx,                            tags: ['nginx'] }
-    - { role: php,                              tags: ['php'] }
-    - { role: php-fpm,                          tags: ['php-fpm'] }
-    - { role: mysqld,                           tags: ['mysqld'] }
-    - { role: prestashop,                       tags: ['prestashop'] }
-    - { role: wordpress,                        tags: ['wordpress'] }
-    - { role: phpmyadmin,                       tags: ['phpmyadmin'] }
-    - { role: monit,                            tags: ['monit'] }
-    - { role: ftp,                              tags: ['ftp'] }
+    - { role: base,              tags: ['base'] }
+    - { role: sshd,              tags: ['sshd'] }
+    - { role: mysqld,            tags: ['mysqld'] }
+    - { role: letsencrypt,       tags: ['letsencrypt'] }
+    - { role: nginx,             tags: ['nginx'] }
+    - { role: collectd,          tags: ['collectd'] } # Requires mysqld, nginx
+    - { role: postfix,           tags: ['postfix'] }
+    - { role: backup-instance,   tags: ['backup-instance'] }
+    - { role: php,               tags: ['php'] }
+    - { role: php-fpm,           tags: ['php-fpm'] }
+    - { role: prestashop,        tags: ['prestashop'] } # Requires mysqld, nginx
+    - { role: wordpress,         tags: ['wordpress'] } # Requires mysqld, nginx
+    - { role: phpmyadmin,        tags: ['phpmyadmin'] } # Requires mysqld, nginx
+    - { role: monit,             tags: ['monit'] }
+    - { role: ftp,               tags: ['ftp'] }
