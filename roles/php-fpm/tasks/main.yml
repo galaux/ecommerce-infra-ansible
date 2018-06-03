@@ -30,6 +30,8 @@
     # https://stackoverflow.com/a/21934455/2681752
   with_items:
     - { key: "access.log",           value: "/var/log/php-fpm/$pool.access.log" }
+    - { key: "user",                 value: "{{ www_owner }}"                   }
+    - { key: "group",                value: "{{ www_group }}"                   }
     - { key: "listen",               value: "/var/run/php-fpm/php-fpm.sock"     }
     - { key: "listen.acl_users",     value: "nginx"                             }
     - { key: "pm",                   value: "static"                            }

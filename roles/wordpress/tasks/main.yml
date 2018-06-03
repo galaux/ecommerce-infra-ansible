@@ -83,8 +83,8 @@
 - name: files and directories owner/group set
   file:
     path: "{{ wordpress_path }}"
-    owner: apache
-    group: apache
+    owner: "{{ www_owner }}"
+    group: "{{ www_group }}"
     mode: 0664
     state: directory
     recurse: yes

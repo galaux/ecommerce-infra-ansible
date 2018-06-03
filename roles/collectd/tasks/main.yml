@@ -101,8 +101,8 @@
   file:
     path: "{{ monitoring_path }}"
     state: directory
-    owner: apache
-    group: apache
+    owner: "{{ www_owner }}"
+    group: "{{ www_group }}"
     mode: 0755
 
 - name: CGP files installed
@@ -116,8 +116,8 @@
 - name: files and directories owner/group set
   file:
     path: "{{ monitoring_path }}"
-    owner: apache
-    group: apache
+    owner: "{{ www_owner }}"
+    group: "{{ www_group }}"
     mode: 0644
     state: directory
     recurse: yes

@@ -123,8 +123,8 @@
   copy:
     content: ""
     dest: "{{ prestashop_path }}/.htaccess"
-    owner: apache
-    group: apache
+    owner: "{{ www_owner }}"
+    group: "{{ www_group }}"
     mode: 0644
 
 - name: robots.txt downloaded from S3
@@ -139,8 +139,8 @@
   template:
     src: settings.inc.php.j2
     dest: "{{ prestashop_path }}/config/settings.inc.php"
-    owner: apache
-    group: apache
+    owner: "{{ www_owner }}"
+    group: "{{ www_group }}"
     mode: 0664
   notify:
     - restart nginx
@@ -148,8 +148,8 @@
 - name: files and directories owner/group set
   file:
     path: "{{ prestashop_path }}"
-    owner: apache
-    group: apache
+    owner: "{{ www_owner }}"
+    group: "{{ www_group }}"
     mode: 0664
     state: directory
     recurse: yes
