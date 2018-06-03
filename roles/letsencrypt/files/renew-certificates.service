@@ -6,5 +6,5 @@ OnFailure=status-email-user@%n.service
 Type=oneshot
 StandardOutput=syslog
 StandardError=syslog
-ExecStart=/bin/certbot -n renew
+ExecStart=/usr/local/bin/certbot -n renew
 ExecStartPost=/bin/systemctl reload nginx.service

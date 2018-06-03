@@ -1,18 +1,18 @@
 ---
 
 - name: certbot installed
-  yum:
+  pip:
+    virtualenv: "{{ virtualenv_path }}/certbot"
     name: >
       certbot,
-      python2-certbot-nginx
+      certbot-nginx,
+      certbot-dns-route53
 
-# - name: certbot dependencies installed
-#   shell: >
-#     unset $PYTHON_INSTALL_LAYOUT && \
-#     /usr/local/bin/certbot-auto \
-#       --debug \
-#       --non-interactive \
-#       --version
+- name: certbot link available
+  file:
+    src: "{{ virtualenv_path }}/certbot/bin/certbot"
+    dest: /usr/local/bin/certbot
+    state: link
 
 - name: state whether certificates are already present
   command: test -d "{{ letsencrypt_path }}"
