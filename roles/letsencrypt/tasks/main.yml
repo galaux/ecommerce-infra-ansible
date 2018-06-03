@@ -36,6 +36,14 @@
     creates: "{{ letsencrypt_path }}"
   when: letsencrypt_already_present.rc == 1
 
+- name: files and directories owner/group set
+  file:
+    path: "{{ backup_data_snippet_dir }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+    recurse: yes
 
 - name: data backup snippet installed
   template:
