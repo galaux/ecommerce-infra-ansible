@@ -72,6 +72,17 @@
     group: root
     mode: 0600
 
+- name: monit and collectd snippet directories created
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - /etc/collectd.d
+    - /etc/monit.d
+
 - name: monit snippet installed
   template:
     src: monit.j2
