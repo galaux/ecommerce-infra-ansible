@@ -56,10 +56,9 @@
   notify:
     - restart nginx
 
-- name: nginx started and enabled
+- name: nginx and enabled
   service:
     name: nginx
-    state: started
     enabled: yes
 
 - name: nginx monit snippet installed
