@@ -20,6 +20,7 @@ admins_email_list:
   - "{{ gdb_email }}"
   - "{{ gax_email }}"
 admins_emails_str: "{{ ','.join(admins_email_list) }}"
+virtualenv_path: "/var/lib/virtualenv"
 backup_data_snippet_dir: "/etc/backup-instance.d"
 is_prod: "{% if main_domain_name == 'example.com' %}True{% else %}False{% endif %}"
 ssh_port: 22

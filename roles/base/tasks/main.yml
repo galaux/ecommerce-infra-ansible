@@ -24,19 +24,23 @@
       htop,
       python-boto3,
       python-passlib,
+      python2-pip,
       tree,
       unzip,
-      vim-enhanced
-    state: present
-
-# Dirty awscli install to circumvent its python dependency mess in CentOS
-- name: pip installed
-  yum:
-    name: python2-pip
+      vim-enhanced,
+      python-virtualenv
     state: present
 
 - name: awscli installed
-  command: /bin/pip install awscli
+  pip:
+    virtualenv: "{{ virtualenv_path }}/awscli"
+    name: awscli
+
+- name: aws link available
+  file:
+    src: "{{ virtualenv_path }}/awscli/bin/aws"
+    dest: /usr/local/bin/aws
+    state: link
 
 - name: hostname set
   command: /usr/bin/hostnamectl set-hostname "{{ main_domain_name }}"
