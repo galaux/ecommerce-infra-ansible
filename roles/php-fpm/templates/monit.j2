@@ -5,8 +5,5 @@ check process php-fpm with pidfile {{ php_fpm_pid_path }}
   if cpu > 80% for 5 cycles then restart
   if totalmem > 1500.0 MB for 5 cycles then restart
   if children > 250 then restart
-  if loadavg(1min) greater than 1 for 2 cycles then alert
-  if loadavg(5min) greater than 0.4 for 2 cycles then alert
-  #if loadavg(5min) greater than 0.4 for 8 cycles then stop
   if 3 restarts within 5 cycles then timeout
 
