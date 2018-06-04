@@ -24,16 +24,6 @@ Nice to have
 ------------
 
 - écrire script ou playbook qui transforme une instance de test en prod
-  - sur nouvelle prod : lancer ansible sur le playbook `drop-data`
-  - sur actuelle prod :
-    - mettre PS en maintenance via requête SQL
-    - lancer script de backup
-  - lancer Ansible sur nouvelle prod **avec tous les roles** pour remettre la conf au carat
-  - switcher elastic IP
-  - enlever site de nouvelle prod de maintenance via requête SQL
-  - sur ancienne prod :
-    - attention elle ne répond plus au nom de example.com !!!
-    - relancer ansible pour la configurer en "test" (ou prévoire un autre subdomain genre `oldprod.example.com`?)
 - configurer les services suivants pour qu'ils utilisent l'adresse commune contact@example.com
   - letsencrypt
   - AWS route53
@@ -67,7 +57,25 @@ Can wait
 - les infos textuelles que l'on backup devraient être backupées dans un fichier text commun `config.yml`
   - pour l'instant il n'y a que la version de PS donc pas besoin …
 - monit peut vérifier les certificats SSL (voir la conf par défaut dans /etc/monitrc)
+- voir s'il n'est pas possible de factoriser le morceaux de codes qui crééent les répertoires comme /etc/monit.d et /etc/collectd.d
+- aucun service systemd ne devrait être "started" de façon autoritaire
+  - au lieu de ça, chaque service qui l'utilise devrait déclarer un `notify restart` sur lui
+  - ex :
+    - les rôles nginx et php-fpm ne devraient pas déclarer `service started`
+    - mais les rôles wordpress et prestashop, eux, devraient avoir un `notify restart nginx` et `… php-fpm`
+    - ils devraient aussi avoir un notify reload sur leur propre conf
+  - idem pour monit, collectd, … : ils ne devraient pas être started mais devraient avoir un `notify reload` sur leur propre conf
+  - attention à mysql qui doit être démarré pour pouvoir créer les BD et users
+    - chaque rôle qui a besoin de créer un user/bd peut vérifier qu'il est lancé!
+- attention les volumes associés aux images ne sont pas "marked as delete when terminated" ce qui fait qu'ils persistent après que j'aie "terminate" l'instance!
+- mettre rôle backup-instance après le rôle postfix pour éviter les "erreurs" dans les logs :
+- php-fpm loggue dans www.access.log au lieu de www-access.log
+- nginx loggue dans blog.error.log au lieu de blog-error.log
+- php-fpm loggue tout www dans le même fichier : splitter en blog/ps
+- configurer PS pour utiliser le postfix local?
 
+- voir quels doivent être les droits de /etc/letsencrypt sur prod et les fixer
+- attention quand on transforme une test en prod il reste les anciennes entrées de test dans /etc/postfix/virtual
 
 
 About performances
@@ -92,25 +100,22 @@ About performances
 Procédure de MEP
 ----------------
 
+- rajouter 8.8.4.4 dans resolv.conf de ma machine
 - créer nouvelle instance EC2 "test"
   - BackupDate: latest_backup
   - Branch: develop
   - DomainPrefix: 'test'
   - InstanceType: 't2.micro'
 - attendre que cette instance soit up, la rebooter
-- vérifier que tout fonctionne (pour cette MEP il faudra générer et copier les nouveaux certificats à la main depuis actuelle prod vers nouvelle prod)
-- sur nouvelle prod : lancer ansible sur le playbook `drop-data`
+- vérifier que tout fonctionne
+- sur test : lancer ansible sur le playbook `drop-data`
 - sur actuelle prod :
   - mettre PS en maintenance
   - lancer script de backup
-- lancer Ansible sur nouvelle prod **avec tous les roles** pour remettre la conf au carat
+- lancer Ansible sur test avec `domain_prefix=''`
+
 - switcher elastic IP
 - enlever site de nouvelle prod de maintenance
 - sur ancienne prod :
   - attention elle ne répond plus au nom de example.com !!!
-  - relancer ansible pour la configurer en "test" (ou prévoire un autre subdomain genre `oldprod.example.com`?)
 - éteindre/supprimer ancienne prod
-
-
-
-- voir pourquoi j'ai retrouvé 30 "volumes" dans la console AWS (mes instances générées via CloudFormation génèrent-elles des backups automatiquement?)
