@@ -5,7 +5,18 @@
     name: monit
     state: present
 
-- name: monit configuration installed
+- name: monit alerting configuration installed
+  lineinfile:
+    path: /etc/monit.d/monit-alert-email
+    regexp: "^#?{{ conf_line }}"
+    line: "{{ conf_line }}"
+    create: yes
+  vars:
+    conf_line: "set mailserver localhost"
+  notify:
+    - reload monit
+
+- name: monit alerting email configuration installed
   lineinfile:
     path: /etc/monit.d/monit-alert-email
     regexp: "^#?set alert {{ item }}"
