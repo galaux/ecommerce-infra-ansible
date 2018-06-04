@@ -36,8 +36,8 @@ prestashop_backups:
   - { tarball: "themes_example.tgz", relpath: "themes/example" }
   - { tarball: "translations.tgz",          relpath: "translations" }
   - { tarball: "upload.tgz",                relpath: "upload" }
-www_owner: "nginx"
-www_group: "nginx"
+www_owner: "apache"
+www_group: "apache"
 www_path: "/var/www"
 prestashop_backup_bucket: "prestashop-data"
 prestashop_path: "{{ www_path }}/prestashop"
