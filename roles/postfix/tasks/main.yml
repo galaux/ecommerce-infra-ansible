@@ -29,7 +29,7 @@
     - { key: "guillaume",  value: "{{ gdb_email }}" }
     - { key: "postmaster", value: "{{ gdb_email }}" }
     - { key: "root",       value: "{{ gdb_email }},{{ gax_email }}" }
-    - { key: "",           value: "{{ gdb_email }}.{{ gax_email }}" } # Catch-all
+    - { key: "",           value: "{{ gdb_email }},{{ gax_email }}" } # Catch-all
   notify:
     - update postfix lookup table
     - reload postfix
