@@ -1,11 +1,12 @@
 #!/bin/sh
 
-if [ -n $(ls -A {{ backup_data_snippet_dir }}) ];
+if [ -n "$(ls -A {{ backup_data_snippet_dir }})" ];
 then
   BACKUP_TIME=$(date +%F-%H%M%S)
   echo "New backup: ${BACKUP_TIME}"
 
   TEMP_DIR=$(mktemp -d)
+  mkdir ${TEMP_DIR}/${BACKUP_TIME}
 
   for snippet in {{ backup_data_snippet_dir }}/*;
   do
