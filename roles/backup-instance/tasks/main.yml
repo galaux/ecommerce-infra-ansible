@@ -16,10 +16,20 @@
     group: root
     mode: 0755
 
-- name: Systemd service to run backup instance installed
+- name: Systemd instance backup service installed
   template:
     src: backup-instance.service.j2
     dest: /etc/systemd/system/backup-instance.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - daemon reload
+
+- name: Systemd instance backup timer installed
+  copy:
+    src: backup-instance.timer
+    dest: /etc/systemd/system/backup-instance.timer
     owner: root
     group: root
     mode: 0644
@@ -36,11 +46,10 @@
   when: not is_prod
 
 - name: test instance only - instance backup timer disabled
-  file:
-    path: /etc/systemd/system/backup-instance.timer
-    state: absent
-  notify:
-    - daemon reload
+  service:
+    name: backup-instance.timer
+    enabled: no
+    state: stopped
   when: not is_prod
 
 
@@ -53,13 +62,9 @@
   when: is_prod
 
 - name: production instance only - instance backup timer enabled
-  copy:
-    src: backup-instance.timer
-    dest: /etc/systemd/system/backup-instance.timer
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - daemon reload
+  service:
+    name: backup-instance.timer
+    enabled: yes
+    state: started
   when: is_prod
 
