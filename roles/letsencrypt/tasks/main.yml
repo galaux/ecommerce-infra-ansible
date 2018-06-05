@@ -53,15 +53,18 @@
     group: root
     mode: 0755
 
-- name: certificates renewal service installed
+- name: Systemd certificates renewal units installed
   copy:
-    src: renew-certificates.service
-    dest: /etc/systemd/system/renew-certificates.service
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
     owner: root
     group: root
     mode: 0644
   notify:
     - daemon reload
+  with_items:
+    - renew-certificates.service
+    - renew-certificates.timer
 
 
 # Test config only
@@ -73,11 +76,10 @@
   when: not is_prod
 
 - name: test instance only - certificates renewal timer disabled
-  file:
-    path: /etc/systemd/system/renew-certificates.timer
-    state: absent
-  notify:
-    - daemon reload
+  service:
+    name: renew-certificates.timer
+    enabled: no
+    state: stopped
   when: not is_prod
 
 
@@ -90,13 +92,9 @@
   when: is_prod
 
 - name: production instance only - certificates renewal timer enabled
-  copy:
-    src: renew-certificates.timer
-    dest: /etc/systemd/system/renew-certificates.timer
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - daemon reload
+  service:
+    name: renew-certificates.timer
+    enabled: yes
+    state: started
   when: is_prod
 
