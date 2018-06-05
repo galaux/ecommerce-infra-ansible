@@ -25,6 +25,7 @@ grep '_PS_VERSION_' "${PS_DIR}/config/settings.inc.php" \
   > ${DEST_DIR}/{{ prestashop_version_file_name }}
 
 mysqldump \
+  --defaults-extra-file=/root/.my.cnf \
   {{ mysql_ps_db_name }} \
   | bzip2 \
   > ${DEST_DIR}/db_ps.sql.bz2
