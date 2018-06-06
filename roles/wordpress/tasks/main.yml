@@ -92,6 +92,16 @@
 - name: directories permissions set
   command: find "{{ wordpress_path }}" -type d -exec chmod 0775 {} +
 
+- name: Nginx configuration installed
+  copy:
+    src: vhost-nginx.conf
+    dest: /etc/nginx/conf.d/blog.conf-wordpress
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart nginx
+
 
 # Test config only
 
