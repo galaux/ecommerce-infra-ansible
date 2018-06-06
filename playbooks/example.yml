@@ -10,13 +10,13 @@
     - { role: mysqld,            tags: ['mysqld'] }
     - { role: letsencrypt,       tags: ['letsencrypt'] }
     - { role: nginx,             tags: ['nginx'] }
-    - { role: collectd,          tags: ['collectd'] } # Requires mysqld, nginx
+    - { role: php,               tags: ['php'] } # Installs httpd which creates user apache
+    - { role: php-fpm,           tags: ['php-fpm'] }
+    - { role: collectd,          tags: ['collectd'] } # Requires mysqld, nginx, php
     - { role: postfix,           tags: ['postfix'] }
     - { role: backup-instance,   tags: ['backup-instance'] }
-    - { role: php,               tags: ['php'] }
-    - { role: php-fpm,           tags: ['php-fpm'] }
-    - { role: prestashop,        tags: ['prestashop'] } # Requires mysqld, nginx
-    - { role: wordpress,         tags: ['wordpress'] } # Requires mysqld, nginx
-    - { role: phpmyadmin,        tags: ['phpmyadmin'] } # Requires mysqld, nginx
+    - { role: prestashop,        tags: ['prestashop'] } # Requires mysqld, nginx, php
+    - { role: wordpress,         tags: ['wordpress'] } # Requires mysqld, nginx, php
+    - { role: phpmyadmin,        tags: ['phpmyadmin'] } # Requires mysqld, nginx, php
     - { role: monit,             tags: ['monit'] }
     - { role: ftp,               tags: ['ftp'] }
