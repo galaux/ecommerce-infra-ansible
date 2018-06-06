@@ -19,17 +19,9 @@
     - reload postfix
 
 - name: email redirections configured
-  lineinfile:
-    path: /etc/postfix/virtual
-    regexp: "^#?{{ item.key }}@{{ main_domain_name }}"
-    line: "{{ item.key }}@{{ main_domain_name }} {{ item.value }}"
-  with_items:
-    - { key: "contact",    value: "{{ gdb_email }}" }
-    - { key: "galaux",     value: "{{ gax_email }}" }
-    - { key: "guillaume",  value: "{{ gdb_email }}" }
-    - { key: "postmaster", value: "{{ gdb_email }}" }
-    - { key: "root",       value: "{{ gdb_email }},{{ gax_email }}" }
-    - { key: "",           value: "{{ gdb_email }},{{ gax_email }}" } # Catch-all
+  template:
+    src: virtual.j2
+    dest: /etc/postfix/virtual
   notify:
     - update postfix lookup table
     - reload postfix
