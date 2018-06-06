@@ -143,7 +143,7 @@
     group: "{{ www_group }}"
     mode: 0664
   notify:
-    - restart nginx
+    - restart php-fpm
 
 - name: files and directories owner/group set
   file:
