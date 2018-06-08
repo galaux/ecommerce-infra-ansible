@@ -1,0 +1,22 @@
+<?php
+
+# create smooth graphs (rrdtool -E)
+$CONFIG['graph_smooth'] = true;
+
+# "png", "svg", "canvas" or "hybrid" (canvas on detail page, png on the others) graphs
+$CONFIG['graph_type'] = 'hybrid';
+
+# add XXth percentile line + legend to network graphs
+# false = disabled; 95 = 95th percentile
+$CONFIG['percentile'] = 95;
+
+# max width/height of a graph (to prevent from OOM)
+$CONFIG['detail-width'] = 1600;
+$CONFIG['detail-height'] = 700;
+
+# collectd's unix socket (unixsock plugin)
+# enabled: 'unix:///var/run/collectd-unixsock'
+# enabled (rrdcached): 'unix:///var/run/rrdcached.sock'
+# disabled: NULL
+$CONFIG['socket'] = 'unix://{{ collectd_socket_path }}';
+

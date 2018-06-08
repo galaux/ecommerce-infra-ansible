@@ -2,6 +2,6 @@ LoadPlugin unixsock
 <Plugin unixsock>
         SocketFile "{{ collectd_socket_path }}"
         SocketGroup "root"
-        SocketPerms "0660"
+        SocketPerms "0666"
         DeleteSocket false
 </Plugin>

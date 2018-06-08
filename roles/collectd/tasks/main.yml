@@ -123,12 +123,12 @@
     recurse: yes
 
 - name: CGP configured
-  lineinfile:
-    path: "{{ monitoring_path }}/conf/config.php"
-    regexp: "^\\$CONFIG\\['{{ item.key }}'\\]"
-    line: "$CONFIG['{{ item.key }}'] = {{ item.value }};"
-  with_items:
-    - { key: "graph_smooth", value: "true" }
+  template:
+    src: cgp-config.local.php.j2
+    dest: "{{ monitoring_path }}/conf/config.local.php"
+    owner: "{{ www_owner }}"
+    group: "{{ www_group }}"
+    mode: 0644
 
 - name: directories permissions set
   command: find "{{ monitoring_path }}" -type d -exec chmod 0755 {} +
