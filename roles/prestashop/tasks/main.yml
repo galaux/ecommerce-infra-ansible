@@ -127,6 +127,21 @@
     group: "{{ www_group }}"
     mode: 0644
 
+- name: favicons tarball downloaded from S3
+  aws_s3:
+    bucket: "{{ prestashop_backup_bucket }}"
+    object: "/favicons.tgz"
+    dest: /tmp/favicons.tgz
+    mode: get
+  when: ps_already_present.rc == 1
+
+- name: favicons deployed
+  unarchive:
+    src: /tmp/favicons.tgz
+    dest: "{{ prestashop_path }}"
+    remote_src: yes
+  when: ps_already_present.rc == 1
+
 - name: robots.txt downloaded from S3
   aws_s3:
     bucket: "{{ prestashop_backup_bucket }}"
