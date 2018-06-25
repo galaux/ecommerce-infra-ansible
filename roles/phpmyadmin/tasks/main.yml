@@ -22,7 +22,7 @@
     name: "{{ phpmyadmin_sql_user }}"
     host: 'localhost'
     password: "{{ phpmyadmin_sql_password }}"
-    priv: '{{ mysql_ps_db_name }}.*:SELECT'
+    priv: '{{ mysql_ps_db_name }}.*:SELECT,UPDATE'
     state: present
 
 - name: phpMyAdmin files available for Nginx
