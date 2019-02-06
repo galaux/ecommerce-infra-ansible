@@ -11,8 +11,8 @@
     - { role: letsencrypt,       tags: ['letsencrypt'] }
     - { role: nginx,             tags: ['nginx'] }
     - { role: php,               tags: ['php'] } # Installs httpd which creates user apache
-    - { role: php-fpm,           tags: ['php-fpm'] }
     - { role: collectd,          tags: ['collectd'] } # Requires mysqld, nginx, php
+    - { role: php-fpm,           tags: ['php-fpm'] }
     - { role: postfix,           tags: ['postfix'] }
     - { role: backup-instance,   tags: ['backup-instance'] }
     - { role: prestashop,        tags: ['prestashop'] } # Requires mysqld, nginx, php
