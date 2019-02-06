@@ -82,6 +82,10 @@
     state: stopped
   when: not is_prod
 
+- name: test instance only - certificates updated
+  shell: /usr/local/bin/certbot -n renew
+  when: not is_prod
+
 
 # Production config only
 
