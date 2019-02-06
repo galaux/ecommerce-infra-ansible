@@ -23,7 +23,7 @@
     name: >
       bzip2,
       htop,
-      python2-boto3,
+      python-boto3,
       python-passlib,
       python2-pip,
       tree,
