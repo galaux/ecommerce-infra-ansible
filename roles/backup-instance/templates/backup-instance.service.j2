@@ -1,7 +1,7 @@
 #jinja2: trim_blocks:False
 [Unit]
 Description=Backup instance
-After=network.target{% if not is_prod %} renew-certificates.service{% endif %}
+After=network.target{% if backup_instance_at_boot %} renew-certificates.service{% endif %}
 OnFailure=status-email-user@%n.service
 
 [Service]

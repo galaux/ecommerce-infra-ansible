@@ -1,0 +1,15 @@
+---
+
+dev:
+  hosts:
+    dev.example.com
+  vars:
+    prompt_host_color: "DARK_GREEN"
+    domain_prefix: "dev"
+    backup_instance_at_boot: false
+    update_dns_at_boot: false
+    alerting_email_enabled: false
+    renew_certificates: false
+    renew_certificates_at_boot: false
+    # self_signed_certificate: true
+    do_backup: false

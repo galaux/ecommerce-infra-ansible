@@ -20,7 +20,7 @@
   lineinfile:
     path: /etc/monit.d/monit-alert-email
     regexp: "^#?set alert {{ item }}"
-    line: "{% if not is_prod %}#{% endif %}set alert {{ item }}"
+    line: "{% if not alerting_email_enabled %}#{% endif %}set alert {{ item }}"
     create: yes
   with_items:
     "{{ admins_email_list }}"

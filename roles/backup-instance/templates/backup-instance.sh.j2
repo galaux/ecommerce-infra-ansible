@@ -16,7 +16,7 @@ then
   aws s3 sync \
     ${TEMP_DIR}/ \
     s3://{{ prestashop_backup_bucket }}/
-  {% if is_prod %}
+  {% if do_backup %}
 
   aws s3 rm --recursive \
     s3://{{ prestashop_backup_bucket }}/{{ backup_date_latest_label }}

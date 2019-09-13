@@ -43,14 +43,14 @@
   service:
     name: backup-instance.service
     enabled: yes
-  when: not is_prod
+  when: backup_instance_at_boot
 
 - name: test instance only - instance backup timer disabled
   service:
     name: backup-instance.timer
     enabled: no
     state: stopped
-  when: not is_prod
+  when: not do_backup
 
 
 # Production config only
@@ -59,12 +59,12 @@
   service:
     name: backup-instance.service
     enabled: no
-  when: is_prod
+  when: not backup_instance_at_boot
 
 - name: production instance only - instance backup timer enabled
   service:
     name: backup-instance.timer
     enabled: yes
     state: started
-  when: is_prod
+  when: do_backup
 

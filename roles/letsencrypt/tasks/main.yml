@@ -73,18 +73,18 @@
   service:
     name: renew-certificates.service
     enabled: yes
-  when: not is_prod
+  when: renew_certificates_at_boot
 
 - name: test instance only - certificates renewal timer disabled
   service:
     name: renew-certificates.timer
     enabled: no
     state: stopped
-  when: not is_prod
+  when: renew_certificates
 
 - name: test instance only - certificates updated
   shell: /usr/local/bin/certbot -n renew
-  when: not is_prod
+  when: not renew_certificates
 
 
 # Production config only
@@ -93,12 +93,12 @@
   service:
     name: renew-certificates.service
     enabled: no
-  when: is_prod
+  when: renew_certificates_at_boot
 
 - name: production instance only - certificates renewal timer enabled
   service:
     name: renew-certificates.timer
     enabled: yes
     state: started
-  when: is_prod
+  when: renew_certificates
 

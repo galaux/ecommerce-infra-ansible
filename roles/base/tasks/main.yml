@@ -104,7 +104,7 @@
     mode: 0644
   vars:
     user_color: "{{ item.user_color }}"
-    hostname_color: "{% if is_prod %}DARK_RED{% else %}DARK_YELLOW{% endif %}"
+    hostname_color: "{{ prompt_host_color }}"
   with_items:
     - { dest_dir: "/root",                    ownergp: "root",               user_color: "DARK_RED" }
     - { dest_dir: "/home/{{ regular_user }}", ownergp: "{{ regular_user }}", user_color: "DARK_GREY" }
@@ -126,11 +126,11 @@
   service:
     name: update-instance-dns-records
     enabled: true
-  when: not is_prod
+  when: update_dns_at_boot
 
 - name: test instance only - instance DNS records updated
   command: /usr/local/bin/update-instance-dns-records
-  when: not is_prod
+  when: update_dns_at_boot
 
 
 # Production config only
@@ -139,7 +139,7 @@
   service:
     name: update-instance-dns-records
     enabled: false
-  when: is_prod
+  when: not update_dns_at_boot
 
 - name: production instance only - backup snippet installed
   copy:
@@ -148,5 +148,5 @@
     owner: root
     group: root
     mode: 0755
-  when: is_prod
+  when: do_backup
 

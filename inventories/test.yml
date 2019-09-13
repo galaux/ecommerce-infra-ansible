@@ -1,0 +1,15 @@
+---
+
+dev:
+  hosts:
+    ec2-203-0-113-44.eu-central-1.compute.amazonaws.com
+  vars:
+    prompt_host_color: "DARK_YELLOW"
+    domain_prefix: "test"
+    backup_instance_at_boot: true
+    update_dns_at_boot: true
+    alerting_email_enabled: false
+    renew_certificates: false
+    renew_certificates_at_boot: true
+    # self_signed_certificate: true
+    do_backup: false

@@ -156,7 +156,7 @@
   file:
     path: "{{ backup_data_snippet_dir }}/collectd"
     state: absent
-  when: not is_prod
+  when: not do_backup
 
 
 # Production config only
@@ -168,5 +168,5 @@
     owner: root
     group: root
     mode: 0755
-  when: is_prod
+  when: do_backup
 

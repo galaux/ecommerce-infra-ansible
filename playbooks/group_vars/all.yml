@@ -7,7 +7,6 @@ sub_domains:
   - admin
   - blog
   - www
-domain_prefix: "test"
 domain_prefix_dot: "{% if domain_prefix %}{{ domain_prefix }}.{% endif %}"
 main_hosted_zone: { domain_name: "{{ domain_prefix_dot }}example.com", ps_path_prefix: "", zone_id: "Z0EXAMPLEZON02" }
 alt_hosted_zones:
@@ -22,7 +21,6 @@ admins_email_list:
 admins_emails_str: "{{ ','.join(admins_email_list) }}"
 virtualenv_path: "/var/lib/virtualenv"
 backup_data_snippet_dir: "/etc/backup-instance.d"
-is_prod: "{% if main_domain_name == 'example.com' %}True{% else %}False{% endif %}"
 ssh_port: 22
 regular_user: "centos"
 prestashop_version_file_name: "prestashop_version"
