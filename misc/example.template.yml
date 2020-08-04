@@ -14,11 +14,6 @@ Parameters:
       - t2.medium
     ConstraintDescription: must be a valid EC2 instance type.
 
-  Branch:
-    Description: Which Git branch to deploy
-    Type: String
-    Default: develop
-
   BackupDate:
     Description: Date of S3 backup to restore or "latest_backup"
     Type: String
@@ -56,8 +51,8 @@ Resources:
           set -x
           set -e
           GITLAB_TOKEN='REDACTED700000000000'
-          PROJECT_NAME='example-ansible'
-          ARCHIVE_URL="https://gitlab.com/example/$PROJECT_NAME/repository/${Branch}/archive.tar.gz"
+          PROJECT_ID=4742520
+          ARCHIVE_URL="https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/archive.tar.gz"
           yum --assumeyes clean all
           yum --assumeyes makecache
           yum --assumeyes install epel-release
@@ -69,10 +64,13 @@ Resources:
             python-boto3 \
             ansible
           cd /tmp
-          wget "$ARCHIVE_URL?private_token=$GITLAB_TOKEN" \
+          # https://gitlab.com/gitlab-org/gitlab-foss/-/issues/19843
+          wget \
+            --header "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+            "${ARCHIVE_URL}" \
             -O $PROJECT_NAME.tar.gz
           tar xf $PROJECT_NAME.tar.gz
-          cd $PROJECT_NAME-${Branch}-*
+          cd $PROJECT_NAME-develop-*
           ansible-playbook \
             --connection=local \
             --limit=localhost \
