@@ -2,7 +2,9 @@
 
 prod:
   hosts:
-    ec2-203-0-113-10.eu-central-1.compute.amazonaws.com
+    ec2-203-0-113-10.eu-central-1.compute.amazonaws.com:
+      ansible_user: centos
+      ansible_port: 22
   vars:
     prompt_host_color: "DARK_RED"
     domain_prefix: ""

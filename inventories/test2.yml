@@ -2,8 +2,11 @@
 
 dev:
   hosts:
-    ec2-203-0-113-39.eu-central-1.compute.amazonaws.com
+    ec2-203-0-113-38.eu-central-1.compute.amazonaws.com:
+      ansible_user: centos
+      ansible_port: 22
   vars:
+    ssh_port: 22
     prompt_host_color: "DARK_YELLOW"
     domain_prefix: "test2"
     backup_instance_at_boot: true

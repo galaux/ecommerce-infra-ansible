@@ -2,7 +2,9 @@
 
 dev:
   hosts:
-    dev.example.com
+    dev.example.com:
+      ansible_user: centos
+      ansible_port: 22
   vars:
     prompt_host_color: "DARK_GREEN"
     domain_prefix: "dev"
