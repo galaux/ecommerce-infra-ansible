@@ -20,7 +20,8 @@
       php-mcrypt,
       php-mysqlnd,
       php-soap,
-      php-xml
+      php-xml,
+      php-zip
     state: present
 
 - name: PHP configured
