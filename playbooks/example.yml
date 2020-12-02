@@ -7,7 +7,7 @@
   roles:
     - { role: base,              tags: ['base'] }
     - { role: sshd,              tags: ['sshd'] }
-    - { role: mysqld,            tags: ['mysqld'] }
+    - { role: mysqld,            tags: ['mysqld'] } # Requires collectd
     - { role: letsencrypt,       tags: ['letsencrypt'] }
     - { role: nginx,             tags: ['nginx'] }
     - { role: php,               tags: ['php'] } # Installs httpd which creates user apache
