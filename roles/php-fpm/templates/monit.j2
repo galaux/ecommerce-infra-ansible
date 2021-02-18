@@ -12,4 +12,5 @@ check host localhost-php-fpm with address www.{{ main_domain_name }}
         port 80
         protocol http
         status = 301
+        for 5 cycles
     then restart
