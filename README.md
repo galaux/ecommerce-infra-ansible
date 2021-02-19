@@ -179,3 +179,10 @@ switch to something similar to GitHub flow):
 - other _devs_ branches should be pulled from `develop`
 - potential hot fixes should be pulled from `master` then backported into
   `develop`
+
+
+PS 1.6 and 1.7 pages for Nginx conf (where one sees that the 1.6 one lacks the
+conf to prevent using `tools` and such)
+
+- https://devdocs.prestashop.com/1.7/basics/installation/nginx/
+- http://doc.prestashop.com/display/PS16/System+Administrator+Guide
