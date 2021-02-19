@@ -2,7 +2,7 @@
 
 dev:
   hosts:
-    ec2-203-0-113-40.eu-central-1.compute.amazonaws.com:
+    ec2-203-0-113-42.eu-central-1.compute.amazonaws.com:
       ansible_user: centos
       # ansible_port: 22
   vars:
