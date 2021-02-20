@@ -186,3 +186,19 @@ conf to prevent using `tools` and such)
 
 - https://devdocs.prestashop.com/1.7/basics/installation/nginx/
 - http://doc.prestashop.com/display/PS16/System+Administrator+Guide
+
+
+Work locally
+------------
+
+- start VirtualBox `AnsibleSeedbox2019`
+- add its IP to `/etc/hosts`: `192.168.0.213 dev.example.com`
+- check correct SSH client conf:
+  ```
+  Host dev.example.com
+      Port                22
+      User                centos
+      IdentityFile        ~/.ssh/id_rsa_perso
+      UserKnownHostsFile  /dev/null
+      StrictHostKeyChecking no
+  ```
