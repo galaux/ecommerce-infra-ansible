@@ -71,6 +71,12 @@
   notify:
     - reload monit
 
+
+# - name: nginx installed
+#   yum:
+#     name: collectd-nginx
+#     state: present
+
 - name: collectd snippet installed
   template:
     src: collectd.conf.j2

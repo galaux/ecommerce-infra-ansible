@@ -72,6 +72,19 @@
     group: root
     mode: 0600
 
+# - name: MySQL Collectd package installed
+#   yum:
+#     name: collectd-mysql
+#     state: present
+
+# - name: collectd SQL account created
+#   mysql_user:
+#     name: "{{ collectd_sql_user }}"
+#     host: 'localhost'
+#     password: "{{ collectd_sql_password }}"
+#     priv: '{{ mysql_ps_db_name }}.*:SELECT'
+#     state: present
+
 # - name: monit and collectd snippet directories created
 #   file:
 #     path: "{{ item }}"

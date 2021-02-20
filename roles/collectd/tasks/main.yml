@@ -4,9 +4,6 @@
   yum:
     name: >
       collectd,
-      collectd-curl_json,
-      collectd-mysql,
-      collectd-nginx,
       collectd-rrdtool
     state: present
 
@@ -82,66 +79,6 @@
     - unixsock
   notify:
     - restart collectd
-
-- name: collectd SQL account created
-  mysql_user:
-    name: "{{ collectd_sql_user }}"
-    host: 'localhost'
-    password: "{{ collectd_sql_password }}"
-    priv: '{{ mysql_ps_db_name }}.*:SELECT'
-    state: present
-
-- name: state whether CGP is already present
-  command: test -d "{{ monitoring_path }}"
-  check_mode: no
-  register: cgp_already_present
-  failed_when: cgp_already_present.rc > 1
-
-- name: CGP directory created
-  file:
-    path: "{{ monitoring_path }}"
-    state: directory
-    owner: "{{ www_owner }}"
-    group: "{{ www_group }}"
-    mode: 0755
-
-- name: CGP files installed
-  unarchive:
-    remote_src: yes
-    src: "https://github.com/pommi/CGP/archive/v1.tar.gz"
-    dest: "{{ monitoring_path }}"
-    extra_opts: [--strip-components=1]
-  when: cgp_already_present.rc == 1
-
-- name: files and directories owner/group set
-  file:
-    path: "{{ monitoring_path }}"
-    owner: "{{ www_owner }}"
-    group: "{{ www_group }}"
-    mode: 0644
-    state: directory
-    recurse: yes
-
-- name: CGP configured
-  template:
-    src: cgp-config.local.php.j2
-    dest: "{{ monitoring_path }}/conf/config.local.php"
-    owner: "{{ www_owner }}"
-    group: "{{ www_group }}"
-    mode: 0644
-
-- name: directories permissions set
-  command: find "{{ monitoring_path }}" -type d -exec chmod 0755 {} +
-
-- name: /monitoring nginx access configured
-  template:
-    src: vhost-nginx.j2
-    dest: /etc/nginx/conf.d/admin.conf-monitoring
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart nginx
 
 - name: collectd started and enabled at boot
   service:

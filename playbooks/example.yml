@@ -8,12 +8,13 @@
     - { role: base,              tags: ['base'] }
     - { role: sshd,              tags: ['sshd'] }
     - { role: monit,             tags: ['monit'] }
+    - { role: collectd,          tags: ['collectd'] }
+    # - { role: collectd-ui,       tags: ['collectd'] } # Requires Nginx & Co.
 
     - { role: mysqld,            tags: ['mysqld'] } # Requires collectd
     - { role: letsencrypt,       tags: ['letsencrypt'] }
     - { role: nginx,             tags: ['nginx'] }
     - { role: php,               tags: ['php'] } # Installs httpd which creates user apache
-    - { role: collectd,          tags: ['collectd'] } # Requires mysqld, nginx, php
     - { role: php-fpm,           tags: ['php-fpm'] }
     - { role: postfix,           tags: ['postfix'] }
     - { role: backup-instance,   tags: ['backup-instance'] }

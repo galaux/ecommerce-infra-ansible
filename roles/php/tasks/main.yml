@@ -35,3 +35,10 @@
     - { section: "Date", option: "date.timezone", value: '"Europe/Paris"' }
   notify:
     - restart php-fpm
+
+
+# - name: PHP-FPM Collectd package installed
+#   yum:
+#     name: collectd-curl_json
+#     state: present
+
