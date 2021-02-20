@@ -7,6 +7,7 @@
   roles:
     - { role: base,              tags: ['base'] }
     - { role: sshd,              tags: ['sshd'] }
+    - { role: backup-instance,   tags: ['backup-instance'] }
     - { role: monit,             tags: ['monit'] }
     - { role: collectd,          tags: ['collectd'] }
     # - { role: collectd-ui,       tags: ['collectd'] } # Requires Nginx & Co.
@@ -16,8 +17,9 @@
     - { role: nginx,             tags: ['nginx'] }
     - { role: php,               tags: ['php'] } # Installs httpd which creates user apache
     - { role: php-fpm,           tags: ['php-fpm'] }
+
     - { role: postfix,           tags: ['postfix'] }
-    - { role: backup-instance,   tags: ['backup-instance'] }
+
     - { role: prestashop,        tags: ['prestashop'] } # Requires mysqld, nginx, php
     - { role: wordpress,         tags: ['wordpress'] } # Requires mysqld, nginx, php
     - { role: phpmyadmin,        tags: ['phpmyadmin'] } # Requires mysqld, nginx, php
