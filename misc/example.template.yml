@@ -61,6 +61,7 @@ Resources:
             --assumeyes \
             install \
             wget \
+            python2-botocore \
             python-boto3 \
             ansible
           cd /tmp

@@ -15,8 +15,11 @@
     regexp: "^#?SELINUX="
     line: "SELINUX=permissive"
 
-# boto3 required for Ansible module aws_s3
-# - watchout python-boto3 is buggy: https://bugs.centos.org/view.php?id=14771
+# python-boto3 and python2-botocore are required for Ansible module aws_s3
+# - watchout
+#   - Ansible module aws_s3 doesn't seem to use the `aws` CLI that we install
+#     afterwards. It seems to be completely unrelated.
+#   - python-boto3 is buggy: https://bugs.centos.org/view.php?id=14771
 # passlib required for Ansible module htpasswd
 - name: base packages are installed
   yum:
@@ -24,6 +27,7 @@
       bzip2,
       htop,
       python-boto3,
+      python2-botocore,
       python-passlib,
       python2-pip,
       tree,
@@ -32,16 +36,15 @@
       python-virtualenv
     state: present
 
-- name: awscli installed
-  pip:
-    virtualenv: "{{ virtualenv_path }}/awscli"
-    name: awscli
+- name: aws cli installer available
+  unarchive:
+    remote_src: yes
+    src: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+    dest: "/tmp/"
+    creates: "/tmp/aws"
 
-- name: aws link available
-  file:
-    src: "{{ virtualenv_path }}/awscli/bin/aws"
-    dest: /usr/local/bin/aws
-    state: link
+- name: awscli installed
+  shell: /tmp/aws/install --update
 
 - name: hostname set
   command: /usr/bin/hostnamectl set-hostname "{{ main_domain_name }}"

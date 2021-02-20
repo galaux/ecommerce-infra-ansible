@@ -202,3 +202,44 @@ Work locally
       UserKnownHostsFile  /dev/null
       StrictHostKeyChecking no
   ```
+
+Boto and aws once and for all!
+------------------------------
+
+- the `aws` CLI and the Ansible `aws_s3` are two unrelated things
+- Ansible module `aws_s3`
+  - requires packages `python2-botocore` and `python-boto3`
+- `aws` CLI
+  - exists in v1 and v2
+  - v1 (don't use it) can be installed with pip:
+    ```
+    - name: awscli installed
+      pip:
+        virtualenv: "{{ virtualenv_path }}/awscli"
+        name: awscli
+    ```
+  - v2 can be [installed manually (no package it seems)](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html)
+    ```
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+    ```
+- If run from an EC2 instance, one does not need to configure credentials:
+  [they are retrieved from the instance
+  metadata](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-metadata.html):
+  > When you run the AWS CLI from within an Amazon Elastic Compute Cloud
+  > (Amazon EC2) instance, you can simplify providing credentials to your
+  > commands. Each Amazon EC2 instance contains metadata that the AWS CLI can
+  > directly query for temporary credentials. When an IAM role is attached to
+  > the instance, the AWS CLI automatically and securely retrieves the
+  > credentials from the instance metadata.
+
+In conclusion:
+- if one wants to run `aws` from CLI
+  - install v2 with the given official AWS method that curls the source and hard-install it locally
+- if one wants to run Ansible
+  - install said 'boto' dependencies
+
+- if on a real EC2 instance, no need to setup credentials, but if on
+  VirtualBox, setup credentials and pay attention to which user you set it up
+  for: Ansible will want `/root/.aws/`
