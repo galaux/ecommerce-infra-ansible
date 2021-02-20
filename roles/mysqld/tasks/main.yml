@@ -72,34 +72,34 @@
     group: root
     mode: 0600
 
-- name: monit and collectd snippet directories created
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  with_items:
-    - /etc/collectd.d
-    - /etc/monit.d
+# - name: monit and collectd snippet directories created
+#   file:
+#     path: "{{ item }}"
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: 0755
+#   with_items:
+#     - /etc/collectd.d
+#     - /etc/monit.d
 
-- name: monit snippet installed
-  template:
-    src: monit.j2
-    dest: /etc/monit.d/mysqld
-    owner: root
-    group: root
-    mode: 0600
-  notify:
-    - reload monit
+# - name: monit snippet installed
+#   template:
+#     src: monit.j2
+#     dest: /etc/monit.d/mysqld
+#     owner: root
+#     group: root
+#     mode: 0600
+#   notify:
+#     - reload monit
 
-- name: collectd snippet installed
-  template:
-    src: collectd.conf.j2
-    dest: /etc/collectd.d/mysqld.conf
-    owner: root
-    group: root
-    mode: 0600
-  notify:
-    - restart collectd
+# - name: collectd snippet installed
+#   template:
+#     src: collectd.conf.j2
+#     dest: /etc/collectd.d/mysqld.conf
+#     owner: root
+#     group: root
+#     mode: 0600
+#   notify:
+#     - restart collectd
 
