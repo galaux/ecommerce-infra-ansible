@@ -72,47 +72,47 @@
     group: root
     mode: 0600
 
-# - name: MySQL Collectd package installed
-#   yum:
-#     name: collectd-mysql
-#     state: present
 
-# - name: collectd SQL account created
-#   mysql_user:
-#     name: "{{ collectd_sql_user }}"
-#     host: 'localhost'
-#     password: "{{ collectd_sql_password }}"
-#     priv: '{{ mysql_ps_db_name }}.*:SELECT'
-#     state: present
+- name: MySQL Collectd package installed
+  yum:
+    name: collectd-mysql
+    state: present
 
-# - name: monit and collectd snippet directories created
-#   file:
-#     path: "{{ item }}"
-#     state: directory
-#     owner: root
-#     group: root
-#     mode: 0755
-#   with_items:
-#     - /etc/collectd.d
-#     - /etc/monit.d
+- name: collectd SQL account created
+  mysql_user:
+    name: "{{ collectd_sql_user }}"
+    host: 'localhost'
+    password: "{{ collectd_sql_password }}"
+    priv: '{{ mysql_ps_db_name }}.*:SELECT'
+    state: present
 
-# - name: monit snippet installed
-#   template:
-#     src: monit.j2
-#     dest: /etc/monit.d/mysqld
-#     owner: root
-#     group: root
-#     mode: 0600
-#   notify:
-#     - reload monit
+- name: monit and collectd snippet directories created
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - /etc/collectd.d
+    - /etc/monit.d
 
-# - name: collectd snippet installed
-#   template:
-#     src: collectd.conf.j2
-#     dest: /etc/collectd.d/mysqld.conf
-#     owner: root
-#     group: root
-#     mode: 0600
-#   notify:
-#     - restart collectd
+- name: collectd snippet installed
+  template:
+    src: collectd.conf.j2
+    dest: /etc/collectd.d/mysql.conf
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - restart collectd
 
+- name: monit snippet installed
+  template:
+    src: monit.j2
+    dest: /etc/monit.d/mysqld
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - reload monit
