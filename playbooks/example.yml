@@ -7,6 +7,8 @@
   roles:
     - { role: base,              tags: ['base'] }
     - { role: sshd,              tags: ['sshd'] }
+    - { role: monit,             tags: ['monit'] }
+
     - { role: mysqld,            tags: ['mysqld'] } # Requires collectd
     - { role: letsencrypt,       tags: ['letsencrypt'] }
     - { role: nginx,             tags: ['nginx'] }
@@ -18,5 +20,4 @@
     - { role: prestashop,        tags: ['prestashop'] } # Requires mysqld, nginx, php
     - { role: wordpress,         tags: ['wordpress'] } # Requires mysqld, nginx, php
     - { role: phpmyadmin,        tags: ['phpmyadmin'] } # Requires mysqld, nginx, php
-    - { role: monit,             tags: ['monit'] }
     - { role: ftp,               tags: ['ftp'] }
