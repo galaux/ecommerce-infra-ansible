@@ -5,8 +5,15 @@
     name: nginx
     state: present
 
+# PS 1.6
+# See "Complete example configuration for nginx" from:
 # http://doc.prestashop.com/display/PS16/System+Administrator+Guide#SystemAdministratorGuide-NginxfriendlyURLs
-# https://github.com/PrestaShop/PrestaShop/blob/develop/docs/server_config/nginx.conf.dist
+# Watch-out, it lacks some security redirects, see
+# - 20bf620be67b120ddd969698a2f8072a5111c289 from this repository
+# - next link for PS 1.7 that has these redirects
+#
+# PS 1.7
+# https://devdocs.prestashop.com/1.7/basics/installation/nginx/
 - name: main nginx configuration file installed
   template:
     src: nginx.conf.j2
@@ -61,15 +68,15 @@
     name: nginx
     enabled: yes
 
-- name: nginx monit snippet installed
-  template:
-    src: monit.j2
-    dest: /etc/monit.d/nginx
-    owner: root
-    group: root
-    mode: 0600
-  notify:
-    - reload monit
+# - name: nginx monit snippet installed
+#   template:
+#     src: monit.j2
+#     dest: /etc/monit.d/nginx
+#     owner: root
+#     group: root
+#     mode: 0600
+#   notify:
+#     - reload monit
 
 
 # - name: nginx installed
@@ -77,13 +84,13 @@
 #     name: collectd-nginx
 #     state: present
 
-- name: collectd snippet installed
-  template:
-    src: collectd.conf.j2
-    dest: /etc/collectd.d/nginx.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart collectd
+# - name: collectd snippet installed
+#   template:
+#     src: collectd.conf.j2
+#     dest: /etc/collectd.d/nginx.conf
+#     owner: root
+#     group: root
+#     mode: 0644
+#   notify:
+#     - restart collectd
 
