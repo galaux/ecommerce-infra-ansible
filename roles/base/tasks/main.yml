@@ -20,7 +20,15 @@
 #   - Ansible module aws_s3 doesn't seem to use the `aws` CLI that we install
 #     afterwards. It seems to be completely unrelated.
 #   - python-boto3 is buggy: https://bugs.centos.org/view.php?id=14771
+#
 # passlib required for Ansible module htpasswd
+#
+# FIXME package htop must belong to epel-release. We maybe need to have a first
+# run such as Archlinux Infrastructure does https://git.archlinux.org/infrastructure.git/tree/README.md#n19
+# > For the first time setup in the Hetzner rescue system,
+# > run the provisioning script: `ansible-playbook playbooks/tasks/install-arch.yml -l $host`.
+# > The provisioning script configures a sane basic systemd with sshd. By design, it is NOT idempotent.
+# > After the provisioning script has run, it is safe to reboot.
 - name: base packages are installed
   yum:
     name: >
