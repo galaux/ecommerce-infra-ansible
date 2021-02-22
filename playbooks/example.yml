@@ -13,11 +13,12 @@
     # - { role: collectd-ui,       tags: ['collectd'] } # Requires Nginx & Co.
     - { role: postfix,           tags: ['postfix'] }
 
-    - { role: mysqld,            tags: ['mysqld'] } # Requires collectd
-    - { role: letsencrypt,       tags: ['letsencrypt'] }
-    - { role: nginx,             tags: ['nginx'] }
+    - { role: mysqld,            tags: ['mysqld'] } # Requires monit, collectd
+    - { role: nginx,             tags: ['nginx'] } # Requires monit, collectd
+      # TODO Update letsencrypt once nginx is done
+    # - { role: letsencrypt,       tags: ['letsencrypt'] }
     - { role: php,               tags: ['php'] } # Installs httpd which creates user apache
-    - { role: php-fpm,           tags: ['php-fpm'] }
+    - { role: php-fpm,           tags: ['php-fpm'] } # Requires nginx, monit, collectd
 
     - { role: prestashop,        tags: ['prestashop'] } # Requires mysqld, nginx, php
     - { role: wordpress,         tags: ['wordpress'] } # Requires mysqld, nginx, php

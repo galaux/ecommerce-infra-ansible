@@ -1,5 +1,44 @@
 ---
 
+- name: PHP RPM repository installed
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
+
+- name: PHP 5.6 RPM repository disabled
+  shell: yum-config-manager --assumeyes --disable remi-php56
+
+- name: PHP 7.1 RPM repository enabled
+  shell: yum-config-manager --assumeyes --enable remi-php71
+
+- name: PHP installed
+  yum:
+    name: >
+      php,
+      php-gd,
+      php-mbstring,
+      php-mcrypt,
+      php-mysqlnd,
+      php-soap,
+      php-xml,
+      php-zip
+    state: present
+
+- name: PHP configured
+  ini_file:
+    path: /etc/php.ini
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { section: "PHP", option: "max_input_vars", value: '2000' }
+    - { section: "Date", option: "date.timezone", value: '"Europe/Paris"' }
+  notify:
+    - restart php-fpm
+
+
+## php-fpm
+
 - name: php-fpm installed
   yum:
     name: php-fpm
@@ -67,36 +106,41 @@
     state: started
     enabled: yes
 
-- name: monit snippet installed
-  template:
-    src: monit.j2
-    dest: /etc/monit.d/php-fpm
-    owner: root
-    group: root
-    mode: 0600
-  notify:
-    - reload monit
+# - name: monit snippet installed
+#   template:
+#     src: monit.j2
+#     dest: /etc/monit.d/php-fpm
+#     owner: root
+#     group: root
+#     mode: 0600
+#   notify:
+#     - reload monit
 
-- name: collectd snippet installed
-  template:
-    src: collectd.conf.j2
-    dest: /etc/collectd.d/php-fpm.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart collectd
+# - name: PHP-FPM Collectd package installed
+#   yum:
+#     name: collectd-curl_json
+#     state: present
 
-- name: specific php-fpm types configured
-  lineinfile:
-    path: /usr/share/collectd/types.db
-    regexp: "^{{ item.key }}"
-    line: "{{ item.key }} {{ item.value }}"
-  with_items:
-    - { key: "phpfpm_listen_queue",  value: "value:GAUGE:0:65535" }
-    - { key: "phpfpm_processes",     value: "value:GAUGE:0:65535" }
-    - { key: "phpfpm_requests",      value: "value:DERIVE:0:U" }
-    - { key: "phpfpm_slow_requests", value: "value:DERIVE:0:U" }
-  notify:
-    - restart collectd
+# - name: collectd snippet installed
+#   template:
+#     src: collectd.conf.j2
+#     dest: /etc/collectd.d/php-fpm.conf
+#     owner: root
+#     group: root
+#     mode: 0644
+#   notify:
+#     - restart collectd
+
+# - name: specific php-fpm types configured
+#   lineinfile:
+#     path: /usr/share/collectd/types.db
+#     regexp: "^{{ item.key }}"
+#     line: "{{ item.key }} {{ item.value }}"
+#   with_items:
+#     - { key: "phpfpm_listen_queue",  value: "value:GAUGE:0:65535" }
+#     - { key: "phpfpm_processes",     value: "value:GAUGE:0:65535" }
+#     - { key: "phpfpm_requests",      value: "value:DERIVE:0:U" }
+#     - { key: "phpfpm_slow_requests", value: "value:DERIVE:0:U" }
+#   notify:
+#     - restart collectd
 

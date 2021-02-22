@@ -243,3 +243,12 @@ In conclusion:
 - if on a real EC2 instance, no need to setup credentials, but if on
   VirtualBox, setup credentials and pay attention to which user you set it up
   for: Ansible will want `/root/.aws/`
+
+
+2021-02-21 TODO fix web file owner
+----------------------------------
+
+At the moment, files on the SB are owned by `nginx:nginx` and files on shop are
+owned by `apache:apache`. It seems this is wrong. Try to implement correct file
+ownership as explained in this article:
+https://www.getpagespeed.com/server-setup/nginx-and-php-fpm-what-my-permissions-should-be
