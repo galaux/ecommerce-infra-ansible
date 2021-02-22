@@ -1,0 +1,114 @@
+---
+
+- name: certbot installed
+  pip:
+    virtualenv: "{{ virtualenv_path }}/certbot"
+    name: >
+      certbot,
+      certbot-nginx,
+      certbot-dns-route53
+
+- name: certbot link available
+  file:
+    src: "{{ virtualenv_path }}/certbot/bin/certbot"
+    dest: /usr/local/bin/certbot
+    state: link
+
+- name: state whether certificates are already present
+  command: test -d "{{ letsencrypt_path }}"
+  check_mode: no
+  register: letsencrypt_already_present
+  failed_when: letsencrypt_already_present.rc > 1
+
+- name: certificates backup available
+  aws_s3:
+    bucket: "{{ prestashop_backup_bucket }}"
+    object: "/{{ certificates_backup_name }}"
+    dest: "/tmp/{{ certificates_backup_name }}"
+    mode: get
+  when: letsencrypt_already_present.rc == 1
+
+- name: certificates installed
+  unarchive:
+    src: /tmp/cert-{{ main_domain_name }}.tgz
+    dest: /etc
+    remote_src: yes
+    creates: "{{ letsencrypt_path }}"
+  when: letsencrypt_already_present.rc == 1
+
+- name: snippet backup directory present
+  file:
+    path: "{{ backup_data_snippet_dir }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+    recurse: yes
+
+- name: data backup snippet installed
+  template:
+    src: backup-instance.sh.j2
+    dest: "{{ backup_data_snippet_dir }}/certificates"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Systemd certificates renewal units installed
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - daemon reload
+  with_items:
+    - renew-certificates.service
+    - renew-certificates.timer
+
+- name: nginx SSL configuration file installed
+  template:
+    src: letsencrypt-ssl.conf.j2
+    dest: /etc/nginx/default.d/ssl.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart nginx
+
+
+# Test config only
+
+- name: test instance only - certificates renewal enabled at boot
+  service:
+    name: renew-certificates.service
+    enabled: yes
+  when: renew_certificates_at_boot
+
+- name: test instance only - certificates renewal timer disabled
+  service:
+    name: renew-certificates.timer
+    enabled: no
+    state: stopped
+  when: renew_certificates
+
+- name: test instance only - certificates updated
+  shell: /usr/local/bin/certbot -n renew
+  when: not renew_certificates
+
+
+# Production config only
+
+- name: production instance only - certificates renewal disabled at boot
+  service:
+    name: renew-certificates.service
+    enabled: no
+  when: renew_certificates_at_boot
+
+- name: production instance only - certificates renewal timer enabled
+  service:
+    name: renew-certificates.timer
+    enabled: yes
+    state: started
+  when: renew_certificates
+

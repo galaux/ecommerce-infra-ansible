@@ -70,6 +70,7 @@ php_fpm_pid_path: "/run/php-fpm/php-fpm.pid"
 php_fpm_status_path: "/status-php-fpm"
 php_fpm_socket_path: "/run/php-fpm/php-fpm.sock"
 certificates_backup_name: "cert-{{ main_domain_name }}.tgz"
+self_signed_certificate_path: "/etc/ssl/certs/self-signed"
 htpasswd_path: "/etc/nginx/htpasswd"
 ro_user: "rouser"
 ro_password_hash: XXXXXXXX

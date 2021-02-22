@@ -4,6 +4,14 @@ example
 [Create a new instance](https://eu-central-1.console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/create/review?templateURL=https://s3.eu-central-1.amazonaws.com/prestashop-data/example.template.yml&stackName=example)
 
 
+Local setup to use this playbook
+--------------------------------
+
+If generating self-signed certs (for a local VirtualBox instance), you will
+need to `ansible-galaxy collection install community.crypto` on your local
+machine.
+
+
 Situation and solution about how we perform backups
 ---------------------------------------------------
 

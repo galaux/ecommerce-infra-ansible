@@ -14,10 +14,14 @@
     - { role: postfix,           tags: ['postfix'] }
 
     - { role: mysqld,            tags: ['mysqld'] } # Requires monit, collectd
-    - { role: nginx,             tags: ['nginx'] } # Requires monit, collectd
-      # TODO Update letsencrypt once nginx is done
-    # - { role: letsencrypt,       tags: ['letsencrypt'] }
-    - { role: php,               tags: ['php'] } # Installs httpd which creates user apache
+      # At the moment, nginx role needs role letsencrypt (because Nginx conf
+      # holds SSL vhost) and letsencrypt depends on nginx because it "notifies"
+      # it. To decouple these two, the Nginx files that declares the vhosts
+      # (/etc/nginx/conf.d/{www,admin,blog,…}.conf) should be split: 80 conf
+      # should be placed by nginx and 443 by letsencrypt.
+      # FIXME decouple roles nginx and letsencrypt.
+    - { role: nginx,             tags: ['nginx'] } # Requires monit, collectd, letsencrypt
+    - { role: letsencrypt,       tags: ['letsencrypt'] } # Requires nginx
     - { role: php-fpm,           tags: ['php-fpm'] } # Requires nginx, monit, collectd
 
     - { role: prestashop,        tags: ['prestashop'] } # Requires mysqld, nginx, php

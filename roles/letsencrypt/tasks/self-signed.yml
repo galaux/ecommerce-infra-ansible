@@ -1,0 +1,51 @@
+---
+
+# community.crypto.x509_certificate dependencies for `provider: selfsigned`
+- name: tools dependencies installed
+  yum:
+    name: >
+      pyOpenSSL,
+      python2-cryptography
+    state: present
+
+- name: SSL certificate directory exists
+  file:
+    path: "{{ self_signed_certificate_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: states whether private key exists
+  stat:
+    path: "{{ self_signed_certificate_path }}/localhost.crt"
+  register: cert_file
+
+- name: states whether certificate exists
+  stat:
+    path: "{{ self_signed_certificate_path }}/localhost.key"
+  register: key_file
+
+- name: OpenSSL private key generated
+  community.crypto.openssl_privatekey:
+    path: "{{ self_signed_certificate_path }}/localhost.key"
+  when: not key_file.stat.exists
+
+# To run this module, you'll need to first install it on your local machine:
+#   `ansible-galaxy collection install community.crypto`
+- name: self-signed OpenSSL certificate generated
+  community.crypto.x509_certificate:
+    path: "{{ self_signed_certificate_path }}/localhost.crt"
+    privatekey_path: "{{ self_signed_certificate_path }}/localhost.key"
+    provider: selfsigned
+  when: not cert_file.stat.exists or not key_file.stat.exists
+
+- name: nginx SSL configuration file installed
+  template:
+    src: self-signed-ssl.conf.j2
+    dest: /etc/nginx/default.d/ssl.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart nginx
