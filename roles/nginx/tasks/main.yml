@@ -40,13 +40,11 @@
     - admin.conf
     - blog.conf
 
-# Crypt scheme set to plain text in order to store password encrypted
 - name: htpasswd file installed
   htpasswd:
     path: "{{ htpasswd_path }}"
-    name: postmaster
-    password: '$apr1$XXXXXXXX'
-    crypt_scheme: plaintext
+    name: "{{ web_user }}"
+    password: "{{ web_password }}"
     owner: root
     group: root
     mode: 0644

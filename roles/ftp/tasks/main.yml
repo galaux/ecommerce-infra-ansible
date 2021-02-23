@@ -24,9 +24,13 @@
   user:
     name: "{{ ro_user }}"
     group: apache
-    password: '{{ ro_password_hash }}'
+    # https://gist.github.com/douglasmiranda/f21a4481d372ae54fcf4a6ff32249949#trying-to-apply-some-jinja2-pipeline-functionsfilters-to-encrypted-inline-var-ansible-vault
+    password: "{{ '%s' | format(ro_password) | password_hash('sha512') }}"
     createhome: no
     home: "{{ www_path }}"
+    # Same password will have different hashes every time this is run so let's
+    # ensure we only update it when creating the user.
+    update_password: on_create
 
 - name: vsftpd stopped and disabled at boot
   service:
