@@ -69,18 +69,18 @@
     - reload monit
 
 
-# - name: nginx installed
-#   yum:
-#     name: collectd-nginx
-#     state: present
+- name: nginx collectd package installed
+  yum:
+    name: collectd-nginx
+    state: present
 
-# - name: collectd snippet installed
-#   template:
-#     src: collectd.conf.j2
-#     dest: /etc/collectd.d/nginx.conf
-#     owner: root
-#     group: root
-#     mode: 0644
-#   notify:
-#     - restart collectd
+- name: collectd snippet installed
+  template:
+    src: collectd.conf.j2
+    dest: /etc/collectd.d/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart collectd
 

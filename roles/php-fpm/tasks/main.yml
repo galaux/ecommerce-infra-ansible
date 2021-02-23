@@ -116,31 +116,31 @@
   notify:
     - reload monit
 
-# - name: PHP-FPM Collectd package installed
-#   yum:
-#     name: collectd-curl_json
-#     state: present
+- name: PHP-FPM Collectd package installed
+  yum:
+    name: collectd-curl_json
+    state: present
 
-# - name: collectd snippet installed
-#   template:
-#     src: collectd.conf.j2
-#     dest: /etc/collectd.d/php-fpm.conf
-#     owner: root
-#     group: root
-#     mode: 0644
-#   notify:
-#     - restart collectd
+- name: collectd snippet installed
+  template:
+    src: collectd.conf.j2
+    dest: /etc/collectd.d/php-fpm.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart collectd
 
-# - name: specific php-fpm types configured
-#   lineinfile:
-#     path: /usr/share/collectd/types.db
-#     regexp: "^{{ item.key }}"
-#     line: "{{ item.key }} {{ item.value }}"
-#   with_items:
-#     - { key: "phpfpm_listen_queue",  value: "value:GAUGE:0:65535" }
-#     - { key: "phpfpm_processes",     value: "value:GAUGE:0:65535" }
-#     - { key: "phpfpm_requests",      value: "value:DERIVE:0:U" }
-#     - { key: "phpfpm_slow_requests", value: "value:DERIVE:0:U" }
-#   notify:
-#     - restart collectd
+- name: specific php-fpm types configured
+  lineinfile:
+    path: /usr/share/collectd/types.db
+    regexp: "^{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+  with_items:
+    - { key: "phpfpm_listen_queue",  value: "value:GAUGE:0:65535" }
+    - { key: "phpfpm_processes",     value: "value:GAUGE:0:65535" }
+    - { key: "phpfpm_requests",      value: "value:DERIVE:0:U" }
+    - { key: "phpfpm_slow_requests", value: "value:DERIVE:0:U" }
+  notify:
+    - restart collectd
 
