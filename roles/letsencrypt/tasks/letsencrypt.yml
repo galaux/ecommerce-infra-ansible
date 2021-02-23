@@ -1,18 +1,13 @@
 ---
 
 - name: certbot installed
-  pip:
-    virtualenv: "{{ virtualenv_path }}/certbot"
+  yum:
     name: >
       certbot,
-      certbot-nginx,
-      certbot-dns-route53
-
-- name: certbot link available
-  file:
-    src: "{{ virtualenv_path }}/certbot/bin/certbot"
-    dest: /usr/local/bin/certbot
-    state: link
+      python2-certbot-dns-route53.noarch,
+      python2-certbot-nginx.noarch,
+      python2-futures
+    state: present
 
 - name: state whether certificates are already present
   command: test -d "{{ letsencrypt_path }}"
@@ -83,6 +78,8 @@
   service:
     name: renew-certificates.service
     enabled: yes
+  notify:
+    - daemon reload
   when: renew_certificates_at_boot
 
 - name: test instance only - certificates renewal timer disabled
@@ -93,7 +90,7 @@
   when: renew_certificates
 
 - name: test instance only - certificates updated
-  shell: /usr/local/bin/certbot -n renew
+  command: certbot -n renew
   when: not renew_certificates
 
 
