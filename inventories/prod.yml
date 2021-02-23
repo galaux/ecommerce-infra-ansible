@@ -13,5 +13,5 @@ prod:
     alerting_email_enabled: true
     renew_certificates: true
     renew_certificates_at_boot: false
-    # self_signed_certificate: false
+    self_signed_certificate: false
     do_backup: true
