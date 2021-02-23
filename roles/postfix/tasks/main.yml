@@ -51,3 +51,14 @@
     name: postfix
     state: started
     enabled: yes
+
+- name: monit snippet installed
+  copy:
+    src: monit
+    dest: /etc/monit.d/postfix
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - reload monit
+

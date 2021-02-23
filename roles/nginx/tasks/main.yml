@@ -53,20 +53,20 @@
   notify:
     - restart nginx
 
-- name: nginx and enabled
+- name: nginx service enabled
   service:
     name: nginx
     enabled: yes
 
-# - name: nginx monit snippet installed
-#   template:
-#     src: monit.j2
-#     dest: /etc/monit.d/nginx
-#     owner: root
-#     group: root
-#     mode: 0600
-#   notify:
-#     - reload monit
+- name: nginx monit snippet installed
+  template:
+    src: monit.j2
+    dest: /etc/monit.d/nginx
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - reload monit
 
 
 # - name: nginx installed
