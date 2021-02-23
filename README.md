@@ -280,3 +280,67 @@ I've found 2 ways that would suit me:
     playbooks/example.yml \
     --extra-vars "ansible_port=22"
   ```
+
+How to choose the correct CentOS AMI
+------------------------------------
+
+[Page to find the correct CentOS](https://wiki.centos.org/Cloud/AWS)
+
+First time boot/init of an EC2 instance (or VirtualBox VM)
+----------------------------------------------------------
+
+1. Modify/add the following `~/.ssh/config` entry:
+```
+Host ec2-203-0-113-41.eu-central-1.compute.amazonaws.com  # ← TODO change this
+    Port                  22
+    User                  centos
+    IdentityFile          ~/.ssh/id_rsa_std
+    UserKnownHostsFile    /dev/null
+    StrictHostKeyChecking no
+```
+
+2. ssh into the box and run what the CloudFormation templates specifies:
+```
+yum --assumeyes clean all
+yum --assumeyes makecache
+yum --assumeyes install epel-release
+yum --assumeyes update
+yum \
+  --assumeyes \
+  install \
+  wget \
+  python2-botocore \
+  python-boto3 \
+  ansible
+```
+
+This should potentially belong to a non-idempotent task such as [the one Arch
+linux instructs to run](../archlinux-infrastructure/README.md):
+
+> All systems are set up the same way. For the first time setup in the Hetzner
+> rescue system, run the provisioning script:
+> `ansible-playbook playbooks/tasks/install-arch.yml -l $host`.
+> The provisioning script configures a sane basic systemd with sshd. By design,
+> it is NOT idempotent.  After the provisioning script has run, it is safe to
+> reboot.
+
+3. Modify/add the following `./inventories/test.yml` entry:
+```
+Host ec2-203-0-113-41.eu-central-1.compute.amazonaws.com # ← TODO change this
+    Port                22
+    User                centos
+    IdentityFile        ~/.ssh/id_rsa_std
+    UserKnownHostsFile  /dev/null
+    StrictHostKeyChecking no
+```
+
+4. Run the playbook for the first time (note the `--extra-var` required for the
+   first time only)
+
+```
+ansible-playbook \
+  --inventory=inventories/test.yml \
+  playbooks/example.yml \
+  --extra-vars "ansible_port=22"
+```
+
