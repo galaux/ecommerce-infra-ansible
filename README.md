@@ -260,3 +260,23 @@ At the moment, files on the SB are owned by `nginx:nginx` and files on shop are
 owned by `apache:apache`. It seems this is wrong. Try to implement correct file
 ownership as explained in this article:
 https://www.getpagespeed.com/server-setup/nginx-and-php-fpm-what-my-permissions-should-be
+
+How to handle SSH port change
+-----------------------------
+
+I've found 2 ways that would suit me:
+- on a role, use `set_fact`:
+  ```
+  - name: Change ssh port to 8888
+    set_fact:
+      ansible_port: 8888
+  ```
+- at CLI: specify `ansible_port`:
+  ```
+  ansible-playbook \
+    --inventory=inventories/dev.yml \
+    --tags base,sshd \
+    --check --diff \
+    playbooks/example.yml \
+    --extra-vars "ansible_port=22"
+  ```
