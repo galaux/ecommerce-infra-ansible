@@ -75,15 +75,15 @@
 # Test config only
 
 - name: test instance only - certificates renewal enabled at boot
-  service:
+  systemd:
     name: renew-certificates.service
+    daemon_reload: yes
     enabled: yes
-  notify:
-    - daemon reload
   when: renew_certificates_at_boot
 
 - name: test instance only - certificates renewal timer disabled
-  service:
+  systemd:
+    daemon_reload: yes
     name: renew-certificates.timer
     enabled: no
     state: stopped
@@ -97,13 +97,15 @@
 # Production config only
 
 - name: production instance only - certificates renewal disabled at boot
-  service:
+  systemd:
+    daemon_reload: yes
     name: renew-certificates.service
     enabled: no
   when: renew_certificates_at_boot
 
 - name: production instance only - certificates renewal timer enabled
-  service:
+  systemd:
+    daemon_reload: yes
     name: renew-certificates.timer
     enabled: yes
     state: started
