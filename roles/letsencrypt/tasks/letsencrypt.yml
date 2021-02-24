@@ -90,7 +90,7 @@
   when: renew_certificates
 
 - name: test instance only - certificates updated
-  command: certbot -n renew
+  command: certbot -n renew --no-random-sleep-on-renew
   when: not renew_certificates
 
 
